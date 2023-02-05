@@ -1,2 +1,3 @@
-# oid
--o-id - Mudorum component model
+# -o-id
+
+Web components based on the Digital Content Component (DCC) model for the Mundorum space.
