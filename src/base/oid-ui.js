@@ -1,7 +1,8 @@
-import { OidWeb } from './oidweb.js'
+import { OidBase } from './oid-base.js'
 
-export class OidUI extends OidWeb {
+export class OidUI extends OidBase {
   connectedCallback() {
+    super.connectedCallback()
     this.render()
   }
 
@@ -16,8 +17,8 @@ export class OidUI extends OidWeb {
   }
 
   _shadowHTML (html) {
-    console.log('=== object ===')
-    console.log(this)
+    // console.log('=== object ===')
+    // console.log(this)
     const template = document.createElement('template')
     template.innerHTML = html.replace(
       /{{this\.([^}]*)}}/g,

@@ -1,12 +1,11 @@
-import { OidWeb } from './oidweb.js'
-import { OidUI } from './oidui.js'
+import { OidBase } from './oid-base.js'
+import { OidUI } from './oid-ui.js'
 
 export class Oid {
   static component (spec) {
-
     let impl = spec.implementation
     if (impl == null) {
-      const inh = (spec.ui === false) ? OidWeb : OidUI
+      const inh = (spec.ui === false) ? OidBase : OidUI
       const className = spec.element[0].toUpperCase() +
         spec.element.slice(1)
           .replace(/-([a-z])/g, function (g) { return g[1].toUpperCase() })
@@ -21,15 +20,25 @@ export class Oid {
       })
       for (const pname in spec.properties) {
         const property = spec.properties[pname]
-        Object.defineProperty(impl.prototype, pname, {
-          get: function() {return this['_' + pname]},
-          set: function(newValue) {
-            console.log('=== object set ===')
-            console.log(this)
-            this['_' + pname] = newValue
-            this.render()
-          }
-        })
+        Object.defineProperty(impl.prototype, pname,
+          ((impl.prototype.render == null)
+            ? {
+              get: function() {return this['_' + pname]},
+              set: function(newValue) {
+                console.log('=== set ' + pname)
+                console.log(newValue)
+                this['_' + pname] = newValue
+              }
+            }
+            : {
+              get: function() {return this['_' + pname]},
+              set: function(newValue) {
+                console.log('=== set ' + pname)
+                console.log(newValue)
+                this['_' + pname] = newValue
+                this.render()
+              }
+            }))
         if (property.attribute == null || property.attribute !== false)
           observed.push(
             (property.attribute) ? property.attribute : pname)

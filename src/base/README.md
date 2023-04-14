@@ -8,7 +8,8 @@ Oid.component(
   properties: {
     name: {default: 'World'}
   },
-  template: `<h1>Hello, {{this.name}}</h1>`
+  template: `<h1>Hello, {{this.name}}</h1>`,
+  notify: ['test'] // {'test': 'notifyTest'}
 })
 ~~~
 
@@ -18,3 +19,7 @@ Oid.component(
 * `implementation`: the predefined class that implements the component
 * `properties`: properties to be attached to the component
   * `default`: default value assigned to the property in the beginning
+* `template`: HTML/SVG/XML template to render
+* `notify`: list of the notices treated by handled by the component
+  * *array format*: lists only the supported notices, automatically mapped to  notifyNotice handler
+  * *object format*: lists the supported notices and the respective handler
