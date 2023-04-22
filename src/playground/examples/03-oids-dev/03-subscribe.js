@@ -1,5 +1,4 @@
-import { Oid } from '../../../base/oid'
-import { OidUI } from '../../../base/oid-ui'
+import { Oid, OidUI } from '/dist/oidlib-dev.js'
 
 export class Ex03 extends OidUI {
   constructor () {
@@ -7,7 +6,6 @@ export class Ex03 extends OidUI {
   }
 
   notifyTest (topic, message) {
-    console.log('=== changeName', topic, message)
     this.name = message.value
     this.render()
   }

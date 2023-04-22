@@ -1,4 +1,4 @@
-import { Oid } from '../../../base/oid'
+import { Oid } from '/dist/oidlib-dev.js'
 
 Oid.component(
 {
