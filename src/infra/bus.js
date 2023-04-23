@@ -12,8 +12,8 @@ export class Bus {
         topics[subscribed] = handler
       else if (typeof subscribed === 'object')
         topics = subscribed
-      console.log('=== subscribe')
-      console.log(topics)
+      // console.log('=== subscribe')
+      // console.log(topics)
       const listeners = this._listeners.slice()
       for (const tp in topics) {
         if (topics[tp] != null) {
@@ -58,9 +58,9 @@ export class Bus {
   }
 
   async publish (topic, message) {
-    console.log('=== publish')
-    console.log(topic)
-    console.log(this._listeners)
+    // console.log('=== publish')
+    // console.log(topic)
+    // console.log(this._listeners)
     let matched = false
     const listeners = this._listeners
     for (const l in listeners) {

@@ -1,11 +1,11 @@
-import { Oid, OidUI } from '/dist/oidlib-dev.js'
+import { html, Oid, OidUI } from '/dist/oidlib-dev.js'
 
 export class Ex04 extends OidUI {
   constructor () {
     super()
   }
 
-  notifyMyTest (topic, message) {
+  myHandleTest (topic, message) {
     this.name = message.value
     this.render()
   }
@@ -18,9 +18,9 @@ Oid.component(
   properties: {
     name: {}
   },
-  notify: {
-    'test': 'notifyMyTest'
+  receive: {
+    'test': 'myHandleTest'
   },
-  template: `<h1>Hello, {{this.name}}</h1>`,
+  template: html`<h1>Hello, {{this.name}}</h1>`,
   implementation: Ex04
 })

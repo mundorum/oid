@@ -7,12 +7,17 @@ export class OidUI extends OidBase {
   }
 
   render() {
+    this._presentation = null
     const spec = this.constructor.spec
     if (spec.template) {
-      if (spec.shadow === false)
-        this.innerHTML = spec.template
-      else
-        this._shadowHTML(spec.template)
+      const template =
+        (spec.styles ? `<style>${spec.styles}</style>` : '') +
+        spec.template
+      if (spec.shadow === false) {
+        this.innerHTML = template
+        this._presentation = this.querySelector('#oid-prs') || this
+      } else
+        this._presentation = this._shadowHTML(template)
     }
   }
 

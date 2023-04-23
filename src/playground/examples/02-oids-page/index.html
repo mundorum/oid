@@ -7,6 +7,12 @@
 </head>
 <body>
   <h1>Playground</h1>
-  <button-oid label="Fire" publish="clicked:example/test"></button-oid>
+  <button-oid label="Start"
+            value="The dinosaur jumped into the mud."
+            publish="click:show/message">
+  </button-oid>
+  <console-oid prompt="*"
+             subscribe="show/message:display">
+  </console-oid>
 </body>
 </html>

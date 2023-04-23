@@ -25,16 +25,16 @@ export class Oid {
             ? {
               get: function() {return this['_' + pname]},
               set: function(newValue) {
-                console.log('=== set ' + pname)
-                console.log(newValue)
+                // console.log('=== set ' + pname)
+                // console.log(newValue)
                 this['_' + pname] = newValue
               }
             }
             : {
               get: function() {return this['_' + pname]},
               set: function(newValue) {
-                console.log('=== set ' + pname)
-                console.log(newValue)
+                // console.log('=== set ' + pname)
+                // console.log(newValue)
                 this['_' + pname] = newValue
                 this.render()
               }
