@@ -9,13 +9,13 @@ To bundle the JavaScript components and infrastructure, we adopt  WebPack. The f
 ## Development Package
 
 ~~~
-npx webpack --config webpack.config.dev.js --mode=development
+npx webpack --config webpack.config.dev.js
 ~~~
 
 ## Production Package
 
 ~~~
-npx webpack --config webpack.config.js --mode=production
+npx webpack
 ~~~
 
 ## Development Server

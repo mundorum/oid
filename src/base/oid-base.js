@@ -3,25 +3,68 @@ import { Primitive } from './primitive.js'
 export class OidBase extends Primitive {
   constructor () {
     super()
-    this._toHandle = this._toHandle.bind(this)
-    this.handleReceive = this.handleReceive.bind(this)
+
+    this._mapTopicNotice = {}
+    this._mapNoticeTopic = {}
+    this._receiveHandler = {}
+
+    this._convertNotice = this._convertNotice.bind(this)
+    this.handleNotice = this.handleNotice.bind(this)
     this._buildReceiveHandlers()
+    this._buildEventDispatchers()
+  }
+
+  _buildReceiveHandlers () {
+    const spec = this.constructor.spec
+    if (spec != null && spec.receive != null) {
+      // check if type is array
+      if (Array.isArray(spec.receive)) {
+        for (const notice of spec.receive)
+          this._receiveHandler[notice] =
+            this['handle' + notice[0].toUpperCase() + notice.slice(1)].bind(this)
+      } else {
+        for (const [notice, callback] of Object.entries(spec.receive))
+          this._receiveHandler[notice] = this[callback].bind(this)
+      }
+    }
+  }
+
+  _buildEventDispatchers () {
+    const spec = this.constructor.spec
+    if (spec && spec.template) {
+      let clsn = 1
+      const te = spec.template.split(/@([^=]*)={{this\.([^}]*)}}/)
+      if (te.length > 1) {
+        this._eventDispatch = []
+        let ntempl = ''
+        for (let i = 0; i + 2 < te.length; i += 3) {
+          ntempl +=
+            te[i] + OidBase.eventClass + clsn
+          this._eventDispatch.push([
+            OidBase.eventClass + clsn, te[i + 1], te[i + 2]])
+          clsn++
+        }
+        spec.template = ntempl + te[te.length - 1]
+      }
+      // console.log('=== template')
+      // console.log(this.constructor.spec.template)
+      // console.log(this._eventDispatch)
+    }
   }
 
   connectedCallback () {
     if (this.hasAttribute('publish'))
-      this._mapNoticeTopic(this.publish)
+      this._publishNoticeTopic(this.publish)
     if (this.hasAttribute('subscribe'))
-      this._subscribeTopic(this.subscribe)
+      this._subscribeTopicNotice(this.subscribe)
   }
 
   disconnectedCallback () {
-    if (this._subsTopic != null) {
-      if (this._subsNote != null)
-        this._unsubscribe(this._subsTopic, this._toHandle)
+    for (const topic in this._mapTopicNotice)
+      if (this._mapTopicNotice[topic] != topic)
+        this._unsubscribe(topic, this._convertNotice)
       else
-        this._unsubscribe(this._subsTopic, this.handleReceive)
-    }
+        this._unsubscribe(topic, this.handleNotice)
   }
 
   static get observedAttributes () {
@@ -34,7 +77,7 @@ export class OidBase extends Primitive {
 
   set publish (newValue) {
     this.setAttribute('publish', newValue)
-    this._mapNoticeTopic(newValue)
+    this._publishNoticeTopic(newValue)
   }
 
   get subscribe () {
@@ -43,73 +86,48 @@ export class OidBase extends Primitive {
 
   set subscribe (newValue) {
     this.setAttribute('subscribe', newValue)
-    this._subscribeTopic(newValue)
+    this._subscribeTopicNotice(newValue)
   }
 
-  _subscribeTopic (topicNotice) {
-    const colon = topicNotice.lastIndexOf(':')
-    if (colon != -1) {
-      this._subsTopic = topicNotice.substring(0, colon)
-      this._subsNotice = topicNotice.substring(colon + 1)
-      this._subscribe(this._subsTopic, this._toHandle)
-      // console.log('=== map topic/notice')
-      // console.log(this._subsTopic, this._toHandle)
-    } else {
-      this._subsTopic = topicNotice
-      this._subscribe(topicNotice, this.handleReceive)
-    }
-    // console.log('=== map topic/notice')
-    // console.log(this._subsTopic, this._subsNotice)
-  }
-
-  _mapNoticeTopic (noticeTopic) {
-    const colon = noticeTopic.lastIndexOf(':')
-    if (colon != -1) {
-      this._pubNotice = noticeTopic.substring(0, colon)
-      this._pubTopic = noticeTopic.substring(colon + 1)
-    } else {
-      this._pubNotice = noticeTopic
-      this._pubTopic = noticeTopic
-    }
-  }
-
-  _toHandle (topic, message) {
-    // console.log('=== _toHandle', topic)
-    this.handleReceive((this._subsNotice)
-      ? this._subsNotice : topic, message)
-  }
-
-  notify (notice, message) {
-    // console.log('=== notify', notice, message)
-    // console.log(this._pubNotice, this._pubTopic)
-    if (this._pubNotice != null && this._pubNotice == notice &&
-        this._pubTopic != null) {
-      // console.log('=== publish', this._pubTopic, message)
-      this._publish(this._pubTopic, message)
-    }
-  }
-
-  handleReceive (notice, message) {
-    // console.log('=== handleReceive', notice, message)
-    if (this._receiveHandler != null) {
-      const handler = this._receiveHandler[notice]
-      if (handler != null) handler(notice, message)
-    }
-  }
-
-  _buildReceiveHandlers () {
-    const spec = this.constructor.spec
-    if (spec != null && spec.receive != null) {
-      this._receiveHandler = {}
-      // check if type is array
-      if (Array.isArray(spec.receive)) {
-        for (const notice of spec.receive)
-          this._receiveHandler[notice] =
-            this['handle' + notice[0].toUpperCase() + notice.slice(1)].bind(this)
+  _subscribeTopicNotice (topicNotice) {
+    const tpnts = topicNotice.split(',')
+    for (const tn of tpnts) {
+      const colon = tn.lastIndexOf(':')
+      if (colon != -1) {
+        const topic = tn.substring(0, colon)
+        this._mapTopicNotice[topic] = tn.substring(colon + 1)
+        this._subscribe(topic, this._convertNotice)
       } else {
-        for (const [notice, callback] of Object.entries(spec.receive))
-          this._receiveHandler[notice] = this[callback].bind(this)
+        this._mapTopicNotice[tn] = tn  // store to unsubscribe
+        this._subscribe(tn, this.handleNotice)
       }
     }
   }
+
+  _publishNoticeTopic (noticeTopic) {
+    const nttps = noticeTopic.split(',')
+    for (const nt of nttps) {
+      const colon = nt.lastIndexOf(':')
+      if (colon != -1)
+        this._mapNoticeTopic[nt.substring(0, colon)] = nt.substring(colon + 1)
+      else
+        this._mapNoticeTopic[nt] = nt
+    }
+  }
+
+  _notify (notice, message) {
+    if (this._mapNoticeTopic[notice] != null)
+      this._publish(this._mapNoticeTopic[notice], message)
+  }
+
+  _convertNotice (topic, message) {
+    this.handleNotice(this._mapTopicNotice[topic], message)
+  }
+
+  handleNotice (notice, message) {
+    if (this._receiveHandler[notice] != null)
+      this._receiveHandler[notice](notice, message)
+  }
 }
+
+OidBase.eventClass = 'oidevent_'

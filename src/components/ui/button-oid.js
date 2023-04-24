@@ -3,15 +3,21 @@ import { Oid } from '../../base/oid'
 import { OidUI } from '../../base/oid-ui'
 
 export class ButtonOid extends OidUI {
-  render () {
-    super.render()
-    this._presentation.style.cursor = 'pointer'
-    this._presentation.addEventListener(
-      'click', this._computeTrigger.bind(this))
+  constructor () {
+    super()
+    this._onClick = this._onClick.bind(this)
   }
 
-  _computeTrigger () {
-    this.notify('click', {value: this.value || this.label})
+  _onClick () {
+    this._notify('click', {value: this.value || this.label})
+  }
+
+  _onMouseEnter () {
+    this._notify('mouseenter', {value: this.value || this.label})
+  }
+
+  _onMouseLeave () {
+    this._notify('mouseleave', {value: this.value || this.label})
   }
 }
 
@@ -42,5 +48,8 @@ Oid.component(
     cursor: pointer;
   }`,
   template: html`
-  <span id="oid-prs" class="button">{{this.label}}</span>`
+  <span id="oid-prs" class="button" @click={{this._onClick}}
+    @mouseenter={{this._onMouseEnter}} @mouseleave={{this._onMouseLeave}}>
+    {{this.label}}
+  </span>`
 })

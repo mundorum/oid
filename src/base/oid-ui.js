@@ -9,25 +9,38 @@ export class OidUI extends OidBase {
   render() {
     this._presentation = null
     const spec = this.constructor.spec
-    if (spec.template) {
-      const template =
-        (spec.styles ? `<style>${spec.styles}</style>` : '') +
-        spec.template
+    if (spec && spec.template) {
+      let html =
+        ((spec.styles ? `<style>${spec.styles}</style>` : '') +
+         spec.template)
+        .replace(
+          /{{this\.([^}]*)}}/g,
+          (match, p1) => {return this[p1]})
       if (spec.shadow === false) {
-        this.innerHTML = template
+        this.innerHTML = html
         this._presentation = this.querySelector('#oid-prs') || this
       } else
-        this._presentation = this._shadowHTML(template)
+        this._presentation = this._shadowHTML(html)
+
+      if (this._eventDispatch) {
+        const query = (spec.shadow === false) ? this : this.shadowRoot
+        console.log('=== presentation')
+        console.log(query)
+        for (const [atr, event, dispatch] of this._eventDispatch) {
+          const target = query.querySelector('[' + atr + ']')
+          // <TODO> avoid bind again every time
+          target.addEventListener(event, this[dispatch].bind(this))
+        }
+      }
     }
   }
 
   _shadowHTML (html) {
-    // console.log('=== object ===')
-    // console.log(this)
     const template = document.createElement('template')
-    template.innerHTML = html.replace(
-      /{{this\.([^}]*)}}/g,
-      (match, p1) => {return this[p1]})
+    // template.innerHTML = html.replace(
+    //   /{{this\.([^}]*)}}/g,
+    //   (match, p1) => {return this[p1]})
+    template.innerHTML = html
     const clone = document.importNode(template.content, true)
     if (!this.shadowRoot)
       this.attachShadow({ mode: 'open' })

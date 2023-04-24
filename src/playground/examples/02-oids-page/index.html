@@ -8,9 +8,12 @@
 <body>
   <h1>Playground</h1>
   <button-oid label="Start"
-            value="The dinosaur jumped into the mud."
-            publish="click:show/message">
+              value="The dinosaur jumped into the mud."
+              publish="click:show/message,mouseenter:show/prepare">
   </button-oid>
+  <console-oid prompt="*"
+               subscribe="show/prepare:display">
+  </console-oid>
   <console-oid prompt="*"
              subscribe="show/message:display">
   </console-oid>

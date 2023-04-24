@@ -10,5 +10,6 @@ module.exports = {
       name: 'oidlib',
       type: 'umd'
     }
-  }
+  },
+  mode: 'production'
 }
