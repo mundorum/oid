@@ -14,6 +14,15 @@ export class OidBase extends Primitive {
     this._buildEventDispatchers()
   }
 
+  connectedCallback () {
+    const spec = this.constructor.spec
+    if (spec && spec.properties) {
+      for (const [prop, def] of Object.entries(spec.properties))
+        if (def.default != null && !this.hasAttribute(prop))
+          this[prop] = def.default
+    }
+  }
+
   _buildReceiveHandlers () {
     const spec = this.constructor.spec
     if (spec != null && spec.receive != null) {
@@ -32,31 +41,25 @@ export class OidBase extends Primitive {
   _buildEventDispatchers () {
     const spec = this.constructor.spec
     if (spec && spec.template) {
-      let clsn = 1
-      const te = spec.template.split(/@([^=]*)={{this\.([^}]*)}}/)
+      let atrn = 1
+      const te = spec.template.split(
+        /@([^= >]*)[ \t]*(?:=[ \t]*{{[ \t]*this\.([^}]*)[ \t]*}})?/)
       if (te.length > 1) {
         this._eventDispatch = []
         let ntempl = ''
         for (let i = 0; i + 2 < te.length; i += 3) {
           ntempl +=
-            te[i] + OidBase.eventClass + clsn
+            te[i] + OidBase.eventAttribute + atrn + ' '
+          const funcName = (te[i + 2] == null)
+            ? '_on' + te[i + 1][0].toUpperCase() + te[i + 1].slice(1)
+            : te[i + 2]
           this._eventDispatch.push([
-            OidBase.eventClass + clsn, te[i + 1], te[i + 2]])
-          clsn++
+            OidBase.eventAttribute + atrn, te[i + 1], this[funcName].bind(this)])
+          atrn++
         }
         spec.template = ntempl + te[te.length - 1]
       }
-      // console.log('=== template')
-      // console.log(this.constructor.spec.template)
-      // console.log(this._eventDispatch)
     }
-  }
-
-  connectedCallback () {
-    if (this.hasAttribute('publish'))
-      this._publishNoticeTopic(this.publish)
-    if (this.hasAttribute('subscribe'))
-      this._subscribeTopicNotice(this.subscribe)
   }
 
   disconnectedCallback () {
@@ -72,25 +75,29 @@ export class OidBase extends Primitive {
   }
 
   get publish () {
-    return this.getAttribute('publish')
+    // return this.getAttribute('publish')
+    return this._publishProp
   }
 
   set publish (newValue) {
-    this.setAttribute('publish', newValue)
+    // this.setAttribute('publish', newValue)
+    this._publishProp = newValue
     this._publishNoticeTopic(newValue)
   }
 
   get subscribe () {
-    return this.getAttribute('subscribe')
+    // return this.getAttribute('subscribe')
+    return this._subscribeProp
   }
 
   set subscribe (newValue) {
-    this.setAttribute('subscribe', newValue)
+    // this.setAttribute('subscribe', newValue)
+    this._subscribeProp = newValue
     this._subscribeTopicNotice(newValue)
   }
 
   _subscribeTopicNotice (topicNotice) {
-    const tpnts = topicNotice.split(',')
+    const tpnts = topicNotice.split(';')
     for (const tn of tpnts) {
       const colon = tn.lastIndexOf(':')
       if (colon != -1) {
@@ -105,7 +112,7 @@ export class OidBase extends Primitive {
   }
 
   _publishNoticeTopic (noticeTopic) {
-    const nttps = noticeTopic.split(',')
+    const nttps = noticeTopic.split(';')
     for (const nt of nttps) {
       const colon = nt.lastIndexOf(':')
       if (colon != -1)
@@ -113,9 +120,11 @@ export class OidBase extends Primitive {
       else
         this._mapNoticeTopic[nt] = nt
     }
+    // console.log('mapNoticeTopic', this._mapNoticeTopic)
   }
 
   _notify (notice, message) {
+    // console.log('notify', notice, message)
     if (this._mapNoticeTopic[notice] != null)
       this._publish(this._mapNoticeTopic[notice], message)
   }
@@ -130,4 +139,4 @@ export class OidBase extends Primitive {
   }
 }
 
-OidBase.eventClass = 'oidevent_'
+OidBase.eventAttribute = 'oidevent_'

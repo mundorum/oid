@@ -1,5 +1,3 @@
-
-
 ~~~js
 Oid.component(
 {

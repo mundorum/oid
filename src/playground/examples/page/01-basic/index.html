@@ -9,13 +9,10 @@
   <h1>Playground</h1>
   <button-oid label="Start"
               value="The dinosaur jumped into the mud."
-              publish="click:show/message,mouseenter:show/prepare">
+              publish="click:show/message">
   </button-oid>
   <console-oid prompt="*"
-               subscribe="show/prepare:display">
-  </console-oid>
-  <console-oid prompt="*"
-             subscribe="show/message:display">
+               subscribe="show/message:display">
   </console-oid>
 </body>
 </html>

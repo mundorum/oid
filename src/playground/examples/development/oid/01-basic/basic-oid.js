@@ -3,7 +3,7 @@ import { Oid } from '/dist/oidlib-dev.js'
 Oid.component(
 {
   id: 'ex:basic',
-  element: 'ex01-oid',
+  element: 'basic-oid',
   properties: {
     name: {}
   },

@@ -5,7 +5,7 @@ import { OidUI } from '../../base/oid-ui'
 export class ConsoleOid extends OidUI {
   handleDisplay (topic, message) {
     if (this._presentation && message.value)
-      this._presentation.value += `${message.value}\n`
+      this._presentation.value += `${this.prompt} ${message.value}\n`
   }
 }
 
@@ -13,7 +13,8 @@ Oid.component({
   id: 'oid:console',
   element: 'console-oid',
   properties: {
-    label: {}
+    label: {},
+    prompt: {default: '>'}
   },
   receive: ['display'],
   implementation: ConsoleOid,
@@ -25,6 +26,5 @@ Oid.component({
     background-color: lightgray
   }`,
   template: html`
-  <textarea class="console" rows="10" id="oid-prs" readonly>
-  </textarea>`
+  <textarea class="console" rows="10" id="oid-prs" readonly></textarea>`
 })

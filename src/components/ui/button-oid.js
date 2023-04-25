@@ -1,22 +1,17 @@
 import { html, css } from '../../infra/literals.js'
-import { Oid } from '../../base/oid'
-import { OidUI } from '../../base/oid-ui'
+import { Oid } from '../../base/oid.js'
+import { OidUI } from '../../base/oid-ui.js'
 
 export class ButtonOid extends OidUI {
-  constructor () {
-    super()
-    this._onClick = this._onClick.bind(this)
-  }
-
   _onClick () {
     this._notify('click', {value: this.value || this.label})
   }
 
-  _onMouseEnter () {
+  _onMouseenter () {
     this._notify('mouseenter', {value: this.value || this.label})
   }
 
-  _onMouseLeave () {
+  _onMouseleave () {
     this._notify('mouseleave', {value: this.value || this.label})
   }
 }
@@ -48,8 +43,8 @@ Oid.component(
     cursor: pointer;
   }`,
   template: html`
-  <span id="oid-prs" class="button" @click={{this._onClick}}
-    @mouseenter={{this._onMouseEnter}} @mouseleave={{this._onMouseLeave}}>
+  <span id="oid-prs" class="button"
+    @click @mouseenter @mouseleave>
     {{this.label}}
   </span>`
 })

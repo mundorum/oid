@@ -12,8 +12,7 @@ export class Oid {
       impl = class extends inh { }
       Object.defineProperty(impl, 'name', {value: className})
     }
-
-    const observed = []
+    const observed = impl.observedAttributes.slice()
     if (spec.properties) {
       Object.defineProperty(impl, 'observedAttributes', {
         get: function() {return this.observed}
@@ -45,9 +44,10 @@ export class Oid {
       }
     }
 
-    impl.prototype.attributeChangedCallback = function(name, oldValue, newValue) {
-      this[name] = newValue
-    }
+    impl.prototype.attributeChangedCallback =
+      function(name, oldValue, newValue) {
+        this[name] = newValue
+      }
 
     Object.assign(impl, {spec: spec, observed: observed})
     customElements.define(spec.element, impl)

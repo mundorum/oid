@@ -1,12 +1,12 @@
 import { OidBase } from './oid-base.js'
 
 export class OidUI extends OidBase {
-  connectedCallback() {
+  connectedCallback () {
     super.connectedCallback()
     this.render()
   }
 
-  render() {
+  render () {
     this._presentation = null
     const spec = this.constructor.spec
     if (spec && spec.template) {
@@ -24,12 +24,9 @@ export class OidUI extends OidBase {
 
       if (this._eventDispatch) {
         const query = (spec.shadow === false) ? this : this.shadowRoot
-        console.log('=== presentation')
-        console.log(query)
         for (const [atr, event, dispatch] of this._eventDispatch) {
           const target = query.querySelector('[' + atr + ']')
-          // <TODO> avoid bind again every time
-          target.addEventListener(event, this[dispatch].bind(this))
+          target.addEventListener(event, dispatch)
         }
       }
     }
@@ -37,9 +34,6 @@ export class OidUI extends OidBase {
 
   _shadowHTML (html) {
     const template = document.createElement('template')
-    // template.innerHTML = html.replace(
-    //   /{{this\.([^}]*)}}/g,
-    //   (match, p1) => {return this[p1]})
     template.innerHTML = html
     const clone = document.importNode(template.content, true)
     if (!this.shadowRoot)
