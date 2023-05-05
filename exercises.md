@@ -1,8 +1,8 @@
 # Exercises
 
-## Exercise of Three Connected Oids
+## Exercise of Two Connected Oids
 
-Instantiate two button components (button-oid) connected to a switch component (switch-oid). The first button turns the switch on and the second off.
+Instantiate one button component (button-oid) connected to a switch component (switch-oid). When the user clicks this button it turns the switch on and off alternately.
 
 ## Exercise `bar-oid`
 
