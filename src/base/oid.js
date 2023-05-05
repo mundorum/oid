@@ -1,4 +1,5 @@
 import { OidBase } from './oid-base.js'
+import { OidWeb } from './oid-web.js'
 import { OidUI } from './oid-ui.js'
 
 export class Oid {
@@ -17,7 +18,10 @@ export class Oid {
   static component (spec) {
     let impl = spec.implementation
     if (impl == null) {
-      const inh = (spec.ui === false) ? OidBase : OidUI
+      const inh =
+        (spec.ui === false || spec.template == null)
+          ? ((spec.element == null) ? OidBase : OidWeb)
+          : OidUI
       const className = spec.element[0].toUpperCase() +
         spec.element.slice(1)
           .replace(/-([a-z])/g, function (g) { return g[1].toUpperCase() })
@@ -74,8 +78,10 @@ export class Oid {
       }
 
     Object.assign(impl, {spec: spec, observed: observed})
-    if (spec.element)
-      customElements.define(spec.element, impl)
+    // <TODO> Provisory
+    if (spec.element == null)
+      spec.element = 'internal-' + spec.id.replace(':', '-')
+    customElements.define(spec.element, impl)
     Oid._oidReg[spec.id] = impl
   }
 
@@ -83,16 +89,16 @@ export class Oid {
     const impl = Oid._oidReg[componentId]
     if (impl == null)
       throw new Error('Unknown component id: ' + componentId)
-    const element = document.createElement(impl.spec.element)
+    const instance = document.createElement(impl.spec.element)
     if (properties != null) {
       for (const p in properties) {
         // const property = impl.spec.properties[p]
         // if (property != null && property.attribute === true)
-          element.setAttribute(p, properties[p])
+          instance.setAttribute(p, properties[p])
         // else
         //   element[p] = properties[p]         
       }
     }
-    return element
+    return instance
   }
 }

@@ -1,6 +1,6 @@
-import { Oid, OidWeb } from '/lib/oidlib-dev.js'
+import { Oid, OidBase } from '/lib/oidlib-dev.js'
 
-export class FibonacciOid extends OidWeb {
+export class FibonacciOid extends OidBase {
   constructor () {
     super()
     this.handleFirst()
@@ -23,7 +23,6 @@ export class FibonacciOid extends OidWeb {
 Oid.component(
 {
   id: 'ex:fibonacci',
-  element: 'fibonacci-oid',
   provide: ['itf:iterate'],
   implementation: FibonacciOid
 })

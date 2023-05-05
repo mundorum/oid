@@ -1,6 +1,6 @@
-import { OidBase } from './oid-base.js'
+import { OidWeb } from './oid-web.js'
 
-export class OidUI extends OidBase {
+export class OidUI extends OidWeb {
   connectedCallback () {
     super.connectedCallback()
     this.render()

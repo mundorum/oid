@@ -15,8 +15,8 @@ export class Bus {
         topics[subscribed] = handler
       else if (typeof subscribed === 'object')
         topics = subscribed
-      console.log('=== subscribe')
-      console.log(topics)
+      // console.log('=== subscribe')
+      // console.log(topics)
       const listeners = this._listeners.slice()
       for (const tp in topics) {
         if (topics[tp] != null) {
@@ -36,8 +36,8 @@ export class Bus {
         }
       }
       this._listeners = listeners
-      console.log('=== listeners')
-      console.log(this._listeners)
+      // console.log('=== listeners')
+      // console.log(this._listeners)
     }
   }
 
@@ -161,8 +161,8 @@ export class Bus {
    * message to it.
    */
   async invoke (cInterface, id, notice, message) {
-    console.log('=== bus invoke', cInterface, id, notice, message)
-    console.log(this._providers)
+    // console.log('=== bus invoke', cInterface, id, notice, message)
+    // console.log(this._providers)
     const key = cInterface + '#' + id
     if (this._providers[key] != null)
       return await
