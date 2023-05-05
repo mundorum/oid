@@ -43,7 +43,7 @@ Example:
 
 HTML:
 ~~~html
-<increase-oid rate="5" publish="clicked~increase/bar"></increase-rate>
+<increase-oid rate="5" publish="click~increase/bar"></increase-oid>
 <bar-oid char="*" size="10" subscribe="increase/bar~increase"></bar-oid>
 ~~~
 
