@@ -1,4 +1,6 @@
-# Oid Developement Guide
+# Oid
+
+## Oid Developement Guide
 
 This guide shows how to build new Oids in JavaScript.
 

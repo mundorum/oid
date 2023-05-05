@@ -1,4 +1,6 @@
-# Oid Development Guide
+# Page
+
+## Oid Inside a Page - Development Guide
 
 An Oid is a technology that enables the packaging of blocks of software and media inside components by using the Digital Content Component (DCC) model. These components can be customized and combined to solve small tasks; interact with a user; perform animations and simulations; or create applications.
 
