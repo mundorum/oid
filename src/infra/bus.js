@@ -102,7 +102,7 @@ export class Bus {
   provide (cInterface, id, provider) {
     let status = false
     if (id != null && cInterface != null && provider != null) {
-      const key = cInterface + ':' + id
+      const key = cInterface + '#' + id
       if (this._providers[key] == null) {
         status = true
         this._providers[key] = provider
@@ -124,7 +124,7 @@ export class Bus {
   withhold (cInterface, id) {
     let status = false
     if (id != null && cInterface != null) {
-      const key = cInterface + ':' + id
+      const key = cInterface + '#' + id
       if (this._providers[key]) {
         status = true
         delete this._providers[key]
@@ -143,7 +143,7 @@ export class Bus {
   connect (cInterface, id, callback) {
     let status = false
     if (id != null && cInterface != null && callback != null) {
-      const key = cInterface + ':' + id
+      const key = cInterface + '#' + id
       if (this._providers[key])
         callback.connectionReady(cInterface, id, this._providers[key])
         // callback.connectionReady(cInterface, id,
@@ -163,7 +163,7 @@ export class Bus {
   async invoke (cInterface, id, notice, message) {
     console.log('=== bus invoke', cInterface, id, notice, message)
     console.log(this._providers)
-    const key = cInterface + ':' + id
+    const key = cInterface + '#' + id
     if (this._providers[key] != null)
       return await
         this._providers[key].handleInvoke(cInterface, notice, message)

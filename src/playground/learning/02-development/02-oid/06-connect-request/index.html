@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Playground</title>
+  <script src="fibonacci-oid.js" type="module"></script>
+  <script src="loop-oid.js" type="module"></script>
+</head>
+<body>
+  <h1>Playground</h1>
+
+  <fibonacci-oid id="fibo">
+  </fibonacci-oid>
+
+  <loop-oid connect="itf:iterate#fibo"
+            title="Fibonacci Sequence">
+  </loop-oid>
+</body>
+</html>

@@ -27,7 +27,8 @@ export class OidBase extends Primitive {
           console.log('=== provide', p, this.id)
           if (this.id)
             this._provide(p, this.id, this)
-          this._buildHandlers(this._provideHandler, spec.provide[p].operations)
+          this._buildHandlers(
+            this._provideHandler, spec.provide[p].operations, p)
         }
       this._buildEventDispatchers()
     }
@@ -39,18 +40,19 @@ export class OidBase extends Primitive {
     }
   }
 
-  _buildHandlers (handlerSet, handlersSpec) {
+  _buildHandlers (handlerSet, handlersSpec, cInterface) {
     if (handlersSpec != null) {
+      const prefix = (cInterface == null) ? '' : cInterface + '.'
       if (Array.isArray(handlersSpec)) {
         for (const notice of handlersSpec)
-          if (handlerSet[notice] == null)
-            handlerSet[notice] =
+          if (handlerSet[prefix + notice] == null)
+            handlerSet[prefix + notice] =
               this['handle' + notice[0].toUpperCase() +
               notice.slice(1)].bind(this)
       } else {
         for (const [notice, handler] of Object.entries(handlersSpec))
-          if (handlerSet[notice] == null)
-            handlerSet[notice] = this[handler].bind(this)
+          if (handlerSet[prefix + notice] == null)
+            handlerSet[prefix + notice] = this[handler].bind(this)
       }
     }
   }
@@ -214,10 +216,13 @@ export class OidBase extends Primitive {
   }
 
   handleInvoke (cInterface, notice, message) {
-    console.log('=== handleInvoke', notice, message)
+    console.log('=== handleInvoke', cInterface, notice, message)
     console.log(this._provideHandler)
-    if (this._provideHandler[notice] != null)
-      this._provideHandler[notice](notice, message)
+    let response = null
+    if (this._provideHandler[cInterface + '.' + notice] != null)
+      response =
+        this._provideHandler[cInterface + '.' + notice](notice, message)
+    return response
   }
 }
 

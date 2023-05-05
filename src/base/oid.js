@@ -74,7 +74,8 @@ export class Oid {
       }
 
     Object.assign(impl, {spec: spec, observed: observed})
-    customElements.define(spec.element, impl)
+    if (spec.element)
+      customElements.define(spec.element, impl)
     Oid._oidReg[spec.id] = impl
   }
 

@@ -6,3 +6,10 @@ Oid.cInterface ({
   cardinality: 'n:n',
   response: false
 })
+
+Oid.cInterface ({
+  id: 'itf:iterate',
+  operations: ['first', 'next'],
+  cardinality: 'n:1',
+  response: false
+})
