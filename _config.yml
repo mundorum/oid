@@ -1,0 +1,8 @@
+title: -o-id
+
+theme: minima
+
+header_pages:
+ - page.md
+ - oid.md
+ - bus.md
