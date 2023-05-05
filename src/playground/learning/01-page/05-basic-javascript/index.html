@@ -9,12 +9,12 @@
     const button = Oid.create('oid:button',
       {label: 'Start',
        value: 'The dinosaur jumped into the mud.',
-       publish: 'click:show/message'})
+       publish: 'click~show/message'})
     document.querySelector('#app').appendChild(button)
 
     const console = Oid.create('oid:console',
       {prompt: '*',
-       subscribe: 'show/message:display'})
+       subscribe: 'show/message~display'})
     document.querySelector('#app').appendChild(console)
   </script>
 </head>

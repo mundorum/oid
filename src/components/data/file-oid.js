@@ -24,6 +24,7 @@ export class FileOid extends OidUI {
       file = event.dataTransfer.files[0]
     const content = await file.text()
     this._notify('loaded', {value: content})
+    this._invoke('itf:transfer', 'send', {value: content})
   }
 }
 

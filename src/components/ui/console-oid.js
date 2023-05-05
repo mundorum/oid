@@ -3,9 +3,11 @@ import { Oid } from '../../base/oid'
 import { OidUI } from '../../base/oid-ui'
 
 export class ConsoleOid extends OidUI {
-  handleDisplay (topic, message) {
+  handleSend (topic, message) {
     if (this._presentation && message.value)
-      this._presentation.value += `${this.prompt} ${message.value}\n`
+      this._presentation.value +=
+        (this.prompt.length > 0 ? `${this.prompt} ` : '') +
+      `${message.value}\n`
   }
 }
 
@@ -16,10 +18,8 @@ Oid.component({
     label: {},
     prompt: {default: '>'}
   },
-  receive: ['display'],
-  provide: {
-    'itf:receive': ['display']
-  },
+  receive: {'display': 'handleSend'},
+  provide: ['itf:transfer'],
   implementation: ConsoleOid,
   styles: css`
   .console {

@@ -1,3 +1,4 @@
+import { Oid } from './oid.js'
 import { Primitive } from './primitive.js'
 
 export class OidBase extends Primitive {
@@ -8,23 +9,29 @@ export class OidBase extends Primitive {
     this._mapNoticeTopic = {}
     this._receiveHandler = {}
     this._provideHandler = {}
+    this._connected = {}
 
     this._convertNotice = this._convertNotice.bind(this)
     this.handleNotice = this.handleNotice.bind(this)
-    const spec = this.constructor.spec
-    if (spec) {
-      this._buildHandlers(this._receiveHandler, spec.receive)
-      console.log('=== receive')
-      console.log(this.constructor.spec)
-      console.log(this._receiveHandler)
-      for (const p in spec.provide)
-        this._buildHandlers(this._provideHandler, spec.provide[p])
-      this._buildEventDispatchers()
-    }
   }
 
   connectedCallback () {
     const spec = this.constructor.spec
+    if (spec) {
+      this._buildHandlers(this._receiveHandler, spec.receive)
+      // console.log('=== receive')
+      // console.log(this.constructor.spec)
+      // console.log(this._receiveHandler)
+      if (spec.provide != null)
+        for (const p in spec.provide) {
+          console.log('=== provide', p, this.id)
+          if (this.id)
+            this._provide(p, this.id, this)
+          this._buildHandlers(this._provideHandler, spec.provide[p].operations)
+        }
+      this._buildEventDispatchers()
+    }
+
     if (spec && spec.properties) {
       for (const [prop, def] of Object.entries(spec.properties))
         if (def.default != null && !this.hasAttribute(prop))
@@ -36,12 +43,14 @@ export class OidBase extends Primitive {
     if (handlersSpec != null) {
       if (Array.isArray(handlersSpec)) {
         for (const notice of handlersSpec)
-          handlerSet[notice] =
-            this['handle' + notice[0].toUpperCase() +
-            notice.slice(1)].bind(this)
+          if (handlerSet[notice] == null)
+            handlerSet[notice] =
+              this['handle' + notice[0].toUpperCase() +
+              notice.slice(1)].bind(this)
       } else {
         for (const [notice, handler] of Object.entries(handlersSpec))
-          handlerSet[notice] = this[handler].bind(this)
+          if (handlerSet[notice] == null)
+            handlerSet[notice] = this[handler].bind(this)
       }
     }
   }
@@ -79,7 +88,15 @@ export class OidBase extends Primitive {
   }
 
   static get observedAttributes () {
-    return ['publish', 'subscribe', 'connect']
+    return ['id', 'publish', 'subscribe', 'connect']
+  }
+
+  get id () {
+    return this._id
+  }
+
+  set id (newValue) {
+    this._id = newValue
   }
 
   get publish () {
@@ -112,14 +129,15 @@ export class OidBase extends Primitive {
   _subscribeTopicNotice (topicNotice) {
     const tpnts = topicNotice.split(';')
     for (const tn of tpnts) {
-      const colon = tn.lastIndexOf(':')
-      if (colon != -1) {
-        const topic = tn.substring(0, colon)
-        this._mapTopicNotice[topic] = tn.substring(colon + 1)
+      const parts = tn.split('~')
+      if (parts.length > 1) {
+        const topic = parts[0].trim()
+        this._mapTopicNotice[topic] = parts[1].trim()
         this._subscribe(topic, this._convertNotice)
       } else {
-        this._mapTopicNotice[tn] = tn  // store to unsubscribe
-        this._subscribe(tn, this.handleNotice)
+        const topic = tn.trim()
+        this._mapTopicNotice[topic] = topic  // store to unsubscribe
+        this._subscribe(topic, this.handleNotice)
       }
     }
   }
@@ -127,23 +145,24 @@ export class OidBase extends Primitive {
   _publishNoticeTopic (noticeTopic) {
     const nttps = noticeTopic.split(';')
     for (const nt of nttps) {
-      const colon = nt.lastIndexOf(':')
-      if (colon != -1)
-        this._mapNoticeTopic[nt.substring(0, colon)] = nt.substring(colon + 1)
+      const parts = nt.split('~')
+      if (parts.length > 1)
+        this._mapNoticeTopic[parts[0].trim()] = parts[1].trim()
       else
-        this._mapNoticeTopic[nt] = nt
+        this._mapNoticeTopic[nt.trim()] = nt.trim()
     }
     // console.log('mapNoticeTopic', this._mapNoticeTopic)
   }
 
   _connectInterface (idInterface) {
     let status = true
-    const idint = noticeTopic.split(';')
-    for (const ii of idiii) {
-      const parts = ii.split(':')
-      if (parts.length > 1)
+    const idint = idInterface.split(';')
+    for (const ii of idint) {
+      const parts = ii.split('#')
+      if (parts.length > 1) {
         this._connect(parts[0].trim(), parts[1].trim(), this)
-      else
+        console.log('=== connect', parts[0].trim(), parts[1].trim(), this)
+      } else
         status = false
     }
     return status
@@ -159,8 +178,34 @@ export class OidBase extends Primitive {
     this.handleNotice(this._mapTopicNotice[topic], message)
   }
 
-  connectionReady(id, cInterface, busHandler, component) {
-    console.log('=== connectionReady', id, cInterface, busHandler, component)
+  connectionReady(cInterface, id, component) {
+    console.log('=== connectionReady', id, cInterface, component)
+    if (this._connected[cInterface] == null)
+      this._connected[cInterface] = []
+    this._connected[cInterface].push(id)
+  }
+
+  async _invoke (cInterface, notice, message) {
+    console.log('=== invoke', cInterface, notice, message)
+    console.log(this._connected)
+    const intSpec = Oid.getInterface(cInterface)
+    console.log('=== intSpec')
+    console.log(intSpec)
+    if (this._connected[cInterface] != null) {
+      if (intSpec.response != null &&
+          intSpec.response === true) {
+        const responses = []
+        for (const id of this._connected[cInterface])
+          responses.push(await this._bus.invoke (cInterface, id, notice, message))
+        return (intSpec.cardinality &&
+                intSpec.cardinality[2] == '1')
+                ? responses[0] : responses
+      } else {
+        console.log('=== invoking', this._connected[cInterface])
+        for (const id of this._connected[cInterface])
+          return await this._bus.invoke (cInterface, id, notice, message)
+      }
+    }
   }
 
   handleNotice (notice, message) {
@@ -168,7 +213,9 @@ export class OidBase extends Primitive {
       this._receiveHandler[notice](notice, message)
   }
 
-  handleInvoke (notice, message) {
+  handleInvoke (cInterface, notice, message) {
+    console.log('=== handleInvoke', notice, message)
+    console.log(this._provideHandler)
     if (this._provideHandler[notice] != null)
       this._provideHandler[notice](notice, message)
   }

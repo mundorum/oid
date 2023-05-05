@@ -94,22 +94,23 @@ export class Bus {
   /*
    * Components declare provided services. Each interface defines a type of
    *  service. The same component can have several interfaces/services:
-   *   id: unique id of the component instance that offers the service
    *   cInterface: interface provided by the component
+   *   id: unique id of the component instance that offers the service
    *   provider: the component or component subobject that implements
    *             the interface/service
    */
-  provide (id, cInterface, provider) {
+  provide (cInterface, id, provider) {
     let status = false
     if (id != null && cInterface != null && provider != null) {
-      const key = id + ':' + cInterface
+      const key = cInterface + ':' + id
       if (this._providers[key] == null) {
         status = true
         this._providers[key] = provider
         if (this._pendingCnx[key] != null) {
           for (let c of this._pendingCnx[key])
-            c.connectionReady(id, cInterface,
-              this.invoke.bind(this, key), provider)
+            c.connectionReady(cInterface, id, provider)
+          // c.connectionReady(cInterface, id,
+          //     this.invoke.bind(this, key), provider)
           delete this._pendingCnx[key]
         }
       }
@@ -120,10 +121,10 @@ export class Bus {
   /*
    * Removes a provided service (usually, when the component is destroyed)
    */
-  withhold (id, cInterface) {
+  withhold (cInterface, id) {
     let status = false
     if (id != null && cInterface != null) {
-      const key = id + ':' + cInterface
+      const key = cInterface + ':' + id
       if (this._providers[key]) {
         status = true
         delete this._providers[key]
@@ -139,13 +140,14 @@ export class Bus {
    *   callback: component that will be notified as soon as the interface is
    *             connected
    */
-  connect (id, cInterface, callback) {
+  connect (cInterface, id, callback) {
     let status = false
     if (id != null && cInterface != null && callback != null) {
-      const key = id + ':' + cInterface
+      const key = cInterface + ':' + id
       if (this._providers[key])
-        callback.connectionReady(id, cInterface,
-          this.invoke.bind(this, key), this._providers[key])
+        callback.connectionReady(cInterface, id, this._providers[key])
+        // callback.connectionReady(cInterface, id,
+        //     this.invoke.bind(this, key), this._providers[key])
       else
         if (this._pendingCnx[key])
           this._pendingCnx[key].push(callback)
@@ -158,9 +160,13 @@ export class Bus {
    * Triggers a interface defined by an id and component, sending an optional
    * message to it.
    */
-  async invoke (key, notice, message) {
+  async invoke (cInterface, id, notice, message) {
+    console.log('=== bus invoke', cInterface, id, notice, message)
+    console.log(this._providers)
+    const key = cInterface + ':' + id
     if (this._providers[key] != null)
-      return await this._providers[key].handleInvoke(notice, message)
+      return await
+        this._providers[key].handleInvoke(cInterface, notice, message)
     else
       return null
   }

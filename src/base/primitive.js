@@ -22,19 +22,19 @@ export class Primitive extends HTMLElement {
     await this._bus.publish(topic, message)
   }
 
-  _provides (id, service, handler) {
-    this._bus.provides(id, service, handler)
+  _provide (cInterface, id, provider) {
+    this._bus.provide(cInterface, id, provider)
   }
 
-  _withhold (id, service) {
-    this._bus.withhold(id, service)
+  _withhold (cInterface, id) {
+    this._bus.withhold(cInterface, id)
   }
 
-  _connect (id, service, callback) {
-    this._bus.connect(id, service, callback)
+  _connect (cInterface, id, callback) {
+    this._bus.connect(cInterface, id, callback)
   }
 
-  async _invoke (id, service, message) {
-    return await this._bus.invoke (id, service, message)
+  async _invoke (cInterface, id, notice, message) {
+    return await this._bus.invoke (cInterface, id, notice, message)
   }
 }

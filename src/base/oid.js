@@ -2,7 +2,17 @@ import { OidBase } from './oid-base.js'
 import { OidUI } from './oid-ui.js'
 
 export class Oid {
-  static oidreg = {}
+  static _interfaceReg = {}
+  static _oidReg = {}
+
+  static cInterface (spec) {
+    if (spec != null)
+      Oid._interfaceReg[spec.id] = spec
+  }
+
+  static getInterface (cInterface) {
+    return Oid._interfaceReg[cInterface]
+  }
 
   static component (spec) {
     let impl = spec.implementation
@@ -46,6 +56,18 @@ export class Oid {
       }
     }
 
+    if (spec.provide) {
+      const provideSpec = {}
+      for (const p of spec.provide) {
+        const cInterface = Oid._interfaceReg[p]
+        if (cInterface == null)
+          throw new Error('Unknown interface id: ' + p)
+        else
+          provideSpec[p] = cInterface
+      }
+      spec.provide = provideSpec
+    }
+
     impl.prototype.attributeChangedCallback =
       function(name, oldValue, newValue) {
         this[name] = newValue
@@ -53,11 +75,11 @@ export class Oid {
 
     Object.assign(impl, {spec: spec, observed: observed})
     customElements.define(spec.element, impl)
-    Oid.oidreg[spec.id] = impl
+    Oid._oidReg[spec.id] = impl
   }
 
   static create (componentId, properties) {
-    const impl = Oid.oidreg[componentId]
+    const impl = Oid._oidReg[componentId]
     if (impl == null)
       throw new Error('Unknown component id: ' + componentId)
     const element = document.createElement(impl.spec.element)

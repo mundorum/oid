@@ -35,7 +35,7 @@ Each message is labeled by a *topic*, which is the basis of the publish/subscrib
 A message publication starts from a notice, which is an internal Oid event that is notified. This notice can be converted into a published topic by the following statement:
 
 ~~~html
-publish="notice:topic"
+publish="notice~topic"
 ~~~
 
 * `notice`: the event internally notified
@@ -46,7 +46,7 @@ The published message content depends on the component. See the following exampl
 ~~~html
 <button-oid label="Start"
             value="The dinosaur jumped into the mud."
-            publish="click:show/message">
+            publish="click~show/message">
 </button-oid>
 ~~~
 
@@ -59,7 +59,7 @@ A button-oid always sends its value attribute in the message value.
 An Oid can subscribe to a topic by adding an attribute subscribe in the following format:
 
 ~~~html
-subscribe="topic:notice"
+subscribe="topic~notice"
 ~~~
 
 * `topic` - the topic of the message subscribed
@@ -69,7 +69,7 @@ In the following example, we added a second Oid, the `console-oid`, which presen
 
 ~~~html
 <console-oid prompt="*"
-             subscribe="show/message:display">
+             subscribe="show/message~display">
 </console-oid>
 ~~~
 
