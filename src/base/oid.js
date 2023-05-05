@@ -2,6 +2,8 @@ import { OidBase } from './oid-base.js'
 import { OidUI } from './oid-ui.js'
 
 export class Oid {
+  static oidreg = {}
+
   static component (spec) {
     let impl = spec.implementation
     if (impl == null) {
@@ -51,5 +53,23 @@ export class Oid {
 
     Object.assign(impl, {spec: spec, observed: observed})
     customElements.define(spec.element, impl)
+    Oid.oidreg[spec.id] = impl
+  }
+
+  static create (componentId, properties) {
+    const impl = Oid.oidreg[componentId]
+    if (impl == null)
+      throw new Error('Unknown component id: ' + componentId)
+    const element = document.createElement(impl.spec.element)
+    if (properties != null) {
+      for (const p in properties) {
+        // const property = impl.spec.properties[p]
+        // if (property != null && property.attribute === true)
+          element.setAttribute(p, properties[p])
+        // else
+        //   element[p] = properties[p]         
+      }
+    }
+    return element
   }
 }

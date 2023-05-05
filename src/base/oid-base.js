@@ -7,11 +7,20 @@ export class OidBase extends Primitive {
     this._mapTopicNotice = {}
     this._mapNoticeTopic = {}
     this._receiveHandler = {}
+    this._provideHandler = {}
 
     this._convertNotice = this._convertNotice.bind(this)
     this.handleNotice = this.handleNotice.bind(this)
-    this._buildReceiveHandlers()
-    this._buildEventDispatchers()
+    const spec = this.constructor.spec
+    if (spec) {
+      this._buildHandlers(this._receiveHandler, spec.receive)
+      console.log('=== receive')
+      console.log(this.constructor.spec)
+      console.log(this._receiveHandler)
+      for (const p in spec.provide)
+        this._buildHandlers(this._provideHandler, spec.provide[p])
+      this._buildEventDispatchers()
+    }
   }
 
   connectedCallback () {
@@ -23,24 +32,23 @@ export class OidBase extends Primitive {
     }
   }
 
-  _buildReceiveHandlers () {
-    const spec = this.constructor.spec
-    if (spec != null && spec.receive != null) {
-      // check if type is array
-      if (Array.isArray(spec.receive)) {
-        for (const notice of spec.receive)
-          this._receiveHandler[notice] =
-            this['handle' + notice[0].toUpperCase() + notice.slice(1)].bind(this)
+  _buildHandlers (handlerSet, handlersSpec) {
+    if (handlersSpec != null) {
+      if (Array.isArray(handlersSpec)) {
+        for (const notice of handlersSpec)
+          handlerSet[notice] =
+            this['handle' + notice[0].toUpperCase() +
+            notice.slice(1)].bind(this)
       } else {
-        for (const [notice, callback] of Object.entries(spec.receive))
-          this._receiveHandler[notice] = this[callback].bind(this)
+        for (const [notice, handler] of Object.entries(handlersSpec))
+          handlerSet[notice] = this[handler].bind(this)
       }
     }
   }
 
   _buildEventDispatchers () {
     const spec = this.constructor.spec
-    if (spec && spec.template) {
+    if (spec.template) {
       let atrn = 1
       const te = spec.template.split(
         /@([^= >]*)[ \t]*(?:=[ \t]*{{[ \t]*this\.([^}]*)[ \t]*}})?/)
@@ -71,29 +79,34 @@ export class OidBase extends Primitive {
   }
 
   static get observedAttributes () {
-    return ['publish', 'subscribe']
+    return ['publish', 'subscribe', 'connect']
   }
 
   get publish () {
-    // return this.getAttribute('publish')
     return this._publishProp
   }
 
   set publish (newValue) {
-    // this.setAttribute('publish', newValue)
     this._publishProp = newValue
     this._publishNoticeTopic(newValue)
   }
 
   get subscribe () {
-    // return this.getAttribute('subscribe')
     return this._subscribeProp
   }
 
   set subscribe (newValue) {
-    // this.setAttribute('subscribe', newValue)
     this._subscribeProp = newValue
     this._subscribeTopicNotice(newValue)
+  }
+
+  get connect () {
+    return this._connectProp
+  }
+
+  set connect (newValue) {
+    this._connectProp = newValue
+    this._connectInterface(newValue)
   }
 
   _subscribeTopicNotice (topicNotice) {
@@ -123,6 +136,19 @@ export class OidBase extends Primitive {
     // console.log('mapNoticeTopic', this._mapNoticeTopic)
   }
 
+  _connectInterface (idInterface) {
+    let status = true
+    const idint = noticeTopic.split(';')
+    for (const ii of idiii) {
+      const parts = ii.split(':')
+      if (parts.length > 1)
+        this._connect(parts[0].trim(), parts[1].trim(), this)
+      else
+        status = false
+    }
+    return status
+  }
+
   _notify (notice, message) {
     // console.log('notify', notice, message)
     if (this._mapNoticeTopic[notice] != null)
@@ -133,9 +159,18 @@ export class OidBase extends Primitive {
     this.handleNotice(this._mapTopicNotice[topic], message)
   }
 
+  connectionReady(id, cInterface, busHandler, component) {
+    console.log('=== connectionReady', id, cInterface, busHandler, component)
+  }
+
   handleNotice (notice, message) {
     if (this._receiveHandler[notice] != null)
       this._receiveHandler[notice](notice, message)
+  }
+
+  handleInvoke (notice, message) {
+    if (this._provideHandler[notice] != null)
+      this._provideHandler[notice](notice, message)
   }
 }
 

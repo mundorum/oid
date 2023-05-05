@@ -21,4 +21,20 @@ export class Primitive extends HTMLElement {
   async _publish (topic, message) {
     await this._bus.publish(topic, message)
   }
+
+  _provides (id, service, handler) {
+    this._bus.provides(id, service, handler)
+  }
+
+  _withhold (id, service) {
+    this._bus.withhold(id, service)
+  }
+
+  _connect (id, service, callback) {
+    this._bus.connect(id, service, callback)
+  }
+
+  async _invoke (id, service, message) {
+    return await this._bus.invoke (id, service, message)
+  }
 }

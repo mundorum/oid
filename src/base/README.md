@@ -94,7 +94,7 @@ Oid.component(
 })
 ~~~
 
-* `id`: unique id of the DCC
+* `id`: unique id of the Oid
 * `element`: the label of the HTML element, if it is a web component
 * `base`: base component class - extended in this component
 * `implementation`: the predefined class that implements the component

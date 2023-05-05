@@ -4,10 +4,12 @@ import { Primitive } from '../base/primitive.js'
 import { Oid } from '../base/oid.js'
 import { OidBase } from '../base/oid-base.js'
 import { OidUI } from '../base/oid-ui.js'
+import { FileOid } from '../components/data/file-oid.js'
 import { ButtonOid } from '../components/ui/button-oid.js'
 import { SwitchOid } from '../components/ui/switch-input-oid.js'
 import { ConsoleOid } from '../components/ui/console-oid.js'
 
 export { html, css, Bus }
 export { Primitive, Oid, OidBase, OidUI }
+export { FileOid }
 export { ButtonOid, SwitchOid, ConsoleOid }

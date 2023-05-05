@@ -7,7 +7,7 @@ module.exports = {
   },
   output: {
     filename: 'oidlib-dev.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'lib'),
     library: {
       type: 'module'
     }

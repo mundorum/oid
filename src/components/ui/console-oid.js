@@ -17,6 +17,9 @@ Oid.component({
     prompt: {default: '>'}
   },
   receive: ['display'],
+  provide: {
+    'itf:receive': ['display']
+  },
   implementation: ConsoleOid,
   styles: css`
   .console {

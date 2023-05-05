@@ -2,8 +2,11 @@ export class Bus {
   constructor() {
     this._listeners = []
     this._providers = {}
-    this._connections = {}
+    this._pendingCnx = {}
   }
+
+  /* Message-oriented communication
+   ********************************/
 
   subscribe (subscribed, handler) {
     if (subscribed != null) {
@@ -12,8 +15,8 @@ export class Bus {
         topics[subscribed] = handler
       else if (typeof subscribed === 'object')
         topics = subscribed
-      // console.log('=== subscribe')
-      // console.log(topics)
+      console.log('=== subscribe')
+      console.log(topics)
       const listeners = this._listeners.slice()
       for (const tp in topics) {
         if (topics[tp] != null) {
@@ -33,6 +36,8 @@ export class Bus {
         }
       }
       this._listeners = listeners
+      console.log('=== listeners')
+      console.log(this._listeners)
     }
   }
 
@@ -61,9 +66,9 @@ export class Bus {
     // console.log('=== publish')
     // console.log(topic)
     // console.log(this._listeners)
-    let matched = false
     const listeners = this._listeners
     for (const l in listeners) {
+      let matched = false
       if (listeners[l].regexp) {
         const matchStr = listeners[l].regexp.exec(topic)
         if (matchStr != null && matchStr[0] === topic) { matched = true }
@@ -81,6 +86,83 @@ export class Bus {
     return new RegExp(filter.replace(/\//g, '\\/')
       .replace(/\+/g, '[^\/]+')
       .replace(/#/g, '.+'))
+  }
+
+  /* Connection-oriented communication
+   ***********************************/
+
+  /*
+   * Components declare provided services. Each interface defines a type of
+   *  service. The same component can have several interfaces/services:
+   *   id: unique id of the component instance that offers the service
+   *   cInterface: interface provided by the component
+   *   provider: the component or component subobject that implements
+   *             the interface/service
+   */
+  provide (id, cInterface, provider) {
+    let status = false
+    if (id != null && cInterface != null && provider != null) {
+      const key = id + ':' + cInterface
+      if (this._providers[key] == null) {
+        status = true
+        this._providers[key] = provider
+        if (this._pendingCnx[key] != null) {
+          for (let c of this._pendingCnx[key])
+            c.connectionReady(id, cInterface,
+              this.invoke.bind(this, key), provider)
+          delete this._pendingCnx[key]
+        }
+      }
+    }
+    return status
+  }
+
+  /*
+   * Removes a provided service (usually, when the component is destroyed)
+   */
+  withhold (id, cInterface) {
+    let status = false
+    if (id != null && cInterface != null) {
+      const key = id + ':' + cInterface
+      if (this._providers[key]) {
+        status = true
+        delete this._providers[key]
+      }
+    }
+    return status
+  }
+
+  /*
+   * Connects a component to another one based on the id and a provided service.
+   *   id: id of the component that offers the service
+   *   cInterface: label related to the provided interface
+   *   callback: component that will be notified as soon as the interface is
+   *             connected
+   */
+  connect (id, cInterface, callback) {
+    let status = false
+    if (id != null && cInterface != null && callback != null) {
+      const key = id + ':' + cInterface
+      if (this._providers[key])
+        callback.connectionReady(id, cInterface,
+          this.invoke.bind(this, key), this._providers[key])
+      else
+        if (this._pendingCnx[key])
+          this._pendingCnx[key].push(callback)
+        else
+          this._pendingCnx[key] = [callback]
+    }
+  }
+
+  /*
+   * Triggers a interface defined by an id and component, sending an optional
+   * message to it.
+   */
+  async invoke (key, notice, message) {
+    if (this._providers[key] != null)
+      return await this._providers[key].handleInvoke(notice, message)
+    else
+      return null
   }
 }
 

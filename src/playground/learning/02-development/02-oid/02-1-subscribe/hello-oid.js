@@ -1,4 +1,4 @@
-import { html, Oid, OidUI } from '/dist/oidlib-dev.js'
+import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
 export class HelloOid extends OidUI {
   handleSomeone (topic, message) {

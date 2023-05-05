@@ -16,6 +16,7 @@ npx webpack --config webpack.config.dev.js
 
 ~~~
 npx webpack
+npx webpack --mode=development
 ~~~
 
 ## Development Server
