@@ -28,3 +28,10 @@ Oid.component(
   * *array format*: lists only the supported notices, automatically mapped to  `handleNotice` handler
   * *object format*: lists the supported notices and the respective handler
 
+## Publishing a notice/message by an Oid
+
+An Oid triggers notices, which will be converted into publications if there is a mapping clause (`publish=""`) in the instantiation:
+
+~~~javascript
+this._notify(notice, message)
+~~~
