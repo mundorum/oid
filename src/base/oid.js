@@ -3,6 +3,8 @@ import { OidWeb } from './oid-web.js'
 import { OidUI } from './oid-ui.js'
 
 export class Oid {
+  static eventAttribute = 'oidevent_'
+
   static _interfaceReg = {}
   static _oidReg = {}
 
@@ -16,6 +18,7 @@ export class Oid {
   }
 
   static component (spec) {
+    // define the class implementation
     let impl = spec.implementation
     if (impl == null) {
       const inh =
@@ -28,10 +31,12 @@ export class Oid {
       impl = class extends inh { }
       Object.defineProperty(impl, 'name', {value: className})
     }
+
+    // build property getters and setters
     const observed = impl.observedAttributes.slice()
     if (spec.properties) {
       Object.defineProperty(impl, 'observedAttributes', {
-        get: function() {return this.observed}
+        get: function() { return this.observed }
       })
       for (const pname in spec.properties) {
         const property = spec.properties[pname]
@@ -40,16 +45,12 @@ export class Oid {
             ? {
               get: function() {return this['_' + pname]},
               set: function(newValue) {
-                // console.log('=== set ' + pname)
-                // console.log(newValue)
                 this['_' + pname] = newValue
               }
             }
             : {
               get: function() {return this['_' + pname]},
               set: function(newValue) {
-                // console.log('=== set ' + pname)
-                // console.log(newValue)
                 this['_' + pname] = newValue
                 this.render()
               }
@@ -60,6 +61,13 @@ export class Oid {
       }
     }
 
+    // call setter every time an attribute changes
+    impl.prototype.attributeChangedCallback =
+      function(name, oldValue, newValue) {
+        this[name] = newValue
+      }
+
+    // associate function ids to specifications
     if (spec.provide) {
       const provideSpec = {}
       for (const p of spec.provide) {
@@ -72,16 +80,38 @@ export class Oid {
       spec.provide = provideSpec
     }
 
-    impl.prototype.attributeChangedCallback =
-      function(name, oldValue, newValue) {
-        this[name] = newValue
+    // preprocess event dispachers
+    if (spec.template) {
+      let atrn = 1
+      const te = spec.template.split(
+        /@([^= >]*)[ \t]*(?:=[ \t]*{{[ \t]*this\.([^}]*)[ \t]*}})?/)
+      if (te.length > 1) {
+        spec.dispatcher = []
+        let ntempl = ''
+        for (let i = 0; i + 2 < te.length; i += 3) {
+          ntempl +=
+            te[i] + Oid.eventAttribute + atrn + ' '
+          const funcName = (te[i + 2] == null)
+            ? '_on' + te[i + 1][0].toUpperCase() + te[i + 1].slice(1)
+            : te[i + 2]
+          spec.dispatcher.push([
+            Oid.eventAttribute + atrn, te[i + 1],
+            impl.prototype[funcName]])
+          atrn++
+        }
+        spec.template = ntempl + te[te.length - 1]
       }
+    }
 
+    // attach the specification to the implementation
     Object.assign(impl, {spec: spec, observed: observed})
-    // <TODO> Provisory
+  
+    // <TODO> provisory - classes without element will not inherit HTMLElement
     if (spec.element == null)
       spec.element = 'internal-' + spec.id.replace(':', '-')
     customElements.define(spec.element, impl)
+  
+    // register the implementation in the dictionary
     Oid._oidReg[spec.id] = impl
   }
 

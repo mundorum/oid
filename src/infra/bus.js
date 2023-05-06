@@ -1,6 +1,7 @@
 export class Bus {
   constructor() {
-    this._listeners = []
+    this._listeners = {}
+    this._listenersRgx = []
     this._providers = {}
     this._pendingCnx = {}
   }
@@ -15,29 +16,24 @@ export class Bus {
         topics[subscribed] = handler
       else if (typeof subscribed === 'object')
         topics = subscribed
-      // console.log('=== subscribe')
-      // console.log(topics)
-      const listeners = this._listeners.slice()
+      const listenersRgx = this._listenersRgx.slice()
+      const listeners = { ...this._listeners }
       for (const tp in topics) {
         if (topics[tp] != null) {
           // topic filter: transform wildcards in regular expressions
-          if (tp.includes('+') || tp.includes('#')) {
-            listeners.push({
-              topic: tp,
-              regexp: Bus._convertRegExp(tp),
-              handler: topics[tp]
-            })
-          } else {
-            listeners.push({
-              topic: tp,
-              handler: topics[tp]
-            })
+          if (tp.includes('+') || tp.includes('#'))
+            listenersRgx.push([Bus._convertRegExp(tp), topics[tp], tp])
+          else {
+            if (listeners[tp] == null)
+              listeners[tp] = []
+            else
+              listeners[tp] = listeners[tp].slice() // clone
+            listeners[tp].push(topics[tp])
           }
         }
       }
+      this._listenersRgx = listenersRgx
       this._listeners = listeners
-      // console.log('=== listeners')
-      // console.log(this._listeners)
     }
   }
 
@@ -48,34 +44,40 @@ export class Bus {
         topics[subscribed] = handler
       else if (typeof subscribed === 'object')
         topics = subscribed
-      const listeners = this._listeners.slice()
+      const listenersRgx = this._listenersRgx.slice()
+      const listeners = { ...this._listeners }
       for (const tp in topics) {
-        for (const l in this._listeners) {
-          if (this._listeners[l].topic === tp &&
-              this._listeners[l].handler === topics[tp]) {
-            listeners.splice(l, 1)
-            break
+        if (tp.includes('+') || tp.includes('#')) {
+          for (const l in listenersRgx) {
+            if (listenersRgx[l][1] === topics[tp] &&
+                listenersRgx[l][2] == tp) {
+              listenersRgx.splice(l, 1)
+              break
+            }
+          }
+        } else if (listeners[tp] != null) {
+          for (const l in listeners[tp]) {
+            if (listeners[tp][l] === topics[tp]) {
+              listeners[tp] = listeners[tp].toSplice(l, 1) // clone
+              break
+            }
           }
         }
       }
+      this._listenersRgx = listenersRgx
       this._listeners = listeners
     }
   }
 
   async publish (topic, message) {
-    // console.log('=== publish')
-    // console.log(topic)
-    // console.log(this._listeners)
-    const listeners = this._listeners
-    for (const l in listeners) {
-      let matched = false
-      if (listeners[l].regexp) {
-        const matchStr = listeners[l].regexp.exec(topic)
-        if (matchStr != null && matchStr[0] === topic) { matched = true }
-      } else if (listeners[l].topic === topic)
-        matched = true
-      if (matched)
-        listeners[l].handler(topic, message)
+    if (this._listeners[topic] != null)
+      for (const handler of this._listeners[topic])
+        handler(topic, message)
+    const listenersRgx = this._listenersRgx
+    for (const l of listenersRgx) {
+      const match = l[0].exec(topic)
+      if (match != null && match[0] === topic)
+        l[1](topic, message)
     }
   }
 

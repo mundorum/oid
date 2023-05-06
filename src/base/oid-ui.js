@@ -16,15 +16,16 @@ export class OidUI extends OidWeb {
         .replace(
           /{{this\.([^}]*)}}/g,
           (match, p1) => {return this[p1]})
+
       if (spec.shadow === false) {
         this.innerHTML = html
         this._presentation = this.querySelector('#oid-prs') || this
       } else
         this._presentation = this._shadowHTML(html)
 
-      if (this._eventDispatch) {
+      if (this._dispatcher) {
         const query = (spec.shadow === false) ? this : this.shadowRoot
-        for (const [atr, event, dispatch] of this._eventDispatch) {
+        for (const [atr, event, dispatch] of this._dispatcher) {
           const target = query.querySelector('[' + atr + ']')
           target.addEventListener(event, dispatch)
         }

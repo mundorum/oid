@@ -1,3 +1,4 @@
+import { Bus } from '../infra/bus.js'
 import { Oid } from './oid.js'
 import { Primitive } from './primitive.js'
 
@@ -6,6 +7,7 @@ export class OidBase extends Primitive {
     super()
 
     this._mapTopicNotice = {}
+    this._rgxTopicNotice = []
     this._mapNoticeTopic = {}
     this._receiveHandler = {}
     this._provideHandler = {}
@@ -14,29 +16,16 @@ export class OidBase extends Primitive {
     this._convertNotice = this._convertNotice.bind(this)
     this.handleNotice = this.handleNotice.bind(this)
 
-    // console.log('=== callback')
-    // console.log(this.connectedCallback)
     if (!this.connectedCallback)
       this._initialize()
   }
 
   _initialize () {
     const spec = this.constructor.spec
-    // console.log('=== initialize', spec)
     if (spec) {
       this._buildHandlers(this._receiveHandler, spec.receive)
-      // console.log('=== receive')
-      // console.log(this.constructor.spec)
-      // console.log(this._receiveHandler)
-      // if (spec.provide != null)
-      //   for (const p in spec.provide) {
-      //     console.log('=== provide', p, this.id)
-      //     if (this.id)
-      //       this._provide(p, this.id, this)
-      //     this._buildHandlers(
-      //       this._provideHandler, spec.provide[p].operations, p)
-      //   }
       this._buildProviders()
+      this._buildProvidersHandlers()
       this._buildEventDispatchers()
     }
 
@@ -49,14 +38,25 @@ export class OidBase extends Primitive {
 
   _buildProviders () {
     const spec = this.constructor.spec
+    if (spec.provide != null && this.id)
+      for (const p in spec.provide)
+          this._provide(p, this.id, this)
+  }
+
+  _buildProvidersHandlers () {
+    const spec = this.constructor.spec
     if (spec.provide != null)
-    for (const p in spec.provide) {
-      // console.log('=== provide', p, this.id)
-      if (this.id)
-        this._provide(p, this.id, this)
-      this._buildHandlers(
-        this._provideHandler, spec.provide[p].operations, p)
-    }
+      for (const p in spec.provide) {
+        this._buildHandlers(
+          this._provideHandler, spec.provide[p].operations, p)
+      }
+  }
+
+  _removeProviders () {
+    const spec = this.constructor.spec
+    if (spec.provide != null && this.id)
+      for (const p in spec.provide)
+          this._withhold(p, this.id)
   }
 
   _buildHandlers (handlerSet, handlersSpec, cInterface) {
@@ -78,29 +78,15 @@ export class OidBase extends Primitive {
 
   _buildEventDispatchers () {
     const spec = this.constructor.spec
-    if (spec.template) {
-      let atrn = 1
-      const te = spec.template.split(
-        /@([^= >]*)[ \t]*(?:=[ \t]*{{[ \t]*this\.([^}]*)[ \t]*}})?/)
-      if (te.length > 1) {
-        this._eventDispatch = []
-        let ntempl = ''
-        for (let i = 0; i + 2 < te.length; i += 3) {
-          ntempl +=
-            te[i] + OidBase.eventAttribute + atrn + ' '
-          const funcName = (te[i + 2] == null)
-            ? '_on' + te[i + 1][0].toUpperCase() + te[i + 1].slice(1)
-            : te[i + 2]
-          this._eventDispatch.push([
-            OidBase.eventAttribute + atrn, te[i + 1], this[funcName].bind(this)])
-          atrn++
-        }
-        spec.template = ntempl + te[te.length - 1]
-      }
+    if (spec.dispatcher) {
+      this._dispatcher = []
+      for (const [atr, event, dispatch] of spec.dispatcher)
+        this._dispatcher.push([atr, event, dispatch.bind(this)])
     }
   }
 
   _finalize () {
+    this._removeProviders()
     for (const topic in this._mapTopicNotice)
       if (this._mapTopicNotice[topic] != topic)
         this._unsubscribe(topic, this._convertNotice)
@@ -117,9 +103,9 @@ export class OidBase extends Primitive {
   }
 
   set id (newValue) {
-    // console.log('=== set id', newValue)
+    if (this._id != null)
+      this._removeProviders()
     this._id = newValue
-    // <TODO> remove previous providers
     this._buildProviders()
   }
 
@@ -156,7 +142,11 @@ export class OidBase extends Primitive {
       const parts = tn.split('~')
       if (parts.length > 1) {
         const topic = parts[0].trim()
-        this._mapTopicNotice[topic] = parts[1].trim()
+        if (topic.includes('+') || topic.includes('#'))
+          this._rgxTopicNotice.push(
+            [Bus._convertRegExp(topic), parts[1].trim(), topic])
+        else
+          this._mapTopicNotice[topic] = parts[1].trim()
         this._subscribe(topic, this._convertNotice)
       } else {
         const topic = tn.trim()
@@ -164,6 +154,8 @@ export class OidBase extends Primitive {
         this._subscribe(topic, this.handleNotice)
       }
     }
+    console.log('=== component subscribed')
+    console.log(this._mapTopicNotice)
   }
 
   _publishNoticeTopic (noticeTopic) {
@@ -199,7 +191,16 @@ export class OidBase extends Primitive {
   }
 
   _convertNotice (topic, message) {
-    this.handleNotice(this._mapTopicNotice[topic], message)
+    if (this._mapTopicNotice[topic] != null)
+      this.handleNotice(this._mapTopicNotice[topic], message)
+    else
+      for (const [rgx, notice] of this._rgxTopicNotice) {
+        const match = rgx.exec(topic)
+        if (match != null && match[0] === topic) {
+          this.handleNotice(notice, message)
+          break
+        }
+      }
   }
 
   connectTo (cInterface, component) {
@@ -252,5 +253,3 @@ export class OidBase extends Primitive {
     return response
   }
 }
-
-OidBase.eventAttribute = 'oidevent_'
