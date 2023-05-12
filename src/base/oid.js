@@ -27,7 +27,7 @@ export class Oid {
           : OidUI
       const className = spec.element[0].toUpperCase() +
         spec.element.slice(1)
-          .replace(/-([a-z])/g, function (g) { return g[1].toUpperCase() })
+          .replace(/-([a-z])/g, (match, letter) => letter.toUpperCase())
       impl = class extends inh { }
       Object.defineProperty(impl, 'name', {value: className})
     }
@@ -40,31 +40,34 @@ export class Oid {
       })
       for (const pname in spec.properties) {
         const property = spec.properties[pname]
-        Object.defineProperty(impl.prototype, pname,
+        const jsName = pname.replace(
+          /-([a-z])/g, (match, letter) => letter.toUpperCase())
+        Object.defineProperty(impl.prototype, jsName,
           ((impl.prototype.render == null)
             ? {
-              get: function() {return this['_' + pname]},
+              get: function() {return this['_' + jsName]},
               set: function(newValue) {
-                this['_' + pname] = newValue
+                this['_' + jsName] = newValue
               }
             }
             : {
-              get: function() {return this['_' + pname]},
+              get: function() {return this['_' + jsName]},
               set: function(newValue) {
-                this['_' + pname] = newValue
+                this['_' + jsName] = newValue
                 this.render()
               }
             }))
         if (property.attribute == null || property.attribute !== false)
-          observed.push(
-            (property.attribute) ? property.attribute : pname)
+          observed.push(pname)
       }
     }
 
     // call setter every time an attribute changes
     impl.prototype.attributeChangedCallback =
       function(name, oldValue, newValue) {
-        this[name] = newValue
+        const jsName = name.replace(
+          /-([a-z])/g, (match, letter) => letter.toUpperCase())
+        this[jsName] = newValue
       }
 
     // associate function ids to specifications
