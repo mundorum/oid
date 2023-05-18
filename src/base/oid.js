@@ -62,14 +62,6 @@ export class Oid {
       }
     }
 
-    // call setter every time an attribute changes
-    impl.prototype.attributeChangedCallback =
-      function(name, oldValue, newValue) {
-        const jsName = name.replace(
-          /-([a-z])/g, (match, letter) => letter.toUpperCase())
-        this[jsName] = newValue
-      }
-
     // associate function ids to specifications
     if (spec.provide) {
       const provideSpec = {}
@@ -83,28 +75,10 @@ export class Oid {
       spec.provide = provideSpec
     }
 
-    // preprocess event dispachers
-    if (spec.template) {
-      let atrn = 1
-      const te = spec.template.split(
-        /@([^= >]*)[ \t]*(?:=[ \t]*{{[ \t]*this\.([^}]*)[ \t]*}})?/)
-      if (te.length > 1) {
-        spec.dispatcher = []
-        let ntempl = ''
-        for (let i = 0; i + 2 < te.length; i += 3) {
-          ntempl +=
-            te[i] + Oid.eventAttribute + atrn + ' '
-          const funcName = (te[i + 2] == null)
-            ? '_on' + te[i + 1][0].toUpperCase() + te[i + 1].slice(1)
-            : te[i + 2]
-          spec.dispatcher.push([
-            Oid.eventAttribute + atrn, te[i + 1],
-            impl.prototype[funcName]])
-          atrn++
-        }
-        spec.template = ntempl + te[te.length - 1]
-      }
-    }
+    const td = Oid.prepareDispatchers(spec.template, impl)
+    spec.template = td.template
+    if (td.dispatcher)
+      spec.dispatcher = td.dispatcher
 
     // attach the specification to the implementation
     Object.assign(impl, {spec: spec, observed: observed})
@@ -118,19 +92,43 @@ export class Oid {
     Oid._oidReg[spec.id] = impl
   }
 
+  static prepareDispatchers (template, impl) {
+    let dispatcher = null
+    if (template) {
+      let atrn = 1
+      const te = template.split(
+        /@([^= >]*)[ \t]*(?:=[ \t]*{{[ \t]*this\.([^}]*)[ \t]*}})?/)
+      if (te.length > 1) {
+        dispatcher = []
+        let ntempl = ''
+        for (let i = 0; i + 2 < te.length; i += 3) {
+          ntempl +=
+            te[i] + Oid.eventAttribute + atrn + ' '
+          const funcName = (te[i + 2] == null)
+            ? '_on' + te[i + 1][0].toUpperCase() + te[i + 1].slice(1)
+            : te[i + 2]
+          dispatcher.push([
+            Oid.eventAttribute + atrn, te[i + 1],
+            impl.prototype[funcName]])
+          atrn++
+        }
+        template = ntempl + te[te.length - 1]
+      }
+    }
+    return {
+      template: template,
+      dispatcher: dispatcher
+    }
+  }
+
   static create (componentId, properties) {
     const impl = Oid._oidReg[componentId]
     if (impl == null)
       throw new Error('Unknown component id: ' + componentId)
     const instance = document.createElement(impl.spec.element)
     if (properties != null) {
-      for (const p in properties) {
-        // const property = impl.spec.properties[p]
-        // if (property != null && property.attribute === true)
-          instance.setAttribute(p, properties[p])
-        // else
-        //   element[p] = properties[p]         
-      }
+      for (const p in properties)
+        instance.setAttribute(p, properties[p])
     }
     return instance
   }

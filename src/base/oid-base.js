@@ -26,7 +26,7 @@ export class OidBase extends Primitive {
       this._buildHandlers(this._receiveHandler, spec.receive)
       this._buildProviders()
       this._buildProvidersHandlers()
-      this._buildEventDispatchers()
+      this._buildEventDispatchers(spec.dispatcher)
     }
 
     if (spec && spec.properties) {
@@ -76,11 +76,10 @@ export class OidBase extends Primitive {
     }
   }
 
-  _buildEventDispatchers () {
-    const spec = this.constructor.spec
-    if (spec.dispatcher) {
+  _buildEventDispatchers (dispatcherTempl) {
+    if (dispatcherTempl) {
       this._dispatcher = []
-      for (const [atr, event, dispatch] of spec.dispatcher)
+      for (const [atr, event, dispatch] of dispatcherTempl)
         this._dispatcher.push([atr, event, dispatch.bind(this)])
     }
   }
@@ -92,6 +91,13 @@ export class OidBase extends Primitive {
         this._unsubscribe(topic, this._convertNotice)
       else
         this._unsubscribe(topic, this.handleNotice)
+  }
+
+  // call setter every time an observed attribute changes
+  attributeChangedCallback (name, oldValue, newValue) {
+    const jsName = name.replace(
+      /-([a-z])/g, (match, letter) => letter.toUpperCase())
+    this[jsName] = newValue
   }
 
   static get observedAttributes () {
