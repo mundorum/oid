@@ -1,3 +1,4 @@
+import { Oid } from './oid.js'
 import { OidWeb } from './oid-web.js'
 
 export class OidUI extends OidWeb {
@@ -7,12 +8,26 @@ export class OidUI extends OidWeb {
   }
 
   render () {
-    this._presentation = null
     const spec = this.constructor.spec
-    if (spec && spec.template) {
+
+    // handles a dynamic template
+    let template = (spec != null) ? spec.template : null
+    if (this.template) {
+      const tmpl = this.template()
+      if (tmpl != this._template) {
+        this._template = tmpl
+        const td = Oid.prepareDispatchers(tmpl)
+        this._templatePre = td.template
+        this._buildEventDispatchers(td.dispatcher, this)
+      }
+      template = this._templatePre
+    }
+
+    this._presentation = null
+    if (spec != null && template != null) {
       let html =
         ((spec.styles ? `<style>${spec.styles}</style>` : '') +
-         spec.template)
+         template)
         .replace(
           /{{this\.([^}]*)}}/g,
           (match, p1) => {return this[p1]})
