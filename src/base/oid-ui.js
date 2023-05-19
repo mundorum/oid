@@ -16,7 +16,7 @@ export class OidUI extends OidWeb {
       const tmpl = this.template()
       if (tmpl != this._template) {
         this._template = tmpl
-        const td = Oid.prepareDispatchers(tmpl)
+        const td = Oid.prepareDispatchers(tmpl, this.constructor)
         this._templatePre = td.template
         this._buildEventDispatchers(td.dispatcher, this)
       }
