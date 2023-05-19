@@ -179,8 +179,8 @@ export class OidBase extends Primitive {
         this._subscribe(topic, this.handleNotice)
       }
     }
-    console.log('=== component subscribed')
-    console.log(this._mapTopicNotice)
+    // console.log('=== component subscribed')
+    // console.log(this._mapTopicNotice)
   }
 
   _publishNoticeTopic (noticeTopic) {
