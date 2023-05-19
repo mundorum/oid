@@ -40,7 +40,7 @@ export class OidBase extends Primitive {
     const spec = this.constructor.spec
     if (spec.provide != null && this.id)
       for (const p in spec.provide)
-          this._provide(p, this.id, this)
+        this._provide(p, this.id, this)
   }
 
   _buildProvidersHandlers () {
@@ -69,9 +69,16 @@ export class OidBase extends Primitive {
               this['handle' + notice[0].toUpperCase() +
               notice.slice(1)].bind(this)
       } else {
-        for (const [notice, handler] of Object.entries(handlersSpec))
-          if (handlerSet[prefix + notice] == null)
-            handlerSet[prefix + notice] = this[handler].bind(this)
+        for (const [notice, noticeSpec] of Object.entries(handlersSpec)) {
+          if (handlerSet[prefix + notice] == null) {
+            const meth = (typeof noticeSpec === 'string')
+              ? noticeSpec
+              : ((noticeSpec.handler != null)
+                  ? noticeSpec.handler
+                  : 'handle' + notice[0].toUpperCase() + notice.slice(1))
+            handlerSet[prefix + notice] = this[meth].bind(this)
+          }
+        }
       }
     }
   }
@@ -140,6 +147,18 @@ export class OidBase extends Primitive {
   set connect (newValue) {
     this._connectProp = newValue
     this._connectInterface(newValue)
+  }
+
+  handleGet (notice, message) {
+    if (message.property != null)
+      return this[message.property]
+    else
+      return null
+  }
+
+  handleSet (notice, message) {
+    if (message.property != null && message.value != null)
+      this[message.property] = message.value
   }
 
   _subscribeTopicNotice (topicNotice) {
