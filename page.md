@@ -77,3 +77,37 @@ In the following example, we added a second Oid, the `console-oid`, which presen
 
 The `button-oid` publishes a topic `show/message` and the message `The dinosaur jumped into the mud.` when the button is clicked. The `console-oid` subscribes to the `show/message` message, i.e., it receives the message whenever it is published on the bus. The `show/message` message is mapped to the internal `display` notice that has an associated action of showing the received message.
 
+## Connecting Oids
+
+Oids can interact through connections. Each connection is a one-to-one relationship between two components, mediated by an interface. Every interface has an id and defines a set of operations. Consider the following interface meant to transfer data from one component to another:
+
+* Interface id: `itf:transfer`
+  * Operation:
+    * `send`: sends data from a source to a target component
+
+To connect the two components, the first requirement is that one assumes the role of requesting the service and the second the role of providing the service.
+
+Consider the example of a file component that can read a text file and send it to be presented in a console. The `file-oid` component is prepared to send data through the `itf:transfer` interface, while de `console-oid` is prepared to receive this data and show it in the console. The one who calls the operation is the component that requests the service (`file-oid`); the one who handles the operation request is the provider (`console-oid`). The component that requests the service must first connect to the provider through the following sentence:
+
+~~~html
+<requester-oid connect="interface_id#component_id">
+</requester-oid>
+
+<provider-oid id="component_id">
+</provider-oid>
+~~~
+
+* `interface_id`: the id of the interface that mediates the service
+  * `component_id`: the id of the component and provides the service
+
+Consider the example:
+
+~~~html
+<file-oid connect="itf:transfer#presenter">
+</file-oid>
+
+<console-oid id="presenter" prompt="">
+</console-oid>
+~~~
+
+The `file-oid` was connected to the `console-oid` through the interface `itf:transfer`. Both components are prepared to use the interface in such a way that, whenever the user clicks on the button, it sends the value (Asdrubal) to the console-oid.

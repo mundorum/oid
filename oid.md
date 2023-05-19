@@ -14,8 +14,10 @@ Oid.component(
   properties: {
     name: {default: 'World'}
   },
+  provide: ['itf:transfer'],
   template: `<h1>Hello, {{this.name}}</h1>`,
-  receive: ['test'] // {'test': 'handleTest'}
+  receive: ['test'], // {'test': 'handleTest'}
+  implementation: OidSample
 })
 ~~~
 
@@ -25,10 +27,48 @@ Oid.component(
 * `implementation`: the predefined class that implements the component
 * `properties`: properties to be attached to the component
   * `default`: default value assigned to the property in the beginning
+* `provide`: list of interfaces provided by this component (see Connection section)
 * `template`: HTML/SVG/XML template to render
 * `receive`: list of the notices treated by handled by the component
   * *array format*: lists only the supported notices, automatically mapped to  `handleNotice` handler
   * *object format*: lists the supported notices and the respective handler
+* `implementation`: name of the class that implements extra code for the component, when it is necessary 
+
+An example of a basic component (see the complete code on [GitHub](https://github.com/mundorum/oid/tree/main/src/playground/learning/02-development/02-oid/001-basic)):
+
+~~~js
+Oid.component(
+{
+  id: 'ex:basic',
+  element: 'basic-oid',
+  properties: {
+    name: {}
+  },
+  template: `<h1>Hello, {{this.name}}</h1>`
+})
+~~~
+
+An example of a component with a provided interface and extra code (see the complete code on [GitHub](https://github.com/mundorum/oid/blob/main/src/playground/learning/02-development/02-oid/202-2-provide-interface/hello-oid.js)):
+
+~~~js
+export class HelloOid extends OidUI {
+  handleSend (topic, message) {
+    this.name = message.value
+  }
+}
+
+Oid.component(
+{
+  id: 'ex:hello',
+  element: 'hello-oid',
+  properties: {
+    name: {default: 'nobody'}
+  },
+  provide: ['itf:transfer'],
+  template: html`<h1>Hello, {{this.name}}</h1>`,
+  implementation: HelloOid
+})
+~~~
 
 ## Publishing a notice/message by an Oid
 
@@ -37,3 +77,30 @@ An Oid triggers notices, which will be converted into publications if there is a
 ~~~javascript
 this._notify(notice, message)
 ~~~
+
+# Dynamic Template
+
+Templates can be defined in the class as a `template` method, as follows (see the complete code on [GitHub](https://github.com/mundorum/oid/tree/main/src/playground/learning/02-development/03-extras/dynamic-template-2)):
+
+~~~js
+import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
+
+export class BarOid extends OidUI {
+  template () {
+    return html`${this.char.repeat(this.size)}`
+  }
+}
+
+Oid.component(
+{
+  id: 'ex:bar',
+  element: 'bar-oid',
+  properties: {
+    char: {default: '-'},
+    size: {default: '10'}
+  },
+  implementation: BarOid
+})
+~~~
+
+This `template` method can use all features of [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals), including calling methods to compute values, as shows the example.

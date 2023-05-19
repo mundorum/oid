@@ -6,4 +6,5 @@ header_pages:
  - page.md
  - oid.md
  - bus.md
+ - connection.md
  - exercises.md
