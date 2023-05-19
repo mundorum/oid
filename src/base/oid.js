@@ -4,6 +4,7 @@ import { OidUI } from './oid-ui.js'
 
 export class Oid {
   static eventAttribute = 'oidevent_'
+  static defaultInterface = ['itf:oid']
 
   static _interfaceReg = {}
   static _oidReg = {}
@@ -62,7 +63,9 @@ export class Oid {
       }
     }
 
-    // associate function ids to specifications
+    // associate interface ids to specifications
+    spec.provide = (spec.provide == null)
+      ? Oid.defaultInterface : spec.provide.concat(Oid.defaultInterface)
     if (spec.provide) {
       const provideSpec = {}
       for (const p of spec.provide) {

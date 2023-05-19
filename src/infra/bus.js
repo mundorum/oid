@@ -111,8 +111,6 @@ export class Bus {
         if (this._pendingCnx[key] != null) {
           for (let c of this._pendingCnx[key])
             c.connectionReady(cInterface, id, provider)
-          // c.connectionReady(cInterface, id,
-          //     this.invoke.bind(this, key), provider)
           delete this._pendingCnx[key]
         }
       }
