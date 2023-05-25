@@ -107,11 +107,12 @@ export class Oid {
         for (let i = 0; i + 2 < te.length; i += 3) {
           ntempl +=
             te[i] + Oid.eventAttribute + atrn + ' '
-          const funcName = (te[i + 2] == null)
-            ? '_on' + te[i + 1][0].toUpperCase() + te[i + 1].slice(1)
-            : te[i + 2]
+          const evt = te[i + 1].trim()
+          const funcName = (te[i + 2] != null)
+            ? te[i + 2].trim()
+            : '_on' + evt[0].toUpperCase() + evt.substring(1)
           dispatcher.push([
-            Oid.eventAttribute + atrn, te[i + 1],
+            Oid.eventAttribute + atrn, evt,
             impl.prototype[funcName]])
           atrn++
         }
