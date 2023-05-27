@@ -15,7 +15,13 @@ Oid.component(
     name: {default: 'World'}
   },
   provide: ['itf:transfer'],
-  template: `<h1>Hello, {{this.name}}</h1>`,
+  stylesheet: ['../imported-styles.css'],
+  styles: css`
+    .myclass {
+      color: blue;
+    }`,
+  stylable: true,
+  template: html`<h1 class="myclass">Hello, {{this.name}}</h1>`,
   receive: ['test'], // {'test': 'handleTest'}
   implementation: OidSample
 })
@@ -28,6 +34,11 @@ Oid.component(
 * `properties`: properties to be attached to the component
   * `default`: default value assigned to the property in the beginning
 * `provide`: list of interfaces provided by this component (see Connection section)
+* `stylesheet`: list of external stylesheet links imported to the local template
+* `styles`: locally defined styles applied to the template
+* `stylable`: defines the precedence between stylesheet and styles
+  * `true` (default) - indicates that stylesheet overrides styles
+  * `false` - vice-versa
 * `template`: HTML/SVG/XML template to render
 * `receive`: list of the notices treated by handled by the component
   * *array format*: lists only the supported notices, automatically mapped to  `handleNotice` handler
@@ -70,7 +81,13 @@ Oid.component(
 })
 ~~~
 
-## Publishing a notice/message by an Oid
+# Notice -> Publish -> Subscribe -> Notice
+
+All components' communication follows the path `notice -> publish -> subscribe -> notice`, as illustrated in the following figure.
+
+![Notice Publish-Subscribe Notice](images/notice-publish-subscribe-notice.png)
+
+## Step 1: Notifying a Notice
 
 An Oid triggers notices, which will be converted into publications if there is a mapping clause (`publish=""`) in the instantiation:
 
