@@ -27,25 +27,23 @@ Oid.component(
   },
   implementation: ButtonOid,
   styles: css`
-  .button {
-    border: 1px solid lightgray;
-    border-radius: 5px;
-    margin: 5px;
-    color: #1d1d1b;
-    padding: 14px 25px;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    width: 50%;
+  .btn {
+    border: 1px solid rgb(30 30 30);
+    border-radius: 0.375rem;
+    margin: 0.5rem;
+    background-color: white;
+    color: rgb(30 30 30);
+    padding: 1rem 0.5rem;
   }
-  .button:hover {
+  .btn:hover {
+    border: 2px solid black;
     color: black;
-    font-weight: bold;
+    font-weight: bolder;
     cursor: pointer;
   }`,
   template: html`
-  <span id="oid-prs" class="button"
+  <button id="oid-prs" class="btn btn-primary"
     @click @mouseenter @mouseleave>
     {{this.label}}
-  </span>`
+  </button>`
 })

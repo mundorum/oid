@@ -8,6 +8,7 @@ export class Oid {
 
   static _interfaceReg = {}
   static _oidReg = {}
+  static _defaultSpec = {}
 
   static cInterface (spec) {
     if (spec != null)
@@ -19,6 +20,9 @@ export class Oid {
   }
 
   static component (spec) {
+    // add default values
+    spec = Object.assign({}, Oid._defaultSpec, spec)
+
     // define the class implementation
     let impl = spec.implementation
     if (impl == null) {
@@ -78,6 +82,20 @@ export class Oid {
       spec.provide = provideSpec
     }
 
+    // styles and template preprocessing
+  
+    let sty = ''
+    if (spec.styles || spec.stylesheet) {
+      sty = (spec.styles) ? `<style>${spec.styles}</style>` : ''
+      let sheet = ''
+      if (spec.stylesheet) {
+        for (const s of spec.stylesheet)
+          sheet += `<link href="${s}" rel="stylesheet">`
+      }
+      sty = (spec.stylable) ? sty + sheet : sheet + sty
+    }
+    spec.styles = sty
+
     const td = Oid.prepareDispatchers(spec.template, impl)
     spec.template = td.template
     if (td.dispatcher)
@@ -135,5 +153,22 @@ export class Oid {
         instance.setAttribute(p, properties[p])
     }
     return instance
+  }
+
+  static setDefault (spec) {
+    this._defaultSpec = spec
+  }
+
+  static addDefault (spec) {
+    for (const p in spec) {
+      if (this._defaultSpec[p] == null)
+        this._defaultSpec[p] = spec[p]
+      else if (Array.isArray(this._defaultSpec[p]))
+        this._defaultSpec[p] = this._defaultSpec[p].concat(spec[p])
+      else if (typeof this._defaultSpec[p] === 'object')
+        Object.assign(this._defaultSpec[p], spec[p])
+      else
+        this._defaultSpec[p] = spec[p]
+    }
   }
 }

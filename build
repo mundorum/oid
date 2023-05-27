@@ -1,0 +1,3 @@
+npx tailwindcss -i ./src/style/default-tw.css -o ./lib/oiddefault.css
+npx webpack --config webpack.config.dev.js
+npx webpack --mode=development
