@@ -25,9 +25,8 @@ export class OidUI extends OidWeb {
 
     this._presentation = null
     if (spec != null && template != null) {
-      let html =
-        ((spec.styles ? `<style>${spec.styles}</style>` : '') +
-         template)
+      const html =
+        (spec.styles + template)
         .replace(
           /{{this\.([^}]*)}}/g,
           (match, p1) => {return this[p1]})
