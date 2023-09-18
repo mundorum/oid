@@ -4,6 +4,8 @@ import { OidWeb } from './oid-web.js'
 export class OidUI extends OidWeb {
   connectedCallback () {
     super.connectedCallback()
+    this._defaultStyle = (this.constructor.spec.defaultStyle)
+      ? `<link href="${this._sphere.stylesheet}" rel="stylesheet">` : ''
     this.render()
   }
 
@@ -26,7 +28,7 @@ export class OidUI extends OidWeb {
     this._presentation = null
     if (spec != null && template != null) {
       const html =
-        (spec.styles + template)
+        (this._defaultStyle + spec.styles + template)
         .replace(
           /{{this\.([^}]*)}}/g,
           (match, p1) => {return this[p1]})

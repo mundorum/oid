@@ -15,9 +15,15 @@ export class OidBase extends Primitive {
 
     this._convertNotice = this._convertNotice.bind(this)
     this.handleNotice = this.handleNotice.bind(this)
+  }
 
-    if (!this.connectedCallback)
-      this._initialize()
+  connectedCallback () {
+    super.connectedCallback()
+    this._initialize()
+  }
+
+  disconnectedCallback () {
+    this._finalize()
   }
 
   _initialize () {
@@ -34,6 +40,13 @@ export class OidBase extends Primitive {
         if (def.default != null && !this.hasAttribute(prop))
           this[prop] = def.default
     }
+
+    if (this.hasAttribute('publish'))
+      this._publishNoticeTopic(this.getAttribute('publish'))
+    if (this.hasAttribute('subscribe'))
+      this._subscribeTopicNotice(this.getAttribute('subscribe'))
+    if (this.hasAttribute('connect'))
+      this._connectInterface(this.getAttribute('connect'))
   }
 
   _buildProviders () {
@@ -108,7 +121,7 @@ export class OidBase extends Primitive {
   }
 
   static get observedAttributes () {
-    return ['id', 'publish', 'subscribe', 'connect']
+    return ['id']
   }
 
   get id () {
@@ -116,38 +129,51 @@ export class OidBase extends Primitive {
   }
 
   set id (newValue) {
-    if (this._id != null)
+    if (this._id != null && this._bus != null)
       this._removeProviders()
     this._id = newValue
-    this._buildProviders()
+    if (this._bus != null)
+      this._buildProviders()
   }
 
   get publish () {
-    return this._publishProp
+    return this.getAttribute('publish')
+    // return this._publishProp
   }
 
+  /*
   set publish (newValue) {
     this._publishProp = newValue
-    this._publishNoticeTopic(newValue)
+    if (this._bus != null)
+      this._publishNoticeTopic(newValue)
   }
+  */
 
   get subscribe () {
-    return this._subscribeProp
+    return this.getAttribute('subscribe')
+    // return this._subscribeProp
   }
 
+  /*
   set subscribe (newValue) {
     this._subscribeProp = newValue
-    this._subscribeTopicNotice(newValue)
+    if (this._bus != null)
+      this._subscribeTopicNotice(newValue)
   }
+  */
 
   get connect () {
-    return this._connectProp
+    return this.getAttribute('connect')
+    // return this._connectProp
   }
 
+  /*
   set connect (newValue) {
     this._connectProp = newValue
-    this._connectInterface(newValue)
+    if (this._bus != null)
+      this._connectInterface(newValue)
   }
+  */
 
   handleGet (notice, message) {
     if (message.property != null)

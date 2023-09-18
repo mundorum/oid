@@ -15,7 +15,7 @@ Oid.component(
   },
   // there is a global inherited stylesheet ['default.css']
   // this stylesheet defines classes btn and btn-primary
-  stylable: false, // precedence for the local style
+  // stylable: false, // precedence for the local style
   styles: css`.btn-primary {
     color: lightsalmon;
   }`,

@@ -2,6 +2,14 @@
 
 Web components based on the Digital Content Component (DCC) model for the Mundorum space.
 
+# Environment Install
+
+In this project root directory:
+~~~
+npm install
+~~~
+
+
 # Development
 
 To bundle the JavaScript components and infrastructure, we adopt  WebPack. The following statements build the development and production packages:
@@ -25,9 +33,3 @@ If you wish to run tests in code developed under the -o-id framework, we advise 
 
 * installing http-server: `npm install @web/dev-server --save-dev`
 * running http-server: `npx web-dev-server --node-resolve`
-
-## Tailwind CSS
-
-~~~
-npx tailwindcss -i ./src/style/default-tw.css -o ./lib/oiddefault.css
-~~~

@@ -1,6 +1,8 @@
+/*
 import { Oid } from '../base/oid'
 
 Oid.setDefault ({
-  stylesheet: ['/lib/oiddefault.css'],
-  stylable: true
+  stylesheet: ['/lib/oiddefault.css']
+  // stylable: true
 })
+*/

@@ -1,4 +1,4 @@
-import { html, css } from '../../infra/literals.js'
+import { html } from '../../infra/literals.js'
 import { Oid } from '../../base/oid.js'
 import { OidUI } from '../../base/oid-ui.js'
 
@@ -26,21 +26,7 @@ Oid.component(
     value: {}
   },
   implementation: ButtonOid,
-  styles: css`
-  .btn {
-    border: 1px solid rgb(30 30 30);
-    border-radius: 0.375rem;
-    margin: 0.5rem;
-    background-color: white;
-    color: rgb(30 30 30);
-    padding: 1rem 0.5rem;
-  }
-  .btn:hover {
-    border: 2px solid black;
-    color: black;
-    font-weight: bolder;
-    cursor: pointer;
-  }`,
+  stylesheet: 'default',
   template: html`
   <button id="oid-prs" class="btn btn-primary"
     @click @mouseenter @mouseleave>
