@@ -2,5 +2,6 @@ p {
   color: salmon;
 }
 .btn-primary {
-  color: lightsalmon;
+  background-color: maroon;
+  color: salmon;
 }

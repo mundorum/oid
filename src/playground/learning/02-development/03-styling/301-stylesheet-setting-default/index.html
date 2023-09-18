@@ -2,17 +2,16 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Playground</title>
+  <title>Setting a Default Stylesheet</title>
   <script src="setup-local.js" type="module"></script>
   <script src="someone-oid.js" type="module"></script>
   <script src="hello-oid.js" type="module"></script>
 </head>
 <body>
-  <h1>Playground</h1>
-  <oid-sphere stylesheet="local.css">
-    <someone-oid name="Asdrubal"
-                publish="click~someone/arrives"></someone-oid>
-    <hello-oid subscribe="someone/arrives~someone"></hello-oid>
-  </oid-sphere>
+  <h1>Setting a Default Stylesheet</h1>
+  <p>Defines a default stylesheet through a default Oid property.</p>
+  <someone-oid name="Asdrubal"
+              publish="click~someone/arrives"></someone-oid>
+  <hello-oid subscribe="someone/arrives~someone"></hello-oid>
 </body>
 </html>

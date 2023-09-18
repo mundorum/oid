@@ -2,12 +2,14 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Reference to the global default stylesheet</title>
+  <title>Default Global Stylesheet</title>
   <script src="someone-oid.js" type="module"></script>
   <script src="hello-oid.js" type="module"></script>
 </head>
 <body>
-  <h1>Reference to the global default stylesheet</h1>
+  <h1>Default Global Stylesheet</h1>
+  <p>Oid references a default external global stylesheet (<code>/lib/oiddefault.css</code>).
+     It does not read external fonts when the reference is only inside the component.</p>
   <someone-oid name="Asdrubal"
                publish="click~someone/arrives"></someone-oid>
   <hello-oid subscribe="someone/arrives~someone"></hello-oid>

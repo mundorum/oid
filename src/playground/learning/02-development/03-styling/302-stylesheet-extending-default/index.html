@@ -2,13 +2,15 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Playground</title>
-  <script src="setup-local.js" type="module"></script>
+  <title>Layering Default Styles</title>
+  <script src="setup-set-local.js" type="module"></script>
+  <script src="setup-add-local.js" type="module"></script>
   <script src="someone-oid.js" type="module"></script>
   <script src="hello-oid.js" type="module"></script>
 </head>
 <body>
-  <h1>Playground</h1>
+  <h1>Layering Default Styles</h1>
+  <p>Defines a default property for the global stylesheet and adds a default property for a local extra stylesheet.</p>
   <someone-oid name="Asdrubal"
                publish="click~someone/arrives"></someone-oid>
   <hello-oid subscribe="someone/arrives~someone"></hello-oid>

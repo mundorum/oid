@@ -13,11 +13,13 @@ Oid.component(
   properties: {
     name: {default: 'nobody'}
   },
-  // there is a global inherited stylesheet ['default.css']
+  // addresses a global stylesheet ['/lib/oiddefault.css']
   // this stylesheet defines classes btn and btn-primary
-  // stylable: false, // precedence for the local style
+  // there is a precedence for the styles over stylesheet
+  stylesheet: 'default',
   styles: css`.btn-primary {
-    color: lightsalmon;
+    background-color: maroon;
+    color: salmon;
   }`,
   template: html`<button class="btn btn-primary" @click>I am {{this.name}}</button>`,
   implementation: SomeoneOid

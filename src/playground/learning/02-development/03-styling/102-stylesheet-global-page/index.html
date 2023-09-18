@@ -2,13 +2,15 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Reference to the global default stylesheet is also on the page</title>
+  <title>Page Default Global Stylesheet</title>
   <link rel="stylesheet" href="/lib/oiddefault.css">
   <script src="someone-oid.js" type="module"></script>
   <script src="hello-oid.js" type="module"></script>
 </head>
 <body>
-  <h1>Reference to the global default stylesheet is also on the page</h1>
+  <h1>Page Default Global Stylesheet</h1>
+  <p>Oid references a default external global stylesheet both within itself and on the page.
+     It reads external fonts due to the reference on the page.</p>
   <someone-oid name="Asdrubal"
                publish="click~someone/arrives"></someone-oid>
   <hello-oid subscribe="someone/arrives~someone"></hello-oid>
