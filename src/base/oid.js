@@ -82,19 +82,7 @@ export class Oid {
       spec.provide = provideSpec
     }
 
-    // styles and template preprocessing
-  
-    let sty = ''
-    if (spec.styles || spec.stylesheet) {
-      sty = (spec.styles) ? `<style>${spec.styles}</style>` : ''
-      let sheet = ''
-      if (spec.stylesheet) {
-        for (const s of spec.stylesheet)
-          sheet += `<link href="${s}" rel="stylesheet">`
-      }
-      sty = (spec.stylable) ? sty + sheet : sheet + sty
-    }
-    spec.styles = sty
+    Oid.stylePreprocess(spec)
 
     const td = Oid.prepareDispatchers(spec.template, impl)
     spec.template = td.template
@@ -111,6 +99,33 @@ export class Oid {
   
     // register the implementation in the dictionary
     Oid._oidReg[spec.id] = impl
+  }
+
+  static componentSet (id, complementarySpec) {
+    if (id != null && Oid._oidReg[id] != null) {
+      const spec = Oid._oidReg[id].spec
+      for (const p in complementarySpec)
+        spec[p] = complementarySpec[p]
+      Oid.stylePreprocess(spec)
+    }
+  }
+
+  // styles and template preprocessing
+  static stylePreprocess (spec) {
+    spec.defaultStyle = false
+    let sty = ''
+    if (spec.stylesheet) {
+      let ss = spec.stylesheet
+      if (!Array.isArray(ss)) ss = [ss]
+      for (const s of ss)
+        if (s == 'default')
+          spec.defaultStyle = true
+        else
+          sty += `<link href="${s}" rel="stylesheet">`
+    }
+    if (spec.styles)
+      sty += (spec.styles) ? `<style>${spec.styles}</style>` : ''
+    spec.styles = sty
   }
 
   static prepareDispatchers (template, impl) {

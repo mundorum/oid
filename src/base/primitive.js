@@ -1,9 +1,33 @@
-import { Bus } from '../infra/bus.js'
+import { Sphere } from '../infra/sphere.js'
+import { OidSphere } from './oid-sphere.js'
 
 export class Primitive extends HTMLElement {
   constructor () {
     super()
-    this._bus = Bus.i
+    this._sphere = null
+    this._bus = null
+  }
+
+  connectedCallback () {
+    let ag = this._findAggregator(OidSphere)
+    if (ag != null) {
+      this._sphere = ag.sphere
+      this._bus = this._sphere.bus
+    } else {
+      this._sphere = Sphere.i
+      this._bus = this._sphere.bus      
+    }
+  }
+
+  _findAggregator(agClass) {
+    let parent = (this.parentNode != null)
+      ? this.parentNode
+      : ((this instanceof DocumentFragment) ? this.host : null)
+    while (parent != null && !(parent instanceof agClass))
+      parent = (parent.parentNode != null)
+        ? parent.parentNode
+        : ((parent instanceof DocumentFragment) ? parent.host : null)
+    return parent
   }
 
   /*
@@ -11,7 +35,8 @@ export class Primitive extends HTMLElement {
    */
 
   _subscribe (subscribed, handler) {
-    return this._bus.subscribe(subscribed, handler)
+    if (this._bus != null)
+      this._bus.subscribe(subscribed, handler)
   }
 
   _unsubscribe (subscribed, handler) {
