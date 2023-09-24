@@ -50,14 +50,18 @@ export class OidUI extends OidWeb {
   }
 
   _shadowHTML (html) {
+    OidUI.prepareShadow(this, html)
+    return this.shadowRoot.querySelector('#oid-prs') || clone
+  }
+
+  static prepareShadow (owner, html) {
     const template = document.createElement('template')
     template.innerHTML = html
     const clone = document.importNode(template.content, true)
-    if (!this.shadowRoot)
-      this.attachShadow({ mode: 'open' })
+    if (!owner.shadowRoot)
+      owner.attachShadow({ mode: 'open' })
     else
-      this.shadowRoot.innerHTML = ''
-    this.shadowRoot.appendChild(clone)
-    return this.shadowRoot.querySelector('#oid-prs') || clone
+      owner.shadowRoot.innerHTML = ''
+    owner.shadowRoot.appendChild(clone)
   }
 }

@@ -3,7 +3,7 @@ import { Sphere } from '../infra/sphere.js'
 
 export class OidSphere extends HTMLElement {
   connectedCallback () {
-    this._sphere = new Sphere(new Bus(), this.stylesheet)
+    this._sphere = new Sphere(new Bus(), this.getAttribute('stylesheet'))
   }
 
   static get observedAttributes () {
@@ -11,7 +11,7 @@ export class OidSphere extends HTMLElement {
   }
 
   get stylesheet () {
-    return this.getAttribute('stylesheet')
+    return this._sphere.stylesheet
   }
 
   get sphere () {

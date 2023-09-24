@@ -16,18 +16,19 @@ Oid.component({
   element: 'console-oid',
   properties: {
     label: {},
-    prompt: {default: '>'}
+    prompt: {default: '>'},
+    rows: {default: 10}
   },
   receive: {'display': 'handleSend'},
   provide: ['itf:transfer'],
   implementation: ConsoleOid,
   styles: css`
   .console {
-    width: 97%;
+    width: 100%;
     font-family: "Courier New", monospace;
     font-size: 1em;
     background-color: lightgray
   }`,
   template: html`
-  <textarea class="console" rows="10" id="oid-prs" readonly></textarea>`
+  <textarea class="console" rows="{{this.rows}}" id="oid-prs" readonly></textarea>`
 })
