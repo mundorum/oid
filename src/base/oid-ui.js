@@ -50,7 +50,7 @@ export class OidUI extends OidWeb {
   }
 
   _shadowHTML (html) {
-    OidUI.prepareShadow(this, html)
+    const clone = OidUI.prepareShadow(this, html)
     return this.shadowRoot.querySelector('#oid-prs') || clone
   }
 
@@ -63,5 +63,6 @@ export class OidUI extends OidWeb {
     else
       owner.shadowRoot.innerHTML = ''
     owner.shadowRoot.appendChild(clone)
+    return clone
   }
 }
