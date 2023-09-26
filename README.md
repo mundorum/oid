@@ -1,5 +1,4 @@
-* [Oid inside a page](page.md)
-* [Creating Oids](oid.md)
-* [Bus and Publish/Subscribe](bus.md)
-* [Interfaces and Connections](connection.md)
-* [Exercises](exercises.md)
+-o-id
+=====
+
+Web components based on the Digital Content Component (DCC) model for the Mundorum space.

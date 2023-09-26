@@ -1,0 +1,23 @@
+# main links
+main:
+  - title: "GitHub"
+    url: https://github.com/mundorum/oid/
+
+# pages sidebar
+pages:
+  - title: Oids Inside a Web Page
+    children:
+      - title: "Tutorial"
+        url: /web/
+  - title: Oid Developement Guide
+    children:
+      - title: "Oid"
+        url: /dev/
+      - title: "Publish/Subscribe"
+        url: /dev/bus/
+      - title: "Connections"
+        url: /dev/connections/
+      - title: "Composition"
+        url: /dev/composition/
+      - title: "Exercises"
+        url: /dev/exercises/
