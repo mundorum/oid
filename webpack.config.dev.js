@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = {
-  entry: './src/lib/index.js',
+  entry: './src/assembly/full.js',
   experiments: {
     outputModule: true,
   },
