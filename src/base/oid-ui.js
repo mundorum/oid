@@ -30,8 +30,13 @@ export class OidUI extends OidWeb {
       const html =
         (this._defaultStyle + spec.styles + template)
         .replace(
-          /{{this\.([^}]*)}}/g,
-          (match, p1) => {return this[p1]})
+          /{{[ \t]*(url:)?[ \t]*this\.([^}]*)}}/g,
+          (match, p1, p2) => {
+            let value = this[p2.trim()]
+            if (p1 === 'url:')
+              value = value.replace('assets:', this._sphere.assets)
+            return value
+          })
 
       if (spec.shadow === false) {
         this.innerHTML = html
