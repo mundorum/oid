@@ -5,18 +5,18 @@ export class Primitive extends HTMLElement {
   constructor () {
     super()
     this._sphere = null
-    this._bus = null
+  }
+
+  get _bus () {
+    return this._sphere.bus
   }
 
   connectedCallback () {
     let ag = this._findAggregator(OidSphere)
-    if (ag != null) {
+    if (ag != null)
       this._sphere = ag.sphere
-      this._bus = this._sphere.bus
-    } else {
+    else
       this._sphere = Sphere.i
-      this._bus = this._sphere.bus      
-    }
   }
 
   _findAggregator(agClass) {

@@ -4,7 +4,7 @@ import { OidUI } from '../../base/oid-ui'
 
 export class ConsoleOid extends OidUI {
   handleSend (topic, message) {
-    if (this._presentation && message.value)
+    if (this._presentation && message && message.value)
       this._presentation.value +=
         (this.prompt.length > 0 ? `${this.prompt} ` : '') +
       `${message.value}\n`

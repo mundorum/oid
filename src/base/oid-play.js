@@ -82,7 +82,7 @@ export class OidPlay extends OidSphere {
 OidPlay.rows = 5
 
 OidPlay.code =
-html`<div style="width:97%;display:flex">
+html`<div style="width:100%;display:flex">
 <textarea id="script" style="width:100%;cursor:pointer" rows="{rows}" readonly>{html}</textarea>
 <button id="btn-render" class="btn btn-secondary" style="width:auto;display:none">Render</button>
 </div>`
@@ -94,7 +94,7 @@ html`<link rel="stylesheet" href="{stylesheet}">
 {console}`
 
 OidPlay.console = 
-html`<div id="msg-pnl" style="width:97%">
+html`<div id="msg-pnl" style="width:100%">
   <b>Messages on the Bus</b><br>
   <console-oid rows="{rows}" subscribe="#~display"></console-oid>
 </div>`

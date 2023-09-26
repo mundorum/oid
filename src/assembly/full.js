@@ -12,14 +12,18 @@ import '../base/interfaces-base.js'
 import '../components/interfaces-components.js'
 import { OidPlay } from '../base/oid-play.js'
 import { FileOid } from '../components/data/file-oid.js'
+import {ImageOid} from '../components/ui/image-oid.js'
 import { ButtonOid } from '../components/ui/button-oid.js'
 // import '../components/ui/button-oid-style.js'
-import { SwitchOid } from '../components/ui/switch-input-oid.js'
 import { ConsoleOid } from '../components/ui/console-oid.js'
+import { SwitchOid } from '../components/ui/switch-input-oid.js'
+import { SliderOid } from '../components/ui/slider-input-oid.js'
 import { SplitPaneOid } from '../components/ui/container/split-pane-oid.js'
 
 export { html, css, Bus, Sphere, OidPlay }
 export { Primitive, OidSphere, Oid, OidBase, OidWeb, OidUI }
 export { FileOid }
-export { ButtonOid, SwitchOid, ConsoleOid }
+export { ImageOid }
+export { ButtonOid, ConsoleOid }
+export { SwitchOid, SliderOid }
 export { SplitPaneOid }

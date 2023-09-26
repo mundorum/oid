@@ -30,8 +30,14 @@ export class OidUI extends OidWeb {
       const html =
         (this._defaultStyle + spec.styles + template)
         .replace(
-          /{{this\.([^}]*)}}/g,
-          (match, p1) => {return this[p1]})
+          /{{[ \t]*(url:)?[ \t]*this\.([^}]*)}}/g,
+          (match, p1, p2) => {
+            p2 = (p2) ? p2.trim() : ''
+            let value = (this[p2]) ? this[p2] : ''
+            if (p1 === 'url:')
+              value = value.replace('assets:', this._sphere.assets)
+            return value
+          })
 
       if (spec.shadow === false) {
         this.innerHTML = html
@@ -50,7 +56,7 @@ export class OidUI extends OidWeb {
   }
 
   _shadowHTML (html) {
-    OidUI.prepareShadow(this, html)
+    const clone = OidUI.prepareShadow(this, html)
     return this.shadowRoot.querySelector('#oid-prs') || clone
   }
 
@@ -63,5 +69,6 @@ export class OidUI extends OidWeb {
     else
       owner.shadowRoot.innerHTML = ''
     owner.shadowRoot.appendChild(clone)
+    return clone
   }
 }
