@@ -21,7 +21,7 @@ Oid.component(
   id: 'oid:image',
   element: 'image-oid',
   properties: {
-    source: {},
+    source: {default: 'assets:images/image.svg'},
     label: {}
   },
   implementation: ImageOid,

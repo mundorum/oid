@@ -32,7 +32,8 @@ export class OidUI extends OidWeb {
         .replace(
           /{{[ \t]*(url:)?[ \t]*this\.([^}]*)}}/g,
           (match, p1, p2) => {
-            let value = this[p2.trim()]
+            p2 = (p2) ? p2.trim() : ''
+            let value = (this[p2]) ? this[p2] : ''
             if (p1 === 'url:')
               value = value.replace('assets:', this._sphere.assets)
             return value

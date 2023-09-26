@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Slider and Console Oids</title>
+  <link rel="stylesheet" href="/lib/oiddefault.css">
+  <script src="/lib/oidlib.js"></script>
+</head>
+<body>
+  <h1>Slider and Console Oids</h1>
+  <p>This is a slider that sends its value to the console.
+     It shows the initial value if the slider comes after the console
+     due to the publish/subscribe order.</p>
+
+  <console-oid prompt="*"
+               subscribe="show/message~display">
+  </console-oid>
+
+  <slider-oid index publish="initial~show/message;change~show/message">
+  </slider-oid>
+</body>
+</html>
