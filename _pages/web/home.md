@@ -96,12 +96,12 @@ subscribe="topic~notice"
 * `topic` - the topic of the message subscribed
 * `notice` (optional) - the external subscribed message can be mapped to an internal notice related to an action
 
-In the following example, we added a second Oid, the `lively-talk-oid`, which presents a character that shows the message `I am a terrible dinosaur!` when the button with the label `Talk` is triggered:
+In the following example, we added a second Oid, the `lively-talk-oid`, which presents a character that shows the message `Graauuuurrrr` when the button with the label `Talk` is triggered:
 
 <p>
 <oid-play messages>
   <button-oid label="Talk"
-    value="I am a terrible dinosaur!"
+    value="Graauuuurrrr"
     publish="click~show/message">
   </button-oid>
 
@@ -110,7 +110,7 @@ In the following example, we added a second Oid, the `lively-talk-oid`, which pr
 </oid-play>
 </p>
 
-The `button-oid` publishes a topic `show/message` and the message `I am a terrible dinosaur!` when the button is clicked. The `lively-talk-oid` subscribes to the `show/message` message, i.e., it receives the message whenever it is published on the bus. The `show/message` message is mapped to the internal `display` notice that has an associated action of showing the received message.
+The `button-oid` publishes a topic `show/message` and the message `Graauuuurrrr` when the button is clicked. The `lively-talk-oid` subscribes to the `show/message` message, i.e., it receives the message whenever it is published on the bus. The `show/message` message is mapped to the internal `display` notice that has an associated action of showing the received message.
 
 ### Playground Editor
 
