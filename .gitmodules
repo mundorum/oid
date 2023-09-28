@@ -1,0 +1,3 @@
+[submodule "oid"]
+	path = oid
+	url = https://github.com/mundorum/oid.git
