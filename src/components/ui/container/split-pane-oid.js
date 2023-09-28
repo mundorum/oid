@@ -7,22 +7,39 @@ export class SplitPaneOid extends OidUI {
     super()
     this._x = 0
     this._y = 0
-    this._leftWidth = 0
+    this._sideASize = 0
     this._onMousemove = this._onMousemove.bind(this)
     this._onMouseup = this._onMouseup.bind(this)
   }
 
   connectedCallback () {
     super.connectedCallback()
-    this._left = this.shadowRoot.getElementById('left')
+    this._horz = !(this.split === 'vertical')
+
     this._resizer = this.shadowRoot.getElementById('resizer')
-    this._right = this.shadowRoot.getElementById('right')
+    this._sidea = this.shadowRoot.getElementById('sidea')
+    this._sideb = this.shadowRoot.getElementById('sideb')
+
+    if (this._horz) {
+      this._resizer.style.cursor = 'ew-resize'
+      this._resizer.style.height = '100%'
+      this._resizer.classList.add('divide-x')
+      this._sidea.style.width = this.proportion
+    } else {
+      this._resizer.style.cursor = 'ns-resize'
+      this._presentation.style.flexDirection = 'column'
+      this._resizer.style.width = '100%'
+      this._resizer.classList.add('divide-y')
+      this._sidea.style.height = this.proportion
+    }
   }
 
   _onMousedown (event) {
     this._x = event.clientX
     this._y = event.clientY
-    this._leftWidth = this._left.getBoundingClientRect().width
+    this._sideASize = (this._horz)
+      ? this._sidea.getBoundingClientRect().width
+      : this._sidea.getBoundingClientRect().height
 
     this.shadowRoot.addEventListener('mousemove', this._onMousemove)
     this.shadowRoot.addEventListener('mouseup', this._onMouseup)
@@ -32,32 +49,41 @@ export class SplitPaneOid extends OidUI {
     const dx = event.clientX - this._x
     const dy = event.clientY - this._y
 
-    const newLeftWidth =
-      (this._leftWidth + dx) * 100 / this._presentation.getBoundingClientRect().width
-    this._left.style.width = newLeftWidth + '%'
+    if (this._horz) {
+      const newSideAWidth =
+        (this._sideASize + dx) * 100 / this._presentation.getBoundingClientRect().width
+      this._sidea.style.width = newSideAWidth + '%'
 
-    this._resizer.style.cursor = 'col-resize'
-    document.body.style.cursor = 'col-resize'
+      this._resizer.style.cursor = 'col-resize'
+      document.body.style.cursor = 'col-resize'
+    } else {
+      const newSideAHeight =
+        (this._sideASize + dy) * 100 / this._presentation.getBoundingClientRect().height
+      this._sidea.style.height = newSideAHeight + '%'
 
-    this._left.style.userSelect = 'none'
-    this._left.style.pointerEvents = 'none'
+      this._resizer.style.cursor = 'row-resize'
+      document.body.style.cursor = 'row-resize'
+    }
 
-    this._right.style.userSelect = 'none'
-    this._right.style.pointerEvents = 'none'
+    this._sidea.style.userSelect = 'none'
+    this._sidea.style.pointerEvents = 'none'
+
+    this._sideb.style.userSelect = 'none'
+    this._sideb.style.pointerEvents = 'none'
   }
 
   _onMouseup (event) {
     this.shadowRoot.removeEventListener('mousemove', this._onMousemove)
     this.shadowRoot.removeEventListener('mouseup', this._onMouseup)
 
-    this._resizer.style.removeProperty('cursor')
+    this._resizer.style.cursor = (this._horz) ? 'ew-resize' : 'ns-resize'
     document.body.style.removeProperty('cursor')
 
-    this._left.style.removeProperty('user-select')
-    this._left.style.removeProperty('pointer-events')
+    this._sidea.style.removeProperty('user-select')
+    this._sidea.style.removeProperty('pointer-events')
 
-    this._right.style.removeProperty('user-select')
-    this._right.style.removeProperty('pointer-events')
+    this._sideb.style.removeProperty('user-select')
+    this._sideb.style.removeProperty('pointer-events')
   }
 }
 
@@ -65,8 +91,8 @@ Oid.component({
   id: 'oid:split-pane',
   element: 'split-pane-oid',
   properties: {
-    label: {},
-    prompt: {default: '>'}
+    split: {default: 'horizontal'},
+    proportion: {default: '50%'}
   },
   implementation: SplitPaneOid,
   stylesheet: 'default',
@@ -74,22 +100,15 @@ Oid.component({
   .group {
     display: flex;
     width: 100%;
-    height: 16rem;
-  }
-  .panel-left {
-    width: 25%;
-  }
-  .resizer {
-    cursor: ew-resize;
     height: 100%;
   }
-  .panel-right {
+  .pane-b {
     flex: 1;
   }`,
   template: html`
   <div id="oid-prs" class="group">
-    <div class="panel-left bg-base" id="left"><slot name="left"></slot></div>
-    <div class="resizer divide" id="resizer" @mousedown></div>
-    <div class="panel-right bg-base" id="right"><slot name="right"></slot></div>
+    <div class="bg-base" id="sidea"><slot name="side-a"></slot></div>
+    <div class="divide" id="resizer" @mousedown></div>
+    <div class="pane-b bg-base" id="sideb"><slot name="side-b"></slot></div>
   </div>`
 })

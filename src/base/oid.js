@@ -58,8 +58,10 @@ export class Oid {
             : {
               get: function() {return this['_' + jsName]},
               set: function(newValue) {
+                const old = this['_' + jsName]
                 this['_' + jsName] = newValue
-                this.render()
+                if (old != newValue && this._sphere)
+                  this.render()
               }
             }))
         if (property.attribute == null || property.attribute !== false)
