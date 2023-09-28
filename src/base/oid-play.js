@@ -1,4 +1,5 @@
 import { html } from '../infra/literals.js'
+import { Bus } from '../infra/bus.js'
 import { OidSphere } from './oid-sphere.js'
 import { OidUI } from './oid-ui.js'
 
@@ -14,7 +15,7 @@ export class OidPlay extends OidSphere {
         .replace('{code}',
           OidPlay.code
             .replace('{html}', html)
-            .replace('{rows}', html.split(/\r\n|\r|\n/).length))
+            .replace('{rows}', this._rows(html)))
         .replace('{console}', (this.messages ?
           OidPlay.console
             .replace('{rows}', ((this.rows) ? this.rows : OidPlay.rows)) : ''))
@@ -28,6 +29,8 @@ export class OidPlay extends OidSphere {
     this._observer = new MutationObserver(this._scriptUpdated.bind(this))
     this._observer.observe(this,
                            {attributes: true, childList: true, subtree: true})
+
+    this.sphere.bus.subscribe('#', this._busMonitor.bind(this))
   }
 
   static get observedAttributes () {
@@ -53,7 +56,16 @@ export class OidPlay extends OidSphere {
   _scriptUpdated(mutationsList, observer) {
     const html = this._prepareHTML()
     this._scriptPanel.value = html
-    this._scriptPanel.rows = html.split(/\r\n|\r|\n/).length
+    this._scriptPanel.rows = this._rows(html)
+  }
+
+  _rows (html) {
+    const lines = html.split(/\r\n|\r|\n/)
+    let rows = 0
+    lines.forEach(l => {
+      rows += Math.floor(l.length / 45) + 1
+    })
+    return rows
   }
 
   _prepareHTML () {
@@ -69,7 +81,6 @@ export class OidPlay extends OidSphere {
 
   _unlockScript() {
     this._scriptPanel.removeEventListener('click', this._unlockScript)
-    // this._scriptPanel.style.width = '90%'
     this._scriptPanel.readOnly = false
     this._buttonRender.style.display = 'initial'
   }
@@ -77,13 +88,18 @@ export class OidPlay extends OidSphere {
   _computeRender() {
     this.shadowRoot.querySelector('#render').innerHTML = this._scriptPanel.value
   }
+
+  _busMonitor (topic, message) {
+    if (topic != 'bus/monitor')
+    this.sphere.bus.publish('bus/monitor', {value: `[${topic}] ${JSON.stringify(message)}`})
+  }
 }
 
 OidPlay.rows = 5
 
 OidPlay.code =
 html`<div style="width:100%;display:flex">
-<textarea id="script" style="width:100%;cursor:pointer" rows="{rows}" readonly>{html}</textarea>
+<textarea id="script" class="code" style="width:100%;cursor:pointer" rows="{rows}" readonly>{html}</textarea>
 <button id="btn-render" class="btn btn-secondary" style="width:auto;display:none">Render</button>
 </div>`
 
@@ -96,7 +112,7 @@ html`<link rel="stylesheet" href="{stylesheet}">
 OidPlay.console = 
 html`<div id="msg-pnl" style="width:100%">
   <b>Messages on the Bus</b><br>
-  <console-oid rows="{rows}" subscribe="#~display"></console-oid>
+  <console-oid rows="{rows}" class="code" prompt="" subscribe="bus/monitor~display"></console-oid>
 </div>`
 
 OidPlay.elementTag = 'oid-play'
