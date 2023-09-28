@@ -74,14 +74,14 @@ The published message content depends on the component. See the following exampl
 
 <p>
 <oid-play messages>
-  <button-oid label="Start"
-              value="The dinosaur jumped into the mud."
-              publish="click~show/message">
+  <button-oid label="Talk"
+              publish="click~show/message"
+              value="Graauuuurrrr">
   </button-oid>
 </oid-play>
 </p>
 
-A `button-oid` produces a clickable button that can send a message when it is clicked. The following example shows a `button-oid` with a label `Start` that publishes a message when it is clicked. The message will have the topic `show/message` and the content `The dinosaur jumped into the mud.`:
+A `button-oid` produces a clickable button that can send a message when it is clicked. The following example shows a `button-oid` with a label `Talk` that publishes a message when it is clicked. The message will have the topic `show/message` and the content `Graauuuurrrr`:
 
 A button-oid always sends its value attribute in the message value.
 
@@ -112,7 +112,9 @@ In the following example, we added a second Oid, the `lively-talk-oid`, which pr
 
 The `button-oid` publishes a topic `show/message` and the message `I am a terrible dinosaur!` when the button is clicked. The `lively-talk-oid` subscribes to the `show/message` message, i.e., it receives the message whenever it is published on the bus. The `show/message` message is mapped to the internal `display` notice that has an associated action of showing the received message.
 
-You can also try by yourself in a complete experimentation setup that we call [Playground Editor](https://harena-lab.github.io/harena-docs/js/harena/dccs/playground/). The parts of this Playground are further presented. After rendering the button, you can click on the button and the message published is presented in the panel `Messages`.
+### Playground Editor
+
+You can also try by yourself in a complete experimentation setup that we call [Playground Editor](https://mundorum.github.io/oid/oid/playground/editor/). You can write complete Oid compositions, render them and track the messages sent in the Bus.
 
 ### Multiple publications and subscriptions
 
