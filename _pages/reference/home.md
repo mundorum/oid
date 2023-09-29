@@ -23,11 +23,11 @@ Show a button on the page that publishes a message for each interaction (e.g., c
 
 ## Properties
 
-property  | role
-----------| --------
-`label`   | label presented inside the button
-`value`   | value of the button -- published inside messages
-`tooltip` | extra information presented when the user moves the mouse over the button
+property  | role     | default
+----------| -------- | -------
+`label`   | Label presented inside the button. |
+`value`   | Value of the button -- published inside messages. |
+`tooltip` | Extra information presented when the user moves the mouse over the button (future). |
 
 ## Output Notices
 
@@ -54,12 +54,12 @@ An input component presented as a slider.
 
 ## Properties
 
-property  | role
-----------| --------
-`value`   | initial value for the slider; if it is not defined, the initial value will be ibetween `min` and `max`
-`min`     | minimal value accepted
-`max`     | maximal value accepted
-`index`   | defines if the index is presented besides the slider
+property  | role     | default
+----------| -------- | -------
+`value`   | Initial value for the slider. | value will be between `min` and `max`
+`min`     | Minimal value accepted. | `0`
+`max`     | Maximal value accepted. | `100`
+`index`   | defines if the index is presented besides the slider | `false`
 
 ## Output Notices
 
@@ -71,8 +71,36 @@ notice       | source  | message | message type
 ## Example
 
 <p>
-<oid-play>
-   <slider-oid min="0" max="100" value="30" index></slider-oid>
+<oid-play messages>
+   <slider-oid min="0" max="100" value="30" index publish="initial~show/message;change~show/message"></slider-oid>
+</oid-play>
+</p>
+
+# Switch Oid (`<switch-oid>`)
+
+An input component presented as a switch.
+
+## Properties
+
+property  | role     | default
+----------| -------- | -------
+`value`   | Initial value for the switch. Value "off" sets switch off and any other value on. | `off`
+`on`      | Value to be dispatched in the message when the switch is on. | `on`
+`off`     | Value to be dispatched in the message when the switch is on. | `off`
+
+## Output Notices
+
+notice       | source  | message | message type
+-------------| --------| ------- | ------------
+`initial`    | the switch defines its initial value | initial value | `SingleValue`
+`change`     | the switch changes the current value - the user slides the switch | current value | `SingleValue`
+
+## Example
+
+<p>
+<oid-play messages>
+  <switch-oid on="switched on" off="switched off" value="on" publish="initial~show/message;change~show/message">
+  </switch-oid>
 </oid-play>
 </p>
 
@@ -82,9 +110,9 @@ Show a console-like display on the page and present messages in it.
 
 ## Properties
 
-property | role
----------| --------
-`prompt` | customize the prompt preceding each message; default is `>`
+property  | role     | default
+----------| -------- | -------
+`prompt` | customize the prompt preceding each message | `>`
 
 ## Input Notices
 
@@ -92,6 +120,19 @@ notice    | source  | message | message type
 ----------| --------| ------- | ------------
 `display` | displays a message in the console | the value to display | `SingleValue`
 `clear`   | clear all console messages | `empty` | `empty`
+
+<p>
+<oid-play>
+  <button-oid label="Start"
+              value="The dinosaur jumped into the mud."
+              publish="click~show/message">
+  </button-oid>
+
+  <console-oid prompt="*"
+               subscribe="show/message~display">
+  </console-oid>
+</oid-play>
+</p>
 
 <!-- Jekyll directive to avoid Liquid filters
 {% endraw %}
