@@ -3,15 +3,22 @@ import { Oid } from '../../base/oid.js'
 import { OidUIInput } from '../../base/oid-ui-input.js'
 
 export class SwitchOid extends OidUIInput {
-  constructor () {
-    super()
-    if (this.hasAttribute('value'))
-      this.value = false
+  connectedCallback () {
+    super.connectedCallback()
+    if (this.hasAttribute('value')) {
+      // <TODO> automatically recognize attribute type and improve render
+      this.value = !(this.getAttribute('value') === 'off')
+      this.render()
+    }
+    this._notify('initial',
+      { value: (this.value) ? this.on : this.off })
   }
 
   render () {
     super.render()
-    this._input = this._presentation.querySelector('#oid-input')
+    this._input =
+      this._presentation.querySelector('#oid-input')
+    this._input.checked = this.value
   }
 
   handleInvert (topic, message) {
@@ -21,6 +28,13 @@ export class SwitchOid extends OidUIInput {
     else
       this._input.checked = false
   }
+
+  _onInput () {
+    console.log('=== input')
+    this._value = this._input.checked
+    this._notify('change',
+      { value: (this.value) ? this.on : this.off })
+  }
 }
 
 Oid.component(
@@ -28,6 +42,10 @@ Oid.component(
   id: 'oid:switch',
   element: 'switch-oid',
   // properties: variable and value inherited from OidUIInput
+  properties: {
+    on:  {default: 'on'},
+    off: {default: 'off'}
+  },
   receive: ['invert'],
   implementation: SwitchOid,
   styles: css`
@@ -83,7 +101,7 @@ Oid.component(
   }`,
   template: html`
   <label id="oid-prs" class="switch">
-    <input id="oid-input" type="checkbox">
+    <input id="oid-input" type="checkbox" @input>
     <span class="slider round"></span>
   </label>`
 })
