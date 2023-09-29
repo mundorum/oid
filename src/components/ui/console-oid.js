@@ -15,7 +15,6 @@ Oid.component({
   id: 'oid:console',
   element: 'console-oid',
   properties: {
-    label: {},
     prompt: {default: '>'},
     rows: {default: 10}
   },

@@ -5,9 +5,9 @@
 import { OidUI } from './oid-ui.js'
 
 export class OidUIInput extends OidUI {
-  constructor () {
-    super()
+  connectedCallback () {
     this._value = this.getAttribute('value') || false
+    super.connectedCallback()
   }
 
   static get observedAttributes () {

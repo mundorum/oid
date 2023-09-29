@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Switch and Console Oids</title>
+  <link rel="stylesheet" href="/lib/oiddefault.css">
+  <script src="/lib/oidlib.js"></script>
+</head>
+<body>
+  <h1>Switch and Console Oids</h1>
+  <p>This is a switch that sends its value to the console.
+     It shows the initial value if the switch comes after the console
+     due to the publish/subscribe order.</p>
+
+  <console-oid prompt="*"
+               subscribe="show/message~display">
+  </console-oid>
+
+  <switch-oid on="switched on" off="switched off" value="on" publish="initial~show/message;change~show/message">
+  </switch-oid>
+</body>
+</html>
