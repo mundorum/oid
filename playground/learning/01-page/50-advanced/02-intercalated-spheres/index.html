@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Two Intercalated Spheres</title>
+  <link rel="stylesheet" href="/lib/oiddefault.css">
+  <script src="/lib/oidlib.js"></script>
+</head>
+<body>
+  <h1>Two Intercalated Spheres</h1>
+
+  Intercalates Sphere II between two references of Sphere I.
+  Whenever a sphere-oid refers to an existing id, it captures the respective sphere. 
+
+  <h2>Sphere I</h2>
+
+  <oid-sphere id="one">
+    <button-oid label="Dinosaur"
+                value="The dinosaur jumped into the mud."
+                publish="click~show/message">
+    </button-oid>
+    <console-oid prompt="*"
+                 subscribe="show/message~display">
+    </console-oid>
+  </oid-sphere>
+
+  <h2>Sphere II</h2>
+
+  <oid-sphere id="two">
+    <button-oid label="Go"
+                value="Asdrubal played the trombone."
+                publish="click~show/message">
+    </button-oid>
+    <console-oid prompt="*"
+                 subscribe="show/message~display">
+    </console-oid>
+  </oid-sphere>
+
+  <h2>Back to Sphere I</h2>
+
+  <oid-sphere id="one">
+    <button-oid label="^ Dance"
+                value="The dinosaur danced."
+                publish="click~show/message">
+    </button-oid>
+  </oid-sphere>
+</body>
+</html>
