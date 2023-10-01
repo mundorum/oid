@@ -18,7 +18,7 @@ export class Sphere {
     return sphere
   }
 
-  get (id) {
+  static get (id) {
     return (id) ? (Sphere._spheres[id] || null) : null
   }
 

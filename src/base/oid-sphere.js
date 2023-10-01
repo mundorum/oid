@@ -13,11 +13,11 @@ export class OidSphere extends HTMLElement {
       // cannot change the id and the bus of the global sphere
     } else {
       const id = this.getAttribute('id')
-      if (Sphere.i.get(id))
+      if (Sphere.get(id))
         // if the sphere already exists, use it
-        this._sphere = Sphere.i.get(id)
+        this._sphere = Sphere.get(id)
       else
-        this._sphere = new Sphere(
+        this._sphere = Sphere.create(
           this.getAttribute('id'),
           new Bus(),
           this.getAttribute('stylesheet'),

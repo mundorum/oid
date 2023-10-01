@@ -1,11 +1,12 @@
-const { Bus } = await import(
+const { Sphere, Bus } = await import(
   (new URL(document.location).searchParams.get('dev'))
     ? '/lib/oidlib-dev.js'
     : './lib/oid-fiction-dev.js')
 
 export class EditorPg {
   start () {
-    Bus.i.subscribe('control/render', this._renderOids.bind(this))
+    Sphere.get('control').bus.subscribe(
+      'control/render', this._renderOids.bind(this))
     Bus.i.subscribe('#', this._busMonitor.bind(this))
   }
 
@@ -15,8 +16,8 @@ export class EditorPg {
   }
 
   _busMonitor (topic, message) {
-    if (topic != 'bus/monitor' && topic != 'control/render')
-      Bus.i.publish('bus/monitor', {value: `[${topic}] ${JSON.stringify(message)}`})
+    Sphere.get('control').bus.
+      publish('control/monitor', {value: `[${topic}] ${JSON.stringify(message)}`})
   }
 }
 
