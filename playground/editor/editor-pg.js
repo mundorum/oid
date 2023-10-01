@@ -1,4 +1,7 @@
-import { Bus } from './lib/oid-fiction-dev.js'
+const { Bus } = await import(
+  (new URL(document.location).searchParams.get('dev'))
+    ? '/lib/oidlib-dev.js'
+    : './lib/oid-fiction-dev.js')
 
 export class EditorPg {
   start () {
