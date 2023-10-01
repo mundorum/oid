@@ -1,11 +1,41 @@
 {
-  "private": true,
-  "main": "dist/oidlib.js",
+  "name": "@mundorum/oid",
+  "version": "0.1.0",
+  "description": "Web components based on the Digital Content Component (DCC) model for the Mundorum space.",
+  "main": "lib/oidlib.js",
   "devDependencies": {
     "@playwright/test": "^1.32.1",
     "@web/dev-server": "^0.1.35",
     "webpack": "^5.79.0",
     "webpack-cli": "^5.0.1"
   },
-  "scripts": {}
+  "scripts": {
+    "build": "webpack && webpack --config webpack.config.dev.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "lib/oidlib.js",
+    "lib/oidlib-dev.js",
+    "lib/oiddefault.css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mundorum/oid.git"
+  },
+  "keywords": [
+    "web component",
+    "oid",
+    "dcc",
+    "digital content component",
+    "mundorum"
+  ],
+  "author": {
+    "name": "André Santanchè",
+    "url": "https://www.ic.unicamp.br/~santanche/"
+  },
+  "license": "LGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/mundorum/oid/issues"
+  },
+  "homepage": "https://mundorum.github.io/oid/"
 }
