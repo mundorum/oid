@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Customizing the Button Oid</title>
+  <link rel="stylesheet" href="/lib/oiddefault.css">
+  <script src="button-oid-custom.js" type="module"></script>
+</head>
+<body>
+  <h1>Customizing the Button Oid</h1>
+  <p>This customization generates a random number on click.
+     It executes the customization before any click notification.</p>
+
+  <button-oid label="Random"
+              custom="random"
+              publish="click~show/message">
+  </button-oid>
+
+  <console-oid prompt="Random number:"
+               subscribe="show/message~display">
+  </console-oid>
+</body>
+</html>

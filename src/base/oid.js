@@ -8,6 +8,8 @@ export class Oid {
 
   static _interfaceReg = {}
   static _oidReg = {}
+  static _oidCustom = {}
+  static _customQueue = {}
   static _defaultSpec = {}
 
   static cInterface (spec) {
@@ -170,6 +172,34 @@ export class Oid {
         instance.setAttribute(p, properties[p])
     }
     return instance
+  }
+
+  static customize (id, spec) {
+    if (id != null && Oid._oidReg[id] != null &&
+        spec != null && spec.cid != null) {
+      Oid._oidCustom[id + '.' + spec.cid] = spec
+      if (Oid._customQueue[id + '.' + spec.cid] != null) {
+        Oid._customQueue[id + '.' + spec.cid]()
+        delete Oid._customQueue[id + '.' + spec.cid]
+      }
+    }
+  }
+
+  static async getCustom (id, cid) {
+    if (id == null || cid == null)
+      return null
+
+    // wait the customization
+    if (Oid._oidCustom[id + '.' + cid] == null) {
+      const promise = new Promise((resolve, reject) => {
+        const callback = function () {
+          resolve()
+        }
+        Oid._customQueue[id + '.' + cid] = callback
+      })
+      await promise
+    }
+    return Oid._oidCustom[id + '.' + cid]
   }
 
   static setDefault (spec) {

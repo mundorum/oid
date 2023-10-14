@@ -4,6 +4,7 @@ import { OidUI } from '../../base/oid-ui.js'
 
 export class ButtonOid extends OidUI {
   _onClick () {
+    this._callCustom('click')
     this._notify('click', {value: this.value || this.label})
     this._invoke('itf:transfer', 'send', {value: this.value || this.label})
   }
