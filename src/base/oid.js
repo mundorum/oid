@@ -50,22 +50,28 @@ export class Oid {
         const jsName = pname.replace(
           /-([a-z])/g, (match, letter) => letter.toUpperCase())
         Object.defineProperty(impl.prototype, jsName,
-          ((impl.prototype.render == null)
-            ? {
-              get: function() {return this['_' + jsName]},
-              set: function(newValue) {
-                this['_' + jsName] = newValue
-              }
-            }
-            : {
-              get: function() {return this['_' + jsName]},
-              set: function(newValue) {
-                const old = this['_' + jsName]
-                this['_' + jsName] = newValue
-                if (old != newValue && this._sphere)
-                  this.render()
-              }
-            }))
+          ((property.readonly)
+              ? {
+                  get: function() {return this['_' + jsName]}
+                }
+              : (impl.prototype.render == null)
+                 ? {
+                    get: function() {return this['_' + jsName]},
+                    set: function(newValue) {
+                      this['_' + jsName] = newValue
+                    }
+                  }
+                  : {
+                      get: function() {return this['_' + jsName]},
+                      set: function(newValue) {
+                        const old = this['_' + jsName]
+                        this['_' + jsName] = newValue
+                        if (old != newValue && this._sphere)
+                          this.render()
+                      }
+                    }
+          )
+        )
         if (property.attribute == null || property.attribute !== false)
           observed.push(pname)
       }
