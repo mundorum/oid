@@ -41,7 +41,7 @@ Oid.component(
     index: {default: false}
   },
   implementation: SliderOid,
-  stylesheet: 'default',
+  stylesheets: 'default',
   template: html`
   <div id="oid-prs" style="width:100%; display:flex; flex-direction:row">
     <span id="index" style="flex:initial"></span>

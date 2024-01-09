@@ -27,7 +27,7 @@ Oid.component(
     value: {}
   },
   implementation: ButtonOid,
-  stylesheet: 'default',
+  stylesheets: 'default',
   template: html`
   <button id="oid-prs" class="btn btn-primary"
     @click @mouseenter @mouseleave>

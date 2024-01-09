@@ -25,7 +25,7 @@ Oid.component(
     label: {}
   },
   implementation: ImageOid,
-  stylesheet: 'default',
+  stylesheets: 'default',
   template: html`
   <image id="oid-prs" src="{{url:this.source}}" alt="{{this.label}}"
     @click @mouseenter @mouseleave>`

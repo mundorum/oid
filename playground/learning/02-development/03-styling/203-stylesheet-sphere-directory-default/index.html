@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Sphere Stylesheet</title>
+  <script src="someone-oid.js" type="module"></script>
+  <script src="hello-oid.js" type="module"></script>
+</head>
+<body>
+  <h1>Sphere Stylesheet</h1>
+  <p>The sphere replaces the stylesheet directory and the default stylesheet (besides the default bus) for all Oids inside its range.
+     The prefix "stylesheets:" will be resolved to the stylesheet directory.</p>
+  <oid-sphere stylesheets="local/" stydefault="stylesheets:contour.css">
+    <someone-oid name="Asdrubal"
+                 publish="click~someone/arrives"></someone-oid>
+    <hello-oid subscribe="someone/arrives~someone"></hello-oid>
+  </oid-sphere>
+</body>
+</html>

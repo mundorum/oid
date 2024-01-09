@@ -16,7 +16,7 @@ Oid.component(
   // addresses a global stylesheet ['/lib/oiddefault.css']
   // this stylesheet defines classes btn and btn-primary
   // there is a precedence for the styles over stylesheet
-  stylesheet: 'default',
+  stylesheets: 'default',
   styles: css`.btn-primary {
     background-color: maroon;
     color: salmon;

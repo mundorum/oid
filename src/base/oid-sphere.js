@@ -6,8 +6,10 @@ export class OidSphere extends HTMLElement {
     // parametrizes the global sphere
     if (this.hasAttribute('global')) {
       this._sphere = Sphere.i
-      if (this.hasAttribute('stylesheet'))
-        Sphere.i.stylesheet = this.getAttribute('stylesheet')
+      if (this.hasAttribute('stylesheets'))
+        Sphere.i.stydefault = this.getAttribute('stylesheets')
+      if (this.hasAttribute('stydefault'))
+        Sphere.i.stydefault = this.getAttribute('stydefault')
       if (this.hasAttribute('assets'))
         Sphere.i.assets = this.getAttribute('assets')
       // cannot change the id and the bus of the global sphere
@@ -20,7 +22,8 @@ export class OidSphere extends HTMLElement {
         this._sphere = Sphere.create(
           this.getAttribute('id'),
           new Bus(),
-          this.getAttribute('stylesheet'),
+          this.getAttribute('stylesheets'),
+          this.getAttribute('stydefault'),
           this.getAttribute('assets'))
     }
   }
@@ -29,8 +32,12 @@ export class OidSphere extends HTMLElement {
     return this._sphere.id
   }
 
-  get stylesheet () {
-    return this._sphere.stylesheet
+  get stylesheets () {
+    return this._sphere.stylesheets
+  }
+
+  get stydefault () {
+    return this._sphere.stydefault
   }
 
   get assets () {

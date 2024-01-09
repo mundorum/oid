@@ -122,20 +122,15 @@ export class Oid {
 
   // styles and template preprocessing
   static stylePreprocess (spec) {
-    spec.defaultStyle = false
     let sty = ''
-    if (spec.stylesheet) {
-      let ss = spec.stylesheet
+    if (spec.stylesheets) {
+      let ss = spec.stylesheets
       if (!Array.isArray(ss)) ss = [ss]
       for (const s of ss)
-        if (s == 'default')
-          spec.defaultStyle = true
-        else
-          sty += `<link href="${s}" rel="stylesheet">`
+        sty += `<link href="${s}" rel="stylesheet">`
     }
-    if (spec.styles)
-      sty += (spec.styles) ? `<style>${spec.styles}</style>` : ''
-    spec.styles = sty
+    spec.stylesheets = sty
+    spec.styles = (spec.styles) ? `<style>${spec.styles}</style>` : ''
   }
 
   static prepareDispatchers (template, impl) {

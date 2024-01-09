@@ -1,18 +1,19 @@
 import { sphereSetup } from './sphere-setup'
 
 export class Sphere {
-  constructor (id, bus, stylesheet, assets) {
+  constructor (id, bus, stylesheets, stydefault, assets) {
     this._id = id || null
     this._bus = (bus) ? bus : Sphere.i.bus
-    this._stylesheet =
-      (stylesheet) ? stylesheet : Sphere.i.stylesheet
+    this._stylesheets = (stylesheets) ? stylesheets : Sphere.i.stylesheets
+    this._stydefault =
+      (stydefault) ? stydefault : Sphere.i.stydefault
     this._assets = (assets) ? assets : Sphere.i.assets
   }
 
-  static create (id, bus, stylesheet, assets) {
+  static create (id, bus, stylesheets, stydefault, assets) {
     if (id != null && Sphere._spheres[id] != null)
       throw new Error(`Sphere with id ${id} already exists`)
-    const sphere = new Sphere(id, bus, stylesheet, assets)
+    const sphere = new Sphere(id, bus, stylesheets, stydefault, assets)
     if (id != null)
       Sphere._spheres[id] = sphere
     return sphere
@@ -30,12 +31,20 @@ export class Sphere {
     return this._bus
   }
 
-  set stylesheet (newValue) {
-    this._stylesheet = newValue
+  set stylesheets (newValue) {
+    this._stylesheets = newValue
   }
 
-  get stylesheet () {
-    return this._stylesheet
+  get stylesheets () {
+    return this._stylesheets
+  }
+
+  set stydefault (newValue) {
+    this._stydefault = newValue
+  }
+
+  get stydefault () {
+    return this._stydefault
   }
 
   set assets (newValue) {
@@ -53,6 +62,7 @@ Sphere._spheres = {}
 Sphere.i = Sphere.create(
   sphereSetup.id,
   sphereSetup.bus,
-  sphereSetup.stylesheet,
+  sphereSetup.stylesheets,
+  sphereSetup.stydefault,
   sphereSetup.assets
 )

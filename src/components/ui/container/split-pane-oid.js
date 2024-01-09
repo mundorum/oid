@@ -101,7 +101,7 @@ Oid.component({
     proportion: {default: '50%'}
   },
   implementation: SplitPaneOid,
-  stylesheet: 'default',
+  stylesheets: 'default',
   styles: css`
   .group {
     display: flex;
