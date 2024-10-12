@@ -17,6 +17,68 @@ Learn and try to instantiate and customize Oids at [Playground Editor](https://m
 
 # Syntax and Examples
 
+# Console Oid (`<console-oid>`)
+
+Show a console-like display on the page and present messages in it.
+
+## Properties
+
+property  | role     | default
+----------| -------- | -------
+`prompt` | customize the prompt preceding each message | `>`
+
+## Input Notices
+
+notice    | source  | message | message type
+----------| --------| ------- | ------------
+`display` | displays a message in the console | the value to display | `SingleValue`
+`clear`   | clear all console messages | `empty` | `empty`
+
+<p>
+<oid-play>
+  <button-oid label="Start"
+              value="The dinosaur jumped into the mud."
+              publish="click~show/message">
+  </button-oid>
+
+  <console-oid prompt="*"
+               subscribe="show/message~display">
+  </console-oid>
+</oid-play>
+</p>
+
+# Image Oid (`<image-oid>`)
+
+Show an image from an external file. This image can generate interaction-related messages.
+
+## Properties
+
+property  | role     | default
+----------| -------- | -------
+`source`  | path to the image file | `assets:images/image.svg`
+`label`   | title or label of the image, presented as alternate (alt) in HTML |
+
+## Output Notices
+
+notice       | source  | message | message type
+-------------| --------| ------- | ------------
+`click`      | the user clicks the mouse over the image | the `label` property; if it is not defined, the `source` | `SingleValue`
+`mouseenter` | the user enters the mouse pointer into the image area | the `label` property; if it is not defined, the `source` | `SingleValue`
+`mouseleave` | the user leaves the mouse pointer from the image area | the `label` property; if it is not defined, the `source` | `SingleValue`
+
+<p>
+<oid-play>
+  <button-oid label="Start"
+              value="The dinosaur jumped into the mud."
+              publish="click~show/message">
+  </button-oid>
+
+  <console-oid prompt="*"
+               subscribe="show/message~display">
+  </console-oid>
+</oid-play>
+</p>
+
 # Button Oid (`<button-oid>`)
 
 Show a button on the page that publishes a message for each interaction (e.g., click).
@@ -33,9 +95,9 @@ property  | role     | default
 
 notice       | source  | message | message type
 -------------| --------| ------- | ------------
-`click`      | the user clicks the mouse over the button | the value property; if it is not defined, the label | `SingleValue`
-`mouseenter` | the user enters the mouse pointer into the button area | the value property; if it is not defined, the label | `SingleValue`
-`mouseleave` | the user leaves the mouse pointer from the button area | the value property; if it is not defined, the label | `SingleValue`
+`click`      | the user clicks the mouse over the button | the `value` property; if it is not defined, the `label` | `SingleValue`
+`mouseenter` | the user enters the mouse pointer into the button area | the `value` property; if it is not defined, the `label` | `SingleValue`
+`mouseleave` | the user leaves the mouse pointer from the button area | the `value` property; if it is not defined, the `label` | `SingleValue`
 
 ## Example
 
@@ -101,36 +163,6 @@ notice       | source  | message | message type
 <oid-play messages>
   <switch-oid on="switched on" off="switched off" value="on" publish="initial~show/message;change~show/message">
   </switch-oid>
-</oid-play>
-</p>
-
-# Console Oid (`<console-oid>`)
-
-Show a console-like display on the page and present messages in it.
-
-## Properties
-
-property  | role     | default
-----------| -------- | -------
-`prompt` | customize the prompt preceding each message | `>`
-
-## Input Notices
-
-notice    | source  | message | message type
-----------| --------| ------- | ------------
-`display` | displays a message in the console | the value to display | `SingleValue`
-`clear`   | clear all console messages | `empty` | `empty`
-
-<p>
-<oid-play>
-  <button-oid label="Start"
-              value="The dinosaur jumped into the mud."
-              publish="click~show/message">
-  </button-oid>
-
-  <console-oid prompt="*"
-               subscribe="show/message~display">
-  </console-oid>
 </oid-play>
 </p>
 

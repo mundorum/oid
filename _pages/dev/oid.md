@@ -34,12 +34,11 @@ Oid.component(
 * `implementation`: the predefined class that implements the component
 * `properties`: properties to be attached to the component
   * `default`: default value assigned to the property in the beginning
+  * `attribute`: true if the HTML attribute affects the property (default is true)
+  * `readonly`: if true, defines only a get method, without a set (default is false)
 * `provide`: list of interfaces provided by this component (see Connection section)
 * `stylesheet`: list of external stylesheet links imported to the local template
 * `styles`: locally defined styles applied to the template
-* `stylable`: defines the precedence between stylesheet and styles
-  * `true` (default) - indicates that stylesheet overrides styles
-  * `false` - vice-versa
 * `template`: HTML/SVG/XML template to render
 * `receive`: list of the notices treated by handled by the component
   * *array format*: lists only the supported notices, automatically mapped to  `handleNotice` handler
