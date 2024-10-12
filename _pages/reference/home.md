@@ -68,14 +68,7 @@ notice       | source  | message | message type
 
 <p>
 <oid-play>
-  <button-oid label="Start"
-              value="The dinosaur jumped into the mud."
-              publish="click~show/message">
-  </button-oid>
-
-  <console-oid prompt="*"
-               subscribe="show/message~display">
-  </console-oid>
+  <image-oid source="assets:images/dino.svg" label="a dangerous dinosaur">
 </oid-play>
 </p>
 
