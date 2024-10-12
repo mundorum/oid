@@ -10,7 +10,7 @@
   </script>
 </head>
 <body onload="editorPg.start()">
-  <oid-sphere assets="../assets/" stydefault="../../lib/oiddefault.css" global></oid-sphere>
+  <oid-sphere assets="../assets/" stylesheets="../../lib/" stydefault="../../lib/oiddefault.css" global></oid-sphere>
   <div style="width:100%;height:100vh;display:flex;flex-direction:column">
     <div style="width:100%">
     <h2>
@@ -35,7 +35,7 @@
                style="width:100%;height:100%;padding:5px;border-style:solid;border-width:1px">
             <oid-sphere id="control">
               <graph-oid layout="vh"
-                        subscribe="tree/node~node/add;tree/edge~edge/add;tree/clear~graph/clear"></graph-oid>
+                         subscribe="tree/node~node/add;tree/edge~edge/add;tree/clear~graph/clear"></graph-oid>
             </oid-sphere>
           </div>
           <textarea id="pg-editor" slot="side-b" class="code"
