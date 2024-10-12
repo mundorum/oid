@@ -9,7 +9,9 @@ export class EditorPg {
     this._controlSphere.subscribe(
       'file/loaded', this._renderFile.bind(this))
     this._controlSphere.subscribe(
-      'control/download', this._downloadResult.bind(this))
+      'control/code', this._downloadCode.bind(this))
+    this._controlSphere.subscribe(
+      'control/page', this._downloadPage.bind(this))
     this._controlSphere.subscribe(
       'control/render', this._renderOids.bind(this))
     this._controlSphere.subscribe(
@@ -85,13 +87,24 @@ export class EditorPg {
       publish('control/monitor', {value: `[${topic}] ${JSON.stringify(message)}`})
   }
 
-  _downloadResult () {
+  _downloadCode () {
+    this._download('code.html', document.querySelector('#pg-render').innerHTML)
+  }
+
+  _downloadPage () {
+    this._download('page.html',
+                   EditorPg.pageBegin +
+                   document.querySelector('#pg-render').innerHTML +
+                   EditorPg.pageEnd)
+  }
+
+  _download (fileName, content) {
     const a = document.createElement('a')
     a.style.display = 'none'
     document.body.appendChild(a)
     a.href = window.URL.createObjectURL(
-      new Blob([document.querySelector('#pg-render').innerHTML], {type: 'text/plain'}))
-    a.setAttribute('download', 'result.html')
+      new Blob([content], {type: 'text/plain'}))
+    a.setAttribute('download', fileName)
     a.click()
     window.URL.revokeObjectURL(a.href)
     document.body.removeChild(a)
@@ -100,24 +113,16 @@ export class EditorPg {
 
 EditorPg.i = new EditorPg()
 
-// Oid.customize('goid:graph', {
-//   cid: 'example',
-//   graph: (oid) => {
-//     oid.importGraph({
-//       nodes: [
-//         { id: 'a', label: 'A' },
-//         { id: 'a1', label: 'A.1', format: 'light' },
-//         { id: 'a2', label: 'A.2' },
-//         { id: 'a11', label: 'A.1.1', format: 'light' },
-//         { id: 'b', label: 'B' },
-//         { id: 'b1', label: 'B.1' },
-//       ],
-//       edges: [
-//         { source: 'a', target: 'a1' },
-//         { source: 'a', target: 'a2' },
-//         { source: 'a1', target: 'a11' },
-//         { source: 'b', target: 'b1' },
-//       ]
-//     })
-//   }
-// })
+EditorPg.pageBegin =
+`<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://mundorum.github.io/oid/oid/lib/oiddefault.css">
+  <script src="https://mundorum.github.io/oid/oid/playground/editor/lib/oid-full.js"></script>
+</head>
+<body>
+<oid-sphere assets="https://mundorum.github.io/oid/oid/playground/assets/" stydefault="https://mundorum.github.io/oid/oid/lib/oiddefault.css" global></oid-sphere>`
+
+EditorPg.pageEnd =
+`</body>
+</html>`

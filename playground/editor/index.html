@@ -10,7 +10,7 @@
   </script>
 </head>
 <body onload="editorPg.start()">
-  <oid-sphere assets="../assets/" stylesheets="../../lib/" stydefault="../../lib/oiddefault.css" global></oid-sphere>
+  <oid-sphere assets="../assets/" stydefault="../../lib/oiddefault.css" global></oid-sphere>
   <div style="width:100%;height:100vh;display:flex;flex-direction:column">
     <div style="width:100%">
     <h2>
@@ -22,7 +22,8 @@
         </select>
         <button-oid label="Render" publish="click~control/render"></button-oid>
         <button-oid label="Clear" publish="click~control/clear"></button-oid>
-        <button-oid label="Download" publish="click~control/download"></button-oid>
+        <button-oid label="Download Code" publish="click~control/code"></button-oid>
+        <button-oid label="Download Page" publish="click~control/page"></button-oid>
       </oid-sphere>
     </h2>
     </div>
@@ -33,7 +34,7 @@
         <split-pane-oid split="vertical">
           <div id="pg-tree" slot="side-a"
                style="width:100%;height:100%;padding:5px;border-style:solid;border-width:1px">
-            <oid-sphere id="control">
+            <oid-sphere id="control" stylesheets="../../lib/" >
               <graph-oid layout="vh"
                          subscribe="tree/node~node/add;tree/edge~edge/add;tree/clear~graph/clear"></graph-oid>
             </oid-sphere>
