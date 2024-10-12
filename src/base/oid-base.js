@@ -17,16 +17,16 @@ export class OidBase extends Primitive {
     this.handleNotice = this.handleNotice.bind(this)
   }
 
-  connectedCallback () {
+  async connectedCallback () {
     super.connectedCallback()
-    this._initialize()
+    await this._initialize()
   }
 
   disconnectedCallback () {
     this._finalize()
   }
 
-  _initialize () {
+  async _initialize () {
     const spec = this.constructor.spec
     if (spec) {
       this._buildHandlers(this._receiveHandler, spec.receive)
@@ -41,6 +41,8 @@ export class OidBase extends Primitive {
           this[prop] = def.default
     }
 
+    if (this.hasAttribute('custom'))
+      this._custom = await Oid.getCustom(spec.id, this.getAttribute('custom'))
     if (this.hasAttribute('publish'))
       this._publishNoticeTopic(this.getAttribute('publish'))
     if (this.hasAttribute('subscribe'))
@@ -205,8 +207,6 @@ export class OidBase extends Primitive {
         this._subscribe(topic, this.handleNotice)
       }
     }
-    // console.log('=== component subscribed')
-    // console.log(this._mapTopicNotice)
   }
 
   _publishNoticeTopic (noticeTopic) {
@@ -218,7 +218,6 @@ export class OidBase extends Primitive {
       else
         this._mapNoticeTopic[nt.trim()] = nt.trim()
     }
-    // console.log('mapNoticeTopic', this._mapNoticeTopic)
   }
 
   _connectInterface (idInterface) {
@@ -226,17 +225,15 @@ export class OidBase extends Primitive {
     const idint = idInterface.split(';')
     for (const ii of idint) {
       const parts = ii.split('#')
-      if (parts.length > 1) {
+      if (parts.length > 1)
         this._connect(parts[0].trim(), parts[1].trim(), this)
-        // console.log('=== connect', parts[0].trim(), parts[1].trim(), this)
-      } else
+      else
         status = false
     }
     return status
   }
 
   _notify (notice, message) {
-    // console.log('notify', notice, message)
     if (this._mapNoticeTopic[notice] != null)
       this._publish(this._mapNoticeTopic[notice], message)
   }
@@ -260,18 +257,13 @@ export class OidBase extends Primitive {
   }
 
   connectionReady(cInterface, id, component) {
-    // console.log('=== connectionReady', id, cInterface, component)
     if (this._connected[cInterface] == null)
       this._connected[cInterface] = []
     this._connected[cInterface].push(id)
   }
 
   async _invoke (cInterface, notice, message) {
-    // console.log('=== invoke', cInterface, notice, message)
-    // console.log(this._connected)
     const intSpec = Oid.getInterface(cInterface)
-    // console.log('=== intSpec')
-    // console.log(intSpec)
     if (this._connected[cInterface] != null) {
       if (intSpec.response != null &&
           intSpec.response === true) {
@@ -282,7 +274,6 @@ export class OidBase extends Primitive {
                 intSpec.cardinality[2] == '1')
                 ? responses[0] : responses
       } else {
-        // console.log('=== invoking', this._connected[cInterface])
         for (const id of this._connected[cInterface])
           return await this._bus.invoke (cInterface, id, notice, message)
       }
@@ -295,12 +286,20 @@ export class OidBase extends Primitive {
   }
 
   handleInvoke (cInterface, notice, message) {
-    // console.log('=== handleInvoke', cInterface, notice, message)
-    // console.log(this._provideHandler)
     let response = null
     if (this._provideHandler[cInterface + '.' + notice] != null)
       response =
         this._provideHandler[cInterface + '.' + notice](notice, message)
     return response
+  }
+
+  _getCustomField (field) {
+    return (this._custom == null || this._custom[field] == null)
+      ? null : this._custom[field]
+  }
+
+  _callCustom (operation, parameters) {
+    if (this._custom != null && this._custom[operation] != null)
+      return this._custom[operation](this, parameters)
   }
 }

@@ -2,10 +2,14 @@ import { Oid } from './oid.js'
 import { OidWeb } from './oid-web.js'
 
 export class OidUI extends OidWeb {
-  connectedCallback () {
-    super.connectedCallback()
-    this._defaultStyle = (this.constructor.spec.defaultStyle)
-      ? `<link href="${this._sphere.stylesheet}" rel="stylesheet">` : ''
+  async connectedCallback () {
+    await super.connectedCallback()
+
+    // resolve dynamic styles
+    this._stylesheets = this.constructor.spec.stylesheets
+      .replace('href="default"', 'href="' + this._sphere.stydefault + '"')
+      .replace('href="stylesheets:', 'href="' + this._sphere.stylesheets)
+
     this.render()
   }
 
@@ -27,8 +31,12 @@ export class OidUI extends OidWeb {
 
     this._presentation = null
     if (spec != null && template != null) {
+      let customTemplate = this._getCustomField('style')
+      customTemplate =  (customTemplate)
+        ? `<style>${customTemplate}</style>` : ''
+
       const html =
-        (this._defaultStyle + spec.styles + template)
+        (this._stylesheets + spec.styles + customTemplate + template)
         .replace(
           /{{[ \t]*(url:)?[ \t]*this\.([^}]*)}}/g,
           (match, p1, p2) => {

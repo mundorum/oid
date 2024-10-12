@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Sphere Stylesheet</title>
+  <script src="someone-oid.js" type="module"></script>
+  <script src="hello-oid.js" type="module"></script>
+</head>
+<body>
+  <h1>Sphere Stylesheet</h1>
+  <p>The Sphere replaces the default stylesheet (and also the default bus) for all Oids inside its range.</p>
+  <oid-sphere stydefault="local.css">
+    <someone-oid name="Asdrubal"
+                 publish="click~someone/arrives"></someone-oid>
+    <hello-oid subscribe="someone/arrives~someone"></hello-oid>
+  </oid-sphere>
+</body>
+</html>

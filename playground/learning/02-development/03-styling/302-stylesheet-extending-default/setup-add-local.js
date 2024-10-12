@@ -1,5 +1,5 @@
-import { Oid} from '/lib/oidlib-dev.js'
+import { Oid } from '/lib/oidlib-dev.js'
 
 Oid.addDefault ({
-  stylesheet: ['local.css']
+  stylesheets: ['local.css']
 })

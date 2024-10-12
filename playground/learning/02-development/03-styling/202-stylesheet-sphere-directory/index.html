@@ -8,8 +8,9 @@
 </head>
 <body>
   <h1>Sphere Stylesheet</h1>
-  <p>The Sphere replaces the default stylesheet (and also the default bus) for all Oids inside its range.</p>
-  <oid-sphere stylesheet="local.css">
+  <p>The sphere replaces the stylesheet directory (and the default bus) for all Oids inside its range.
+     The components retrieve also the default stylesheet from this directory.</p>
+  <oid-sphere stylesheets="local/">
     <someone-oid name="Asdrubal"
                  publish="click~someone/arrives"></someone-oid>
     <hello-oid subscribe="someone/arrives~someone"></hello-oid>

@@ -13,9 +13,9 @@ Oid.component(
   properties: {
     name: {default: 'nobody'}
   },
-  // addresses a global stylesheet ['/lib/oiddefault.css']
-  // this stylesheet defines classes btn and btn-primary
-  stylesheet: 'default',
+  // addresses a local stylesheet ['local.css']
+  // this stylesheet defines the class mybutton
+  stylesheets: 'default',
   template: html`<button class="mybutton" @click>I am {{this.name}}</button>`,
   implementation: SomeoneOid
 })

@@ -12,8 +12,8 @@ export class SplitPaneOid extends OidUI {
     this._onMouseup = this._onMouseup.bind(this)
   }
 
-  connectedCallback () {
-    super.connectedCallback()
+  async connectedCallback () {
+    await super.connectedCallback()
     this._horz = !(this.split === 'vertical')
 
     this._resizer = this.shadowRoot.getElementById('resizer')
@@ -84,6 +84,12 @@ export class SplitPaneOid extends OidUI {
 
     this._sideb.style.removeProperty('user-select')
     this._sideb.style.removeProperty('pointer-events')
+
+    this._notify('resize',
+      {awidth: this._sidea.style.width,
+       aheight: this._sidea.style.height,
+       bwidth: this._sideb.style.width,
+       bheight: this._sideb.style.height})
   }
 }
 
@@ -95,7 +101,7 @@ Oid.component({
     proportion: {default: '50%'}
   },
   implementation: SplitPaneOid,
-  stylesheet: 'default',
+  stylesheets: 'default',
   styles: css`
   .group {
     display: flex;

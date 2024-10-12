@@ -1,4 +1,5 @@
-import { html } from '../../infra/literals.js'
+/*
+import { css, html } from '../../infra/literals.js'
 import { Oid } from '../../base/oid.js'
 import { OidUI } from '../../base/oid-ui.js'
 
@@ -27,10 +28,24 @@ Oid.component(
     value: {}
   },
   implementation: ButtonOid,
-  stylesheets: 'default',
+  style: {
+    tokens: ['shape.corner.small'],
+    style: css`
+    .btn {
+      font-family: {font.family.button.value},
+      font-size: {size.font.button.value},
+      border-radius: {shape.corner.small},
+      padding: [
+        {size.padding.button.vertical.value},
+        {size.padding.button.horizontal.value}
+      ]
+    }`,
+    stylesheets: 'default',
+  },
   template: html`
   <button id="oid-prs" class="btn btn-primary"
     @click @mouseenter @mouseleave>
     {{this.label}}
   </button>`
 })
+*/

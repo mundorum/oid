@@ -8,6 +8,8 @@ export class Oid {
 
   static _interfaceReg = {}
   static _oidReg = {}
+  static _oidCustom = {}
+  static _customQueue = {}
   static _defaultSpec = {}
 
   static cInterface (spec) {
@@ -48,22 +50,28 @@ export class Oid {
         const jsName = pname.replace(
           /-([a-z])/g, (match, letter) => letter.toUpperCase())
         Object.defineProperty(impl.prototype, jsName,
-          ((impl.prototype.render == null)
-            ? {
-              get: function() {return this['_' + jsName]},
-              set: function(newValue) {
-                this['_' + jsName] = newValue
-              }
-            }
-            : {
-              get: function() {return this['_' + jsName]},
-              set: function(newValue) {
-                const old = this['_' + jsName]
-                this['_' + jsName] = newValue
-                if (old != newValue && this._sphere)
-                  this.render()
-              }
-            }))
+          ((property.readonly)
+              ? {
+                  get: function() {return this['_' + jsName]}
+                }
+              : (impl.prototype.render == null)
+                 ? {
+                    get: function() {return this['_' + jsName]},
+                    set: function(newValue) {
+                      this['_' + jsName] = newValue
+                    }
+                  }
+                  : {
+                      get: function() {return this['_' + jsName]},
+                      set: function(newValue) {
+                        const old = this['_' + jsName]
+                        this['_' + jsName] = newValue
+                        if (old != newValue && this._sphere)
+                          this.render()
+                      }
+                    }
+          )
+        )
         if (property.attribute == null || property.attribute !== false)
           observed.push(pname)
       }
@@ -114,20 +122,15 @@ export class Oid {
 
   // styles and template preprocessing
   static stylePreprocess (spec) {
-    spec.defaultStyle = false
     let sty = ''
-    if (spec.stylesheet) {
-      let ss = spec.stylesheet
+    if (spec.stylesheets) {
+      let ss = spec.stylesheets
       if (!Array.isArray(ss)) ss = [ss]
       for (const s of ss)
-        if (s == 'default')
-          spec.defaultStyle = true
-        else
-          sty += `<link href="${s}" rel="stylesheet">`
+        sty += `<link href="${s}" rel="stylesheet">`
     }
-    if (spec.styles)
-      sty += (spec.styles) ? `<style>${spec.styles}</style>` : ''
-    spec.styles = sty
+    spec.stylesheets = sty
+    spec.styles = (spec.styles) ? `<style>${spec.styles}</style>` : ''
   }
 
   static prepareDispatchers (template, impl) {
@@ -170,6 +173,34 @@ export class Oid {
         instance.setAttribute(p, properties[p])
     }
     return instance
+  }
+
+  static customize (id, spec) {
+    if (id != null && Oid._oidReg[id] != null &&
+        spec != null && spec.cid != null) {
+      Oid._oidCustom[id + '.' + spec.cid] = spec
+      if (Oid._customQueue[id + '.' + spec.cid] != null) {
+        Oid._customQueue[id + '.' + spec.cid]()
+        delete Oid._customQueue[id + '.' + spec.cid]
+      }
+    }
+  }
+
+  static async getCustom (id, cid) {
+    if (id == null || cid == null)
+      return null
+
+    // wait the customization
+    if (Oid._oidCustom[id + '.' + cid] == null) {
+      const promise = new Promise((resolve, reject) => {
+        const callback = function () {
+          resolve()
+        }
+        Oid._customQueue[id + '.' + cid] = callback
+      })
+      await promise
+    }
+    return Oid._oidCustom[id + '.' + cid]
   }
 
   static setDefault (spec) {
