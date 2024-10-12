@@ -1,0 +1,14 @@
+{
+  "overrides": [
+    {
+      "include": ["oid.js"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noStaticOnlyClass": "off"
+          }
+        }
+      }
+    }
+  ]
+}

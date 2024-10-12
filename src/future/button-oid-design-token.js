@@ -1,0 +1,51 @@
+/*
+import { css, html } from '../../infra/literals.js'
+import { Oid } from '../../base/oid.js'
+import { OidUI } from '../../base/oid-ui.js'
+
+export class ButtonOid extends OidUI {
+  _onClick () {
+    this._callCustom('click')
+    this._notify('click', {value: this.value || this.label})
+    this._invoke('itf:transfer', 'send', {value: this.value || this.label})
+  }
+
+  _onMouseenter () {
+    this._notify('mouseenter', {value: this.value || this.label})
+  }
+
+  _onMouseleave () {
+    this._notify('mouseleave', {value: this.value || this.label})
+  }
+}
+
+Oid.component(
+{
+  id: 'oid:button',
+  element: 'button-oid',
+  properties: {
+    label: {},
+    value: {}
+  },
+  implementation: ButtonOid,
+  style: {
+    tokens: ['shape.corner.small'],
+    style: css`
+    .btn {
+      font-family: {font.family.button.value},
+      font-size: {size.font.button.value},
+      border-radius: {shape.corner.small},
+      padding: [
+        {size.padding.button.vertical.value},
+        {size.padding.button.horizontal.value}
+      ]
+    }`,
+    stylesheets: 'default',
+  },
+  template: html`
+  <button id="oid-prs" class="btn btn-primary"
+    @click @mouseenter @mouseleave>
+    {{this.label}}
+  </button>`
+})
+*/

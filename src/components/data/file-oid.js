@@ -16,7 +16,7 @@ export class FileOid extends OidUI {
 
     let file = null
     if (event.dataTransfer.items) {
-      for (let item of event.dataTransfer.items) {
+      for (const item of event.dataTransfer.items) {
         if (item.kind === 'file')
           file = item.getAsFile()
       }
