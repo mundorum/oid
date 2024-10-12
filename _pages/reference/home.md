@@ -68,7 +68,14 @@ notice       | source  | message | message type
 
 <p>
 <oid-play>
-  <image-oid source="assets:images/dino.svg" label="a dangerous dinosaur">
+  <image-oid source="assets:images/doctor.png" label="Doctor"></image-oid>
+</oid-play>
+</p>
+
+<p>
+<oid-play messages>
+  <image-oid source="assets:images/nurse.png" label="Nurse" publish="mouseenter~nurse/image"></image-oid>
+  <image-oid source="assets:images/patient.png" label="Patient" publish="click~patient/click"></image-oid>
 </oid-play>
 </p>
 
