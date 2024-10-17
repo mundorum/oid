@@ -16,6 +16,9 @@
                subscribe="show/message~display">
   </console-oid>
 
+  <switch-oid publish="initial~show/message;on~show/message;off~show/message">
+  </switch-oid>
+
   <switch-oid on="switched on" off="switched off" value="on" publish="initial~show/message;change~show/message">
   </switch-oid>
 </body>

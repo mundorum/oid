@@ -9,11 +9,13 @@ export class EditorPg {
     this._controlSphere.subscribe(
       'file/loaded', this._renderFile.bind(this))
     this._controlSphere.subscribe(
-      'control/code', this._downloadCode.bind(this))
+      'control/download/code', this._downloadCode.bind(this))
     this._controlSphere.subscribe(
-      'control/page', this._downloadPage.bind(this))
+      'control/download/page', this._downloadPage.bind(this))
     this._controlSphere.subscribe(
       'control/render', this._renderOids.bind(this))
+    this._controlSphere.subscribe(
+      'control/code', this._codeOids.bind(this))
     this._controlSphere.subscribe(
       'control/clear', this._clearOids.bind(this))
     Bus.i.subscribe('#', this._busMonitor.bind(this))
@@ -74,6 +76,13 @@ export class EditorPg {
       base.appendChild(div.firstChild)
 
     this._showTree()
+  }
+
+  _codeOids () {
+    const selectedOption = document.querySelector("#oid-list").value
+    const base = document.querySelector(
+      (selectedOption === '') ? '#pg-render' : `#${selectedOption}`)
+    document.querySelector("#pg-editor").value = base.innerHTML
   }
 
   _clearOids () {

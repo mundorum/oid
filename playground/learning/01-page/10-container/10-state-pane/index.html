@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Basic Image Oid</title>
+  <link rel="stylesheet" href="/lib/oiddefault.css">
+  <script src="/lib/oidlib.js"></script>
+</head>
+<body>
+  <oid-sphere assets="../../../../assets/" global></oid-sphere>
+  <state-pane-oid initial="doctor" subscribe="state/first~first;state/next~next;state/prev~prev;state/set~state">
+    <image-oid id="doctor" source="assets:images/doctor.png" label="doctor"></image-oid>
+    <image-oid id="nurse" source="assets:images/nurse.png" label="nurse"></image-oid>
+    <image-oid id="patient" source="assets:images/patient.png" label="patient"></image-oid>
+  </state-pane-oid>
+
+  <button-oid label="First" publish="click~state/first"></button-oid>
+  <button-oid label="Next" publish="click~state/next"></button-oid>
+  <button-oid label="Previous" publish="click~state/prev"></button-oid>
+  <button-oid label="Doctor" publish="click~state/set" value="doctor"></button-oid>
+
+  <br>
+
+  <state-pane-oid subscribe="state-b/next~next">
+    <image-oid source="assets:images/doctor.png" label="doctor"></image-oid>
+    <image-oid source="assets:images/nurse.png" label="nurse"></image-oid>
+    <image-oid source="assets:images/patient.png" label="patient"></image-oid>
+  </state-pane-oid>
+
+  <button-oid label="Next" publish="click~state-b/next"></button-oid>
+
+</body>
+</html>

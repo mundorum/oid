@@ -27,13 +27,30 @@ export class SwitchOid extends OidUIInput {
       this._input.checked = true
     else
       this._input.checked = false
+    this._notifyState()
+  }
+
+  handleOn () {
+    this.value = true
+    this._input.checked = true
+    this._notifyState()
+  }
+
+  handleOff () {
+    this.value = false
+    this._input.checked = false
+    this._notifyState()
   }
 
   _onInput () {
-    console.log('=== input')
     this._value = this._input.checked
-    this._notify('change',
-      { value: (this.value) ? this.on : this.off })
+    this._notifyState()
+  }
+
+  _notifyState () {
+    const state = (this._value) ? this.on : this.off
+    this._notify('change', { value: state })
+    this._notify(state, { value: state })
   }
 }
 
@@ -46,7 +63,7 @@ Oid.component(
     on:  {default: 'on'},
     off: {default: 'off'}
   },
-  receive: ['invert'],
+  receive: ['invert', 'on', 'off'],
   implementation: SwitchOid,
   styles: css`
   .switch {

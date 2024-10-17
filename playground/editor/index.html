@@ -17,14 +17,15 @@
       <oid-sphere id="control" stylesheets="../../lib/" 
                   style="display: flex; align-items: center; gap: 20px;">
         Playground Editor
-        <file-oid label="Template" publish="loaded~file/loaded" style="width:200px"></file-oid>
+        <file-oid label="Composition" publish="loaded~file/loaded" style="width:200px"></file-oid>
         <select id="oid-list" class="btn btn-secondary">
           <option value="" selected>Select an id</option>
         </select>
         <button-oid label="Render" publish="click~control/render"></button-oid>
+        <button-oid label="Code" publish="click~control/code"></button-oid>
         <button-oid label="Clear" publish="click~control/clear"></button-oid>
-        <button-oid label="Download Code" publish="click~control/code"></button-oid>
-        <button-oid label="Download Page" publish="click~control/page"></button-oid>
+        <button-oid label="Download Code" publish="click~control/download/code"></button-oid>
+        <button-oid label="Download Page" publish="click~control/download/page"></button-oid>
       </oid-sphere>
     </h2>
     </div>
