@@ -8,7 +8,7 @@ export class Primitive extends HTMLElement {
   }
 
   get _bus () {
-    return this._sphere.bus
+    return (this._sphere == null) ? null : this._sphere.bus
   }
 
   connectedCallback () {

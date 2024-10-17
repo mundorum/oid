@@ -20,6 +20,7 @@ import { ConsoleOid } from '../components/ui/console-oid.js'
 import { SwitchOid } from '../components/ui/switch-input-oid.js'
 import { SliderOid } from '../components/ui/slider-input-oid.js'
 import { SplitPaneOid } from '../components/ui/container/split-pane-oid.js'
+import { StatePaneOid } from '../components/ui/container/state-pane-oid.js'
 
 export { html, css, Bus, Sphere, OidPlay }
 export { Primitive, OidSphere, Oid, OidBase, OidWeb, OidUI }
@@ -27,4 +28,4 @@ export { FileOid }
 export { ImageOid }
 export { ButtonOid, ConsoleOid }
 export { SwitchOid, SliderOid }
-export { SplitPaneOid }
+export { SplitPaneOid, StatePaneOid }
