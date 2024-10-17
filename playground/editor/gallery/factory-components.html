@@ -1,4 +1,4 @@
-<image-oid source="assets:images/di-pietro-engine.gif" publish="mouseleave~thermo/low;mouseenter~thermo/medium;click~thermo/high">
+<image-oid source="assets:images/di-pietro-engine.gif" publish="mouseleave~thermo/low;mouseenter~thermo/medium;click~thermo/high/alert">
 </image-oid>
 
 <state-pane-oid initial="off" subscribe="cooler/on~last;cooler/off~first">
@@ -6,16 +6,16 @@
   <image-oid id="on" source="assets:images/evaporative-cooling.gif"></image-oid>
 </state-pane-oid>
 
-<state-pane-oid initial="low" subscribe="thermo/low~first;thermo/medium~next;thermo/high~last">
+<state-pane-oid initial="low" subscribe="thermo/low~first;thermo/medium~next;thermo/high/#~last">
   <image-oid id="low" source="assets:images/thermometer-a.svg"></image-oid>
   <image-oid id="medium" source="assets:images/thermometer-b.svg"></image-oid>
   <image-oid id="high" source="assets:images/thermometer-c.svg"></image-oid>
 </state-pane-oid>
 
-<state-pane-oid initial="green" subscribe="thermo/low~first;thermo/high~last">
+<state-pane-oid initial="green" subscribe="thermo/low~first;+/+/alert~last">
   <image-oid id="green" source="assets:images/light-green.svg"></image-oid>
   <image-oid id="red" source="assets:images/light-red.svg"></image-oid>
 </state-pane-oid>
 
-<switch-oid publish="on~cooler/on;off~cooler/off" subscribe="thermo/low~off;thermo/high~on">
+<switch-oid publish="on~cooler/on;off~cooler/off" subscribe="thermo/low~off;thermo/high/alert~on">
 </switch-oid>

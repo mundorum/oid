@@ -1,7 +1,7 @@
 <div style="width: 100%; height: 60%; background-color: lightgrey; text-align: center">
   <div style="font-size:larger;font-weight: bold">Factory</div>
   <span id="engine" style="width: 45%; display: inline-block; vertical-align: middle">
-    <image-oid source="assets:images/di-pietro-engine.gif" publish="mouseleave~thermo/low;mouseenter~thermo/medium;click~thermo/high">
+    <image-oid source="assets:images/di-pietro-engine.gif" publish="mouseleave~thermo/low;mouseenter~thermo/medium;click~thermo/high/alert">
     </image-oid>
   </span> 
   <span id="cooler" style="width: 45%; display: inline-block; vertical-align: middle">
@@ -14,20 +14,20 @@
 <div style="width: 100%; height: 35%; background-color: grey; text-align: center">
   <div style="font-size: larger; font-weight: bold;">Control Panel</div>
   <span id="thermometer" style="width: 30%; display: inline-block; vertical-align: middle">
-    <state-pane-oid initial="low" subscribe="thermo/low~first;thermo/medium~next;thermo/high~last">
+    <state-pane-oid initial="low" subscribe="thermo/low~first;thermo/medium~next;thermo/high/#~last">
       <image-oid id="low" source="assets:images/thermometer-a.svg"></image-oid>
       <image-oid id="medium" source="assets:images/thermometer-b.svg"></image-oid>
       <image-oid id="high" source="assets:images/thermometer-c.svg"></image-oid>
     </state-pane-oid>
   </span>
   <span id="alert" style="width: 30%; display: inline-block; vertical-align: middle">
-    <state-pane-oid initial="green" subscribe="thermo/low~first;thermo/high~last">
+    <state-pane-oid initial="green" subscribe="thermo/low~first;+/+/alert~last">
       <image-oid id="green" source="assets:images/light-green.svg"></image-oid>
       <image-oid id="red" source="assets:images/light-red.svg"></image-oid>
     </state-pane-oid>
   </span>
   <span id="activate_cooler" style="width: 30%; display: inline-block; vertical-align: middle">
-    <switch-oid publish="on~cooler/on;off~cooler/off" subscribe="thermo/low~off;thermo/high~on">
+    <switch-oid publish="on~cooler/on;off~cooler/off" subscribe="thermo/low~off;thermo/high/alert~on">
     </switch-oid>
   </span>
 </div>
