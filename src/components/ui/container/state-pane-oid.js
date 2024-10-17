@@ -56,6 +56,11 @@ export class StatePaneOid extends OidUI {
     }
   }
 
+  handleLast () {
+    this._state = this.lastElementChild
+    this._updateVisualState()
+  }
+
   handleState (topic, message) {
     this._state = this.querySelector(`#${message.value}`)
     this._updateVisualState()
@@ -68,7 +73,7 @@ Oid.component({
   properties: {
     initial: {}
   },
-  receive: ['first', 'next', 'prev', 'state'],
+  receive: ['first', 'next', 'prev', 'last', 'state'],
   implementation: StatePaneOid,
   stylesheets: 'default'
 })
