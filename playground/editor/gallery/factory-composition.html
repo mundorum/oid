@@ -21,13 +21,13 @@
     </state-pane-oid>
   </span>
   <span id="alert" style="width: 30%; display: inline-block; vertical-align: middle">
-    <state-pane-oid initial="green" subscribe="thermo/low~first;+/+/alert~last">
+    <state-pane-oid initial="green" subscribe="thermo/+~first;+/+/alert~last">
       <image-oid id="green" source="assets:images/light-green.svg"></image-oid>
       <image-oid id="red" source="assets:images/light-red.svg"></image-oid>
     </state-pane-oid>
   </span>
   <span id="activate_cooler" style="width: 30%; display: inline-block; vertical-align: middle">
-    <switch-oid publish="on~cooler/on;off~cooler/off" subscribe="thermo/low~off;thermo/high/alert~on">
+    <switch-oid publish="on~cooler/on;off~cooler/off" subscribe="thermo/+~off;thermo/+/alert~on">
     </switch-oid>
   </span>
 </div>
