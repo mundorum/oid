@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 
 // Create different configs based on command (build vs serve)
 export default defineConfig(({ command, mode }) => {
