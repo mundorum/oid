@@ -8,6 +8,5 @@ Oid.component(
     'first-name': {default: 'nobody'},
     'last-name': {default: ''}
   },
-  receive: ['someone'],
   template: html`<h1>Hello, {{this.firstName}} {{this.lastName}}</h1>`
 })
