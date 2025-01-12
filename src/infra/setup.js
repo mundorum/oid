@@ -2,7 +2,7 @@
 import { Oid } from '../base/oid'
 
 Oid.setDefault ({
-  stylesheets: ['/lib/oiddefault.css']
+  stylesheets: ['/lib/foundation/oiddefault.css']
   // stylable: true
 })
 */

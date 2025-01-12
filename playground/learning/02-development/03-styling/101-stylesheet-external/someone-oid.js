@@ -1,4 +1,4 @@
-import { css, html, Oid, OidUI } from '/lib/oidlib-dev.js'
+import { css, html, Oid, OidUI } from '/lib/foundation/oidlib-dev.js'
 
 export class SomeoneOid extends OidUI {
   _onClick () {

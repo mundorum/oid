@@ -14,7 +14,7 @@ export default defineConfig(({ command, mode }) => {
         },
         minify: false,
         sourcemap: true,
-        outDir: 'lib',
+        outDir: 'lib/foundation',
         emptyOutDir: false // avoid cleaning the output directory
       }
     }
@@ -29,7 +29,7 @@ export default defineConfig(({ command, mode }) => {
         formats: ['umd']
       },
       minify: true,
-      outDir: 'lib',
+      outDir: 'lib/foundation',
       emptyOutDir: false,
       rollupOptions: {
         output: {
