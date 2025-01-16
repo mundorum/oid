@@ -21,7 +21,6 @@ Oid.component(
     .myclass {
       color: blue;
     }`,
-  stylable: true,
   template: html`<h1 class="myclass">Hello, {{this.name}}</h1>`,
   receive: ['test'], // {'test': 'handleTest'}
   implementation: OidSample
@@ -30,8 +29,6 @@ Oid.component(
 
 * `id`: unique id of the Oid
 * `element`: the label of the HTML element, if it is a web component
-* `base`: base component class - extended in this component
-* `implementation`: the predefined class that implements the component
 * `properties`: properties to be attached to the component
   * `default`: default value assigned to the property in the beginning
   * `attribute`: true if the HTML attribute affects the property (default is true)
