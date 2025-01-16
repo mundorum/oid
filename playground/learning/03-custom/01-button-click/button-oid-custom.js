@@ -1,4 +1,4 @@
-import { Oid } from '/lib/oidlib-dev.js'
+import { Oid } from '/lib/foundation/oidlib-dev.js'
 
 Oid.customize('oid:button', {
   cid: 'random',

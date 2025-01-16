@@ -1,4 +1,4 @@
-import { html, css, Oid, OidUI } from '/lib/oidlib-dev.js'
+import { html, css, Oid, OidUI } from '/lib/foundation/oidlib-dev.js'
 
 export class SomeoneOid extends OidUI {
   _onClick () {
@@ -13,7 +13,7 @@ Oid.component(
   properties: {
     name: {default: 'nobody'}
   },
-  // addresses a global stylesheet ['/lib/oiddefault.css']
+  // addresses a global stylesheet ['/lib/foundation/oiddefault.css']
   // this stylesheet defines classes btn and btn-primary
   // there is a precedence for the styles over stylesheet
   stylesheets: 'default',

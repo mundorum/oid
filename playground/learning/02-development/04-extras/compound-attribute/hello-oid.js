@@ -1,4 +1,4 @@
-import { html, Oid } from '/lib/oidlib-dev.js'
+import { html, Oid } from '/lib/foundation/oidlib-dev.js'
 
 Oid.component(
 {

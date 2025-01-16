@@ -1,4 +1,4 @@
-import { Oid, OidBase } from '/lib/oidlib-dev.js'
+import { Oid, OidBase } from '/lib/foundation/oidlib-dev.js'
 
 export class FibonacciOid extends OidBase {
   constructor () {
