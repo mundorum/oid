@@ -293,6 +293,10 @@ export class OidBase extends Primitive {
     return response
   }
 
+  _customExists (field) {
+    return this._custom != null && this._custom.hasOwnProperty(field)
+  }
+
   _getCustomField (field) {
     return (this._custom == null || this._custom[field] == null)
       ? null : this._custom[field]
