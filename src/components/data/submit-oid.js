@@ -38,12 +38,32 @@ export class SubmitOid extends OidWeb {
       this._invoke('itf:transfer', 'send', {value: toSubmit})
     }
   }
+
+  handleUpdate (topic, message) {
+    if (message.value) {
+      let form = this.parentNode
+      while (form != null && form.nodeName.toLowerCase() != 'form')
+        form = form.parentNode
+      if (form != null)
+        for (let f of form) {
+          if (f.type == 'radio' || f.type == 'checkbox') {
+            if (f.checked) {
+              if (f.type == 'checkbox' || !f.hasAttribute('name'))
+                f.value = message.value[f.id]
+              else
+                f.value = message.value[f.name]
+            }
+          } else
+            f.value = message.value[f.id]
+        }
+    }
+  }
 }
 
 Oid.component(
 {
   id: 'oid:submit',
   element: 'submit-oid',
-  receive: ['submit'],
+  receive: ['submit', 'update'],
   implementation: SubmitOid
 })
