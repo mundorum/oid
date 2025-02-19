@@ -22,9 +22,24 @@ export class FileOid extends OidUI {
       }
     } else
       file = event.dataTransfer.files[0]
-    const content = await file.text()
+    let content = await file.text()
+    if (this.filetype == 'json') content = JSON.parse(content)
     this._notify('loaded', {value: content})
     this._invoke('itf:transfer', 'send', {value: content})
+  }
+
+  handleStore (topic, message) {
+    let content = message.value || ''
+    if (this.filetype == 'json') content = JSON.stringify(content)
+    const a = document.createElement('a')
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.href = window.URL.createObjectURL(
+      new Blob([content], {type: 'text/plain'}))
+    a.setAttribute('download', message.filename || this.filename)
+    a.click()
+    window.URL.revokeObjectURL(a.href)
+    document.body.removeChild(a)
   }
 }
 
@@ -35,8 +50,11 @@ Oid.component(
   properties: {
     label: { default: 'Drop Zone' },
     pre:   { default: 'Drop your file here' },
-    post:  { default: 'File loaded' }
+    post:  { default: 'File loaded' },
+    filename: { default: 'file.txt' },
+    filetype: { default: 'plain' }  // plain, json
   },
+  receive: ['store'],
   implementation: FileOid,
   styles: css`
   #oid-prs {

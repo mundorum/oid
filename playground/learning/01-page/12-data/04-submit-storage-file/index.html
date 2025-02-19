@@ -9,7 +9,7 @@
 <body>
   <h1>Submit with Storage Example</h1>
   <p>Show how a submit without an schema.</p>
-  
+
   <form>
     <div class="form-group">
       <label for="title">Title</label>
@@ -33,5 +33,18 @@
                      publish="loaded~form/update"
                      dataset="test-mundorum-oid" collection="test" key="test">
   </local-storage-oid>
+
+  <h2>File Area</h2>
+
+  <h3>Upload</h3>
+
+  <file-oid publish="loaded~form/update" subscribe="data/download~store"
+            filename="card.json" filetype="json">
+  </file-oid>
+
+  <h3>Download</h3>
+  <switch-oid value="off" subscribe="form/submitted~republish"
+                          publish="republish~data/download">
+  </switch-oid>
 </body>
 </html>
