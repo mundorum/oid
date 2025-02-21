@@ -13,15 +13,13 @@
   <form>
     <div class="form-group">
       <label for="title">Title</label>
-      <input type="text" class="form-control" id="title" name="title">
+      <input type="text" id="title" name="title">
     </div>
     <div class="form-group">
       <label for="description">Description</label>
       <textarea id="description" name="description"></textarea>
     </div>
-    <submit-oid subscribe="form/submit~submit;form/update~update" publish="submit~form/submitted"></dcc-submit>
-    <div id="login-message-alert" class="alert mt-3" role="alert">
-    </div>
+    <submit-oid subscribe="form/submit~submit;form/update~update" publish="dispatch~form/submitted"></dcc-submit>
   </form>
 
   <h2>Local Storage Area</h2>
@@ -30,7 +28,7 @@
   <button-oid label="Load" publish="click~storage/load"></button-oid>
 
   <local-storage-oid subscribe="form/submitted~store;storage/load~load"
-                     publish="loaded~form/update"
+                     publish="dispatch~form/update"
                      dataset="test-mundorum-oid" collection="test" key="test">
   </local-storage-oid>
 </body>

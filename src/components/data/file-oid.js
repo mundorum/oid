@@ -23,8 +23,8 @@ export class FileOid extends OidUI {
     } else
       file = event.dataTransfer.files[0]
     let content = await file.text()
-    if (this.filetype == 'json') content = JSON.parse(content)
-    this._notify('loaded', {value: content})
+    if (this.filetype === 'json') content = JSON.parse(content)
+    this._notify('dispatch', {value: content})
     this._invoke('itf:transfer', 'send', {value: content})
   }
 

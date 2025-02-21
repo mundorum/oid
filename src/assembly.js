@@ -15,6 +15,7 @@ export { OidPlay } from './base/oid-play.js'
 export { SubmitOid } from './components/data/submit-oid.js'
 export { FileOid } from './components/data/file-oid.js'
 export { LocalStorageOid } from './components/data/local-storage-oid.js'
+export { JSONFileOid } from './components/data/json-file-oid.js'
 
 export {ImageOid} from './components/ui/image-oid.js'
 export { ButtonOid } from './components/ui/button-oid.js'

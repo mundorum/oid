@@ -34,7 +34,8 @@ export class SubmitOid extends OidWeb {
         }
     }
     if (!this._customExists('pre') || this._callCustom('pre', toSubmit) === true) {
-      this._notify('submit', {value: toSubmit})
+      this._notify('submit', toSubmit)
+      this._notify('dispatch', {value: toSubmit})
       this._invoke('itf:transfer', 'send', {value: toSubmit})
     }
   }

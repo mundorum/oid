@@ -13,15 +13,13 @@
   <form>
     <div class="form-group">
       <label for="title">Title</label>
-      <input type="text" class="form-control" id="title" name="title">
+      <input type="text" id="title" name="title">
     </div>
     <div class="form-group">
       <label for="description">Description</label>
       <textarea id="description" name="description"></textarea>
     </div>
-    <submit-oid subscribe="form/submit~submit" publish="submit~form/submitted"></dcc-submit>
-    <div id="login-message-alert" class="alert mt-3" role="alert">
-    </div>
+    <submit-oid subscribe="form/submit~submit" publish="dispatch~form/submitted"></dcc-submit>
   </form>
 
   <button-oid label="Submit" publish="click~form/submit"></button-oid>
