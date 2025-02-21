@@ -3,7 +3,13 @@ import { Oid } from '../base/oid'
 Oid.cInterface ({
   id: 'itf:transfer',
   operations: ['send'],
-  cardinality: 'n:n'
+  flow: 'push'
+})
+
+Oid.cInterface ({
+  id: 'itf:storage',
+  operations: ['store', 'load'],
+  flow: 'pull'
 })
 
 Oid.cInterface ({
@@ -12,5 +18,6 @@ Oid.cInterface ({
     'first': {response: true},
     'next': {response: true}
   },
-  cardinality: '1:n'
+  flow: 'pull',
+  connections: '1'
 })

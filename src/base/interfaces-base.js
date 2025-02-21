@@ -6,5 +6,5 @@ Oid.cInterface ({
     'get': {response: true},
     'set': {response: false}
   },
-  cardinality: 'n:n'
+  flow: 'pull'
 })

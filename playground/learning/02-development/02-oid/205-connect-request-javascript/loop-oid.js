@@ -3,11 +3,11 @@ import { html, Oid, OidUI } from '/lib/foundation/oidlib-dev.js'
 export class LoopOid extends OidUI {
   async connectionReady(cInterface, id, component) {
     super.connectionReady(cInterface, id, component)
-    this.loop = await this._invoke('itf:iterate', 'first') + '<br>'
+    this.loop = `${await this._invoke('itf:iterate', 'first')}<br>`
   }
 
   async _onClick () {
-    this.loop += await this._invoke('itf:iterate', 'next') + '<br>'
+    this.loop += `${await this._invoke('itf:iterate', 'next')}<br>`
   }
 }
 

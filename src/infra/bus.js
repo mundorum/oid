@@ -143,7 +143,7 @@ export class Bus {
   connect (cInterface, id, callback) {
     let status = false
     if (id != null && cInterface != null && callback != null) {
-      const key = cInterface + '#' + id
+      const key = `${cInterface}#${id}`
       if (this._providers[key])
         callback.connectionReady(cInterface, id, this._providers[key])
         // callback.connectionReady(cInterface, id,
@@ -153,7 +153,9 @@ export class Bus {
           this._pendingCnx[key].push(callback)
         else
           this._pendingCnx[key] = [callback]
+      status = true
     }
+    return status
   }
 
   /*
@@ -163,7 +165,7 @@ export class Bus {
   async invoke (cInterface, id, notice, message) {
     // console.log('=== bus invoke', cInterface, id, notice, message)
     // console.log(this._providers)
-    const key = cInterface + '#' + id
+    const key = `${cInterface}#${id}`
     if (this._providers[key] != null)
       return await
         this._providers[key].handleInvoke(cInterface, notice, message)
