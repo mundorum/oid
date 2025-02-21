@@ -22,7 +22,8 @@ Oid.cInterface(
       response: false
     }
   },
-  cardinality: '1:n'
+  flow: 'pull',
+  connections: '1'
 })
 ~~~
 
@@ -32,6 +33,11 @@ Oid.cInterface(
   * *object format*: lists labels and specify parameters
     * `response`: indicates if the operation will return a value (optional - default is false)
     * `handler`: name of the handler method to this operation (optional - if not specified, the operation method is handler)
+* `flow`: define the communication flow between components:
+  * `push`: component A sends data to component B (with or without receiving confirmation)
+  * `pull`: component A requests a service from component B and receives the result or confirmation
+* `connections`: defines how many components it is prepared to handle in the pull approach; if not specified, the default is unlimited
+
 
 These are two examples of interfaces:
 
@@ -39,7 +45,7 @@ These are two examples of interfaces:
 Oid.cInterface ({
   id: 'itf:transfer',
   operations: ['send'],
-  cardinality: 'n:n'
+  flow: 'push'
 })
 
 Oid.cInterface ({
@@ -48,7 +54,8 @@ Oid.cInterface ({
     'first': {response: true},
     'next': {response: true}
   },
-  cardinality: '1:n'
+  flow: 'pull',
+  connections: '1'
 })
 ~~~
 
@@ -63,7 +70,7 @@ Oid.cInterface ({
       handler: 'someoneArrives'
     }
   },
-  cardinality: 'n:n'
+  flow: 'push'
 })
 ~~~
 
@@ -78,7 +85,7 @@ Oid.cInterface ({
     'get': {response: true},
     'set': {response: false}
   },
-  cardinality: 'n:n'
+  flow: 'pull'
 })
 ~~~
 
