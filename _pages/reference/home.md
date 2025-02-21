@@ -29,7 +29,7 @@ property  | role     | default
 
 ## Input Notices
 
-notice    | source  | message | message type
+notice    | action  | message | message type
 ----------| --------| ------- | ------------
 `display` | displays a message in the console | the value to display | `SingleValue`
 `clear`   | clear all console messages | `empty` | `empty`
@@ -60,7 +60,7 @@ property  | role     | default
 
 ## Output Notices
 
-notice       | source  | message | message type
+notice       | action  | message | message type
 -------------| --------| ------- | ------------
 `click`      | the user clicks the mouse over the image | the `label` property; if it is not defined, the `source` | `SingleValue`
 `mouseenter` | the user enters the mouse pointer into the image area | the `label` property; if it is not defined, the `source` | `SingleValue`
@@ -93,7 +93,7 @@ property  | role     | default
 
 ## Output Notices
 
-notice       | source  | message | message type
+notice       | action  | message | message type
 -------------| --------| ------- | ------------
 `click`      | the user clicks the mouse over the button | the `value` property; if it is not defined, the `label` | `SingleValue`
 `mouseenter` | the user enters the mouse pointer into the button area | the `value` property; if it is not defined, the `label` | `SingleValue`
@@ -125,7 +125,7 @@ property  | role     | default
 
 ## Output Notices
 
-notice       | source  | message | message type
+notice       | action  | message | message type
 -------------| --------| ------- | ------------
 `initial`    | the slider defines its initial value | initial value | `SingleValue`
 `change`     | the slider changes the current value - the user slides the slider | current value | `SingleValue`
@@ -152,7 +152,7 @@ property  | role     | default
 
 ## Output Notices
 
-notice       | source  | message | message type
+notice       | action  | message | message type
 -------------| --------| ------- | ------------
 `initial`    | the switch defines its initial value | initial value | `SingleValue`
 `change`     | the switch changes the current value - the user slides the switch | current value | `SingleValue`
@@ -165,6 +165,25 @@ notice       | source  | message | message type
   </switch-oid>
 </oid-play>
 </p>
+
+# Submit Oid (`<submit-oid>`)
+
+Collects the data of a `<form>` and dispatches it as a JSON message. The `<submit-oid>` must be declared inside the target `<form>`.
+
+## Input Notices
+
+notice   | action  | message | message type
+---------| --------| ------- | ------------
+`submit` | triggers the collection of the form data to submit it as a message  | `empty` | `empty`
+`update` | update form fields with data sent | field values to be updated in the form | `JSON`
+
+## Output Notices
+
+notice       | action  | message | message type
+-----------| --------| ------- | ------------
+`submit`   | the values of the fields collected from the form | field names and values | `JSON`
+`dispatch` | the values of the fields collected from the form | `value` field with an inner object containing field names and values; `error` field for error  | `JSON`
+
 
 <!-- Jekyll directive to avoid Liquid filters
 {% endraw %}
