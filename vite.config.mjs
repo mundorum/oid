@@ -7,7 +7,7 @@ export default defineConfig(({ command, mode }) => {
     return {
       build: {
         lib: {
-          entry: resolve(__dirname, 'src/assembly/full.js'),
+          entry: resolve(__dirname, 'src/assembly.js'),
           name: 'oidlib',
           fileName: () => 'oidlib-dev.js', // function avoids .es
           formats: ['es']  // ES module format
@@ -23,7 +23,7 @@ export default defineConfig(({ command, mode }) => {
   return {
     build: {
       lib: {
-        entry: resolve(__dirname, 'src/assembly/full.js'),
+        entry: resolve(__dirname, 'src/assembly.js'),
         name: 'oidlib',
         fileName: () => 'oidlib.js', // function avoids .umd
         formats: ['umd']

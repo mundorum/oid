@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Submit Auto Example</title>
+  <link rel="stylesheet" href="/lib/foundation/oiddefault.css">
+  <script src="/lib/foundation/oidlib.js"></script>
+</head>
+<body>
+  <h1>Submit Auto Example</h1>
+  <p>Show how a submit without an schema.</p>
+  
+  <form>
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title">
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description"></textarea>
+    </div>
+    <submit-oid subscribe="form/submit~submit" publish="dispatch~form/submitted"></dcc-submit>
+  </form>
+
+  <button-oid label="Submit" publish="click~form/submit"></button-oid>
+
+  <console-oid prompt="" subscribe="form/submitted~display">
+  </console-oid>
+</body>
+</html>

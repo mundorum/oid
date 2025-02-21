@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Platform Oid Example</title>
+  <link rel="stylesheet" href="/lib/foundation/oiddefault.css">
+  <script src="/lib/foundation/oidlib.js"></script>
+</head>
+<body>
+  <h1>Platform Oid Example</h1>
+  <p>Write an Oid code to render.</p>
+
+  <form>
+    <div class="form-group">
+      <label for="filename">File name</label>
+      <input type="text" id="filename" name="filename" value="composition.json">
+    </div>
+    <submit-oid subscribe="form/submit~submit" publish="submit~form/submitted"></dcc-submit>
+  </form>
+
+  <button-oid label="Load" publish="click~form/submit"></button-oid>
+
+  <h3>Render Area</h3>
+  <div id="platform-oid-space"></div>
+
+  <json-file-oid subscribe="form/submitted~load" publish="dispatch~file/loaded"></json-file-oid>
+
+  <platform-oid subscribe="file/loaded~update">
+  </platform-oid>
+</body>
+</html>

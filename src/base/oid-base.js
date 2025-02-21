@@ -269,13 +269,11 @@ export class OidBase extends Primitive {
           intSpec.response === true) {
         const responses = []
         for (const id of this._connected[cInterface])
-          responses.push(await this._bus.invoke (cInterface, id, notice, message))
-        return (intSpec.cardinality &&
-                intSpec.cardinality[2] == '1')
-                ? responses[0] : responses
+          responses.push(await this._bus.invoke(cInterface, id, notice, message))
+        return responses
       } else {
         for (const id of this._connected[cInterface])
-          return await this._bus.invoke (cInterface, id, notice, message)
+          return await this._bus.invoke(cInterface, id, notice, message)
       }
     }
   }
@@ -285,12 +283,16 @@ export class OidBase extends Primitive {
       this._receiveHandler[notice](notice, message)
   }
 
-  handleInvoke (cInterface, notice, message) {
+  async handleInvoke (cInterface, notice, message) {
     let response = null
-    if (this._provideHandler[cInterface + '.' + notice] != null)
+    if (this._provideHandler[`${cInterface}.${notice}`] != null)
       response =
-        this._provideHandler[cInterface + '.' + notice](notice, message)
+        await this._provideHandler[`${cInterface}.${notice}`](notice, message)
     return response
+  }
+
+  _customExists (field) {
+    return this._custom != null && this._custom.hasOwnProperty(field)
   }
 
   _getCustomField (field) {

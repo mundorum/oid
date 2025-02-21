@@ -7,6 +7,5 @@ Oid.cInterface ({
       response: true,
       handler: 'someoneArrives'
     }
-  },
-  cardinality: 'n:n'
+  }
 })

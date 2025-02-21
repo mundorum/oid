@@ -42,6 +42,11 @@ export class SwitchOid extends OidUIInput {
     this._notifyState()
   }
 
+  handleRepublish (topic, message) {
+    if (this.value)
+      this._notify('republish', message)
+  }
+
   _onInput () {
     this._value = this._input.checked
     this._notifyState()
@@ -63,7 +68,7 @@ Oid.component(
     on:  {default: 'on'},
     off: {default: 'off'}
   },
-  receive: ['invert', 'on', 'off'],
+  receive: ['invert', 'on', 'off', 'republish'],
   implementation: SwitchOid,
   styles: css`
   .switch {

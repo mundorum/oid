@@ -41,8 +41,8 @@ export class OidPlay extends OidSphere {
     return this.hasAttribute('messages')
   }
 
-  get messages () {
-    return this.hasAttribute('messages')
+  set messages (newValue) {
+    this.setAttribute('messages', newValue)
   }
 
   get rows () {

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Submit Auto Example</title>
+  <link rel="stylesheet" href="/lib/foundation/oiddefault.css">
+  <script src="/lib/foundation/oidlib.js"></script>
+</head>
+<body>
+  <h1>Submit with Storage Example</h1>
+  <p>Show how a submit without an schema.</p>
+  
+  <form>
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title">
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description"></textarea>
+    </div>
+    <submit-oid subscribe="form/submit~submit;form/update~update" publish="dispatch~form/submitted"></dcc-submit>
+  </form>
+
+  <h2>Local Storage Area</h2>
+
+  <button-oid label="Submit" publish="click~form/submit"></button-oid>
+  <button-oid label="Load" publish="click~storage/load"></button-oid>
+
+  <local-storage-oid subscribe="form/submitted~store;storage/load~load"
+                     publish="dispatch~form/update"
+                     dataset="test-mundorum-oid" collection="test" key="test">
+  </local-storage-oid>
+</body>
+</html>
