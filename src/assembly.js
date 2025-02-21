@@ -24,3 +24,5 @@ export { SwitchOid } from './components/ui/switch-input-oid.js'
 export { SliderOid } from './components/ui/slider-input-oid.js'
 export { SplitPaneOid } from './components/ui/container/split-pane-oid.js'
 export { StatePaneOid } from './components/ui/container/state-pane-oid.js'
+
+export {PlatformOid} from './components/platform/platform-oid.js'

@@ -11,20 +11,20 @@ export class SubmitOid extends OidWeb {
     const schema = this._getCustomField('schema')
     let form = null
     if (schema != null) {
-      for (let s of Object.keys(schema)) {
-        let field = document.querySelector('#' + s)
+      for (const s of Object.keys(schema)) {
+        const field = document.querySelector(`#${s}`)
         if (field != null)
           toSubmit[s] = field.value
       }
     } else {
       form = this.parentNode
-      while (form != null && form.nodeName.toLowerCase() != 'form')
+      while (form != null && form.nodeName.toLowerCase() !== 'form')
         form = form.parentNode
       if (form != null)
-        for (let f of form) {
-          if (f.type == 'radio' || f.type == 'checkbox') {
+        for (const f of form) {
+          if (f.type === 'radio' || f.type === 'checkbox') {
             if (f.checked) {
-              if (f.type == 'checkbox' || !f.hasAttribute('name'))
+              if (f.type === 'checkbox' || !f.hasAttribute('name'))
                 toSubmit[f.id] = f.value
               else
                 toSubmit[f.name] = f.value
@@ -42,13 +42,13 @@ export class SubmitOid extends OidWeb {
   handleUpdate (topic, message) {
     if (message.value) {
       let form = this.parentNode
-      while (form != null && form.nodeName.toLowerCase() != 'form')
+      while (form != null && form.nodeName.toLowerCase() !== 'form')
         form = form.parentNode
       if (form != null)
-        for (let f of form) {
-          if (f.type == 'radio' || f.type == 'checkbox') {
+        for (const f of form) {
+          if (f.type === 'radio' || f.type === 'checkbox') {
             if (f.checked) {
-              if (f.type == 'checkbox' || !f.hasAttribute('name'))
+              if (f.type === 'checkbox' || !f.hasAttribute('name'))
                 f.value = message.value[f.id]
               else
                 f.value = message.value[f.name]

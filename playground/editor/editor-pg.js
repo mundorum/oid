@@ -1,7 +1,7 @@
-import { Oid, Sphere, Bus } from '/lib/foundation/oidlib-dev.js'
+import { Oid, Sphere, Bus } from '../../lib/foundation/oidlib-dev.js'
 
 if (!new URL(document.location).searchParams.has('dev')) {
-  await import('/lib/full/oid-full-dev.js')
+  await import('../../lib/full/oid-full-dev.js')
 }
 
 export class EditorPg {

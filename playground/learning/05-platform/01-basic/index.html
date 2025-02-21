@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Platform Oid Example</title>
+  <link rel="stylesheet" href="/lib/foundation/oiddefault.css">
+  <script src="/lib/foundation/oidlib.js"></script>
+</head>
+<body>
+  <h1>Platform Oid Example</h1>
+  <p>Write an Oid code to render.</p>
+
+  <form>
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" class="form-control" id="title" name="title">
+    </div>
+    <div class="form-group">
+      <label for="source">Source</label>
+      <textarea id="source" name="source"></textarea>
+    </div>
+    <submit-oid subscribe="form/submit~submit" publish="submit~form/submitted"></dcc-submit>
+    </div>
+  </form>
+
+  <button-oid label="Render" publish="click~form/submit"></button-oid>
+
+  <h3>Render Area</h3>
+  <div id="platform-oid-space"></div>
+
+  <platform-oid subscribe="form/submitted~update">
+  </platform-oid>
+</body>
+</html>
