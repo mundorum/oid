@@ -8,6 +8,7 @@
     "vite": "^6.0.7"
   },
   "scripts": {
+    "dev": "vite --open playground/editor/index.html",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "test": "echo \"Error: no test specified\" && exit 1"

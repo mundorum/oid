@@ -70,8 +70,16 @@ export class EditorPg {
     div.innerHTML = document.querySelector("#pg-editor").value
 
     const selectedOption = document.querySelector("#oid-list").value
-    const base = document.querySelector(
+    let base = document.querySelector(
       (selectedOption === '') ? '#pg-render' : `#${selectedOption}`)
+
+    if (base instanceof SVGElement) {
+      const foreignObject = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
+      foreignObject.setAttribute('width', '100%')
+      foreignObject.setAttribute('height', '100%')
+      base.appendChild(foreignObject)
+      base = foreignObject
+    }
 
     while (div.firstChild)
       base.appendChild(div.firstChild)
