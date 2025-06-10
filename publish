@@ -1,0 +1,5 @@
+cd dist
+cp ../LICENSE .
+cp ../README.md .
+cp ../package.json .
+npm publish

@@ -1,3 +1,5 @@
+import './style/oid.css'
+
 export { html, css } from './infra/literals.js'
 export { Bus } from './infra/bus.js'
 export { Sphere } from './infra/sphere.js'

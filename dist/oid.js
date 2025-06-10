@@ -40,7 +40,7 @@ class Bus {
   }
   unsubscribe(subscribed) {
     if (subscribed != null) {
-      const topics = {};
+      let topics = {};
       if (typeof subscribed === "string" && handler != null)
         topics[subscribed] = handler;
       else if (typeof subscribed === "object")
@@ -161,16 +161,26 @@ Bus.i = new Bus();
 const sphereSetup = {
   id: "default",
   bus: Bus.i,
-  stylesheets: "/lib/foundation/",
-  stydefault: ["stylesheets:oiddefault.css"],
+  stylesheets: "<auto>",
+  stydefault: ["stylesheets:oid.min.css"],
   assets: "/assets/"
 };
 class Sphere {
   constructor(id, bus, stylesheets, stydefault, assets) {
     this._id = id || null;
     this._bus = bus ? bus : Sphere.i.bus;
-    this._stylesheets = stylesheets ? stylesheets : Sphere.i.stylesheets;
     this._stydefault = stydefault ? stydefault : Sphere.i.stydefault;
+    this._stylesheets = stylesheets ? stylesheets : Sphere.i.stylesheets;
+    if (this._stylesheets === "<auto>" && this._stydefault) {
+      const styleName = this._stydefault[0].split(/[:\/]/).pop();
+      const links = document.querySelectorAll('link[rel="stylesheet"]');
+      for (const link of links) {
+        if (link.href && link.href.endsWith(styleName)) {
+          this._stylesheets = link.href.slice(0, -styleName.length);
+          break;
+        }
+      }
+    }
     this._assets = assets ? assets : Sphere.i.assets;
   }
   static create(id, bus, stylesheets, stydefault, assets) {
@@ -1641,4 +1651,4 @@ export {
   css,
   html
 };
-//# sourceMappingURL=oidlib-dev.js.map
+//# sourceMappingURL=oid.js.map

@@ -4,9 +4,19 @@ export class Sphere {
   constructor (id, bus, stylesheets, stydefault, assets) {
     this._id = id || null
     this._bus = (bus) ? bus : Sphere.i.bus
-    this._stylesheets = (stylesheets) ? stylesheets : Sphere.i.stylesheets
     this._stydefault =
       (stydefault) ? stydefault : Sphere.i.stydefault
+    this._stylesheets = (stylesheets) ? stylesheets : Sphere.i.stylesheets
+    if (this._stylesheets === '<auto>' && this._stydefault) {
+      const styleName = this._stydefault[0].split(/[:\/]/).pop()
+      const links = document.querySelectorAll('link[rel="stylesheet"]')
+      for (const link of links) {
+        if (link.href && link.href.endsWith(styleName)) {
+          this._stylesheets = link.href.slice(0, -styleName.length)
+          break
+        }
+      }
+    }
     this._assets = (assets) ? assets : Sphere.i.assets
   }
 

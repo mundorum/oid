@@ -9,12 +9,12 @@ export default defineConfig(({ command, mode }) => {
         lib: {
           entry: resolve(__dirname, 'src/assembly.js'),
           name: 'oidlib',
-          fileName: () => 'oidlib-dev.js', // function avoids .es
+          fileName: () => 'oid.js', // function avoids .es
           formats: ['es']  // ES module format
         },
         minify: false,
         sourcemap: true,
-        outDir: 'lib/foundation',
+        outDir: 'dist',
         emptyOutDir: false // avoid cleaning the output directory
       }
     }
@@ -25,12 +25,13 @@ export default defineConfig(({ command, mode }) => {
       lib: {
         entry: resolve(__dirname, 'src/assembly.js'),
         name: 'oidlib',
-        fileName: () => 'oidlib.js', // function avoids .umd
+        fileName: () => 'oid.min.js', // function avoids .umd
         formats: ['umd']
       },
       minify: true,
-      outDir: 'lib/foundation',
+      outDir: 'dist',
       emptyOutDir: false,
+      cssMinify: true,
       rollupOptions: {
         output: {
           globals: {

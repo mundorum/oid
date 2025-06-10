@@ -1,2 +1,3 @@
 npm run build
+mv dist/oid.css dist/oid.min.css
 npm run build:dev
