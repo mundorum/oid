@@ -1,6 +1,6 @@
 {
   "name": "@mundorum/oid",
-  "version": "0.2.6",
+  "version": "0.2.9",
   "description": "Web components based on the Digital Content Component (DCC) model for the Mundorum space.",
   "jsdelivr": "./oid.min.js",
   "unpkg": "./oid.min.js",
@@ -19,6 +19,7 @@
   },
   "files": [
     "./oid.js",
+    "./oid.js.map",
     "./oid.min.js",
     "./oid.css",
     "./oid.min.css"

@@ -1,4 +1,4 @@
-import { Oid } from '@mundorum/oid'
+import { Oid } from '@mundorum/oid/oid.js'
 
 Oid.component(
 {
