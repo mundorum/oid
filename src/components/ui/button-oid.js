@@ -2,6 +2,9 @@ import { html } from '../../infra/literals.js'
 import { Oid } from '../../base/oid.js'
 import { OidUI } from '../../base/oid-ui.js'
 
+Oid.cInterface({ id: 'itf:oid', methods: [] })
+Oid.cInterface({ id: 'itf:transfer', methods: ['send'] })
+
 export class ButtonOid extends OidUI {
   _onClick () {
     this._callCustom('click')
