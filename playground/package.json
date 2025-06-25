@@ -1,0 +1,14 @@
+{
+  "name": "oid-playground",
+  "private": true,
+  "scripts": {
+    "dev:local": "USE_LOCAL_OID=true vite",
+    "dev": "USE_LOCAL_OID=false vite"
+  },
+  "dependencies": {
+    "@mundorum/oid": "0.1.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.7"
+  }
+}

@@ -1,44 +1,49 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'node:path'
+import { cpSync, existsSync } from 'fs'
 
-// Create different configs based on command (build vs serve)
-export default defineConfig(({ command, mode }) => {
-  if (mode === 'development') {
-    return {
-      build: {
-        lib: {
-          entry: resolve(__dirname, 'src/assembly.js'),
-          name: 'oidlib',
-          fileName: () => 'oidlib-dev.js', // function avoids .es
-          formats: ['es']  // ES module format
-        },
-        minify: false,
-        sourcemap: true,
-        outDir: 'lib/foundation',
-        emptyOutDir: false // avoid cleaning the output directory
-      }
+function copyExtrasToLib() {
+  const folders = ['components', 'base', 'infra']
+  for (const folder of folders) {
+    const src = resolve(__dirname, 'src', folder)
+    const dest = resolve(__dirname, 'lib/foundation', folder)
+    if (existsSync(src)) {
+      cpSync(src, dest, { recursive: true })
+      console.log(`Copied src/${folder} to lib/foundation/${folder}`)
     }
   }
-  // Production config (UMD build)
+
+  const cssSrc = resolve(__dirname, 'oiddefault.css')
+  const cssDest = resolve(__dirname, 'lib/foundation/oiddefault.css')
+  if (existsSync(cssSrc)) {
+    cpSync(cssSrc, cssDest)
+    console.log('Copied oiddefault.css to lib/foundation/')
+  }
+}
+
+export default defineConfig(({ mode }) => {
+  const isDev = mode === 'development'
   return {
     build: {
       lib: {
         entry: resolve(__dirname, 'src/assembly.js'),
         name: 'oidlib',
-        fileName: () => 'oidlib.js', // function avoids .umd
-        formats: ['umd']
+        fileName: () => isDev ? 'oidlib-dev.js' : 'oidlib.js',
+        formats: isDev ? ['es'] : ['umd']
       },
-      minify: true,
+      minify: !isDev,
+      sourcemap: isDev,
       outDir: 'lib/foundation',
       emptyOutDir: false,
       rollupOptions: {
         output: {
-          globals: {
-            // Add any external dependencies here if needed
-            // e.g. 'react': 'React'
-          }
+          globals: {}
         }
       }
-    }
+    },
+    plugins: [{
+      name: 'copy-extras',
+      closeBundle: copyExtrasToLib
+    }]
   }
 })
