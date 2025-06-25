@@ -1,8 +1,30 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'node:path'
 
+function htmlAliasPlugin() {
+  return {
+    name: 'html-alias',
+    transformIndexHtml(html) {
+      // replace automatically redirected CDN link
+      const stage1 = html.replace(
+        /https:\/\/cdn\.jsdelivr\.net\/npm\/@mundorum\/oid(?!\/)/g,
+        '/node_modules/@mundorum/oid/oid.min.js'
+      )
+      // replace remaining CDN paths with local paths
+      return stage1.replace(/https:\/\/cdn.jsdelivr.net\/npm\//g, '/node_modules/')
+    }
+  }
+}
+
 // Create different configs based on command (build vs serve)
 export default defineConfig(({ command, mode }) => {
+  // If running dev server (serve command), use the server configuration
+  if (command === 'serve') {
+    return {
+      plugins: [htmlAliasPlugin()]
+    }
+  }
+
   if (mode === 'development') {
     return {
       build: {

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mundorum/oid/oid.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@mundorum/collections/full.min.js"></script>
+</head>
+<body>
+<oid-sphere assets="https://mundorum.github.io/oid/oid/playground/assets/" stydefault="https://cdn.jsdelivr.net/npm/@mundorum/oid/oid.min.css" global></oid-sphere><div style="width: 100%; height: 60%; background-color: lightgrey; text-align: center">
+  <div style="font-size:larger;font-weight: bold">Factory</div>
+  <span id="engine" style="width: 45%; display: inline-block; vertical-align: middle">
+    <image-oid source="assets:images/di-pietro-engine.gif" publish="mouseleave~thermo/low;mouseenter~thermo/medium;click~thermo/high/alert">
+    </image-oid>
+  </span> 
+  <span id="cooler" style="width: 45%; display: inline-block; vertical-align: middle">
+    <state-pane-oid initial="off" subscribe="cooler/on~last;cooler/off~first">
+      <image-oid id="off" source="assets:images/evaporative-cooling.png"></image-oid>
+      <image-oid id="on" source="assets:images/evaporative-cooling.gif" style="display: none;"></image-oid>
+    </state-pane-oid>
+  </span>
+</div>
+<div style="width: 100%; height: 35%; background-color: grey; text-align: center">
+  <div style="font-size: larger; font-weight: bold;">Control Panel</div>
+  <span id="thermometer" style="width: 30%; display: inline-block; vertical-align: middle">
+    <state-pane-oid initial="low" subscribe="thermo/low~first;thermo/medium~next;thermo/high/#~last">
+      <image-oid id="low" source="assets:images/thermometer-a.svg" style=""></image-oid>
+      <image-oid id="medium" source="assets:images/thermometer-b.svg" style="display: none;"></image-oid>
+      <image-oid id="high" source="assets:images/thermometer-c.svg" style="display: none;"></image-oid>
+    </state-pane-oid>
+  </span>
+  <span id="alert" style="width: 30%; display: inline-block; vertical-align: middle">
+    <state-pane-oid initial="green" subscribe="thermo/+~first;+/+/alert~last">
+      <image-oid id="green" source="assets:images/light-green.svg"></image-oid>
+      <image-oid id="red" source="assets:images/light-red.svg" style="display: none;"></image-oid>
+    </state-pane-oid>
+  </span>
+  <span id="activate_cooler" style="width: 30%; display: inline-block; vertical-align: middle">
+    <switch-oid publish="on~cooler/on;off~cooler/off" subscribe="thermo/+~off;thermo/+/alert~on">
+    </switch-oid>
+  </span>
+</div>
+</body>
+</html>
