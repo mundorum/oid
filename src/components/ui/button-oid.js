@@ -34,6 +34,6 @@ Oid.component(
   template: html`
   <button id="oid-prs" class="btn btn-primary"
     @click @mouseenter @mouseleave>
-    {{this.label}}
+    {{this.label}} - Asdrubal
   </button>`
 })

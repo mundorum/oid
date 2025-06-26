@@ -37,7 +37,7 @@ Quando quiser testar como a biblioteca funciona **a partir do NPM**, execute:
 
 ```bash
 cd playground
-npm unlink @mundorum/oid
+npm unlink --no--save @mundorum/oid
 npm install
 npm run dev
 ```
@@ -114,3 +114,55 @@ Caso enfrente problemas com cache ou links antigos, use:
 ```bash
 npm cache clean --force
 ```
+
+## Scripts disponíveis no `playground`
+
+O projeto `playground` possui scripts no `package.json` que facilitam o uso e troca entre a versão local da biblioteca `@mundorum/oid` e a versão publicada no NPM.
+
+```bash
+npm run dev:local
+```
+
+Inicia o playground usando a **versão local da biblioteca `@mundorum/oid`**, que está no repositório irmão (`../`).
+
+Este comando depende de um `pre-script` que executa os seguintes passos automaticamente:
+
+1. Limpa `node_modules` locais e do repositório da biblioteca;
+2. Reinstala as dependências da biblioteca (`../`);
+3. Executa `npm run build` na biblioteca;
+4. Faz o `npm link` da biblioteca;
+5. Executa `npm link @mundorum/oid` no `playground`;
+6. Reinstala as dependências locais do playground.
+
+> Útil para desenvolvimento ativo da biblioteca, com hot reload no playground.
+
+---
+
+```bash
+npm run dev
+```
+
+Executa o playground utilizando a **versão publicada no NPM** da biblioteca `@mundorum/oid`.
+
+O `pre-script` executa:
+
+- `npm unlink --no-save @mundorum/oid` – remove o link local, se existir;
+- `npm install` – reinstala a dependência a partir do NPM.
+
+> Útil para testar se o pacote publicado está funcionando corretamente.
+
+---
+
+```bash 
+npm run clear
+```
+
+Remove:
+
+- `node_modules` e `package-lock.json` do `playground`;
+- `node_modules` e `package-lock.json` da raiz do monorepo (se houver);
+- Limpa o cache do NPM.
+
+> Útil para resolver problemas com dependências corrompidas ou cache.
+
+---

@@ -12,9 +12,9 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@mundorum/oid': useLocal
+      '@dvsmedeiros/oid': useLocal
         ? path.resolve(__dirname, '../src') // apontando direto para a pasta src
-        : '@mundorum/oid'
+        : '@dvsmedeiros/oid'
     }
   },
   server: {

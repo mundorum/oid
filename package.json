@@ -1,6 +1,6 @@
 {
-  "name": "@mundorum/oid",
-  "version": "0.1.0",
+  "name": "@dvsmedeiros/oid",
+  "version": "0.1.3",
   "description": "Web components based on the Digital Content Component (DCC) model for the Mundorum space.",
   "main": "lib/foundation/oidlib.js",
   "exports": {

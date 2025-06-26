@@ -2,13 +2,16 @@
   "name": "oid-playground",
   "private": true,
   "scripts": {
-    "dev:local": "USE_LOCAL_OID=true vite",
-    "dev": "USE_LOCAL_OID=false vite"
-  },
-  "dependencies": {
-    "@mundorum/oid": "0.1.0"
+    "clear": "echo 'limpando node_modules e cache' && rm -rf node_modules && rm -rf package-lock.json && rm -rf ../node_modules && rm -rf ../package-lock.json",
+    "predev:local": "npm run clear && cd ../ && npm install && npm run build && npm link && cd - && npm link @dvsmedeiros/oid && npm install",
+    "dev:local": "echo 'Usando versão local de @dvsmedeiros/oid' && USE_LOCAL_OID=true vite",
+    "predev": "npm run clear && npm unlink --no-save @dvsmedeiros/oid && npm install",
+    "dev": "echo 'Usando versão do NPM de @dvsmedeiros/oid' && USE_LOCAL_OID=false vite"
   },
   "devDependencies": {
     "vite": "^6.0.7"
+  },
+  "dependencies": {
+    "@dvsmedeiros/oid": "0.1.3"
   }
 }
