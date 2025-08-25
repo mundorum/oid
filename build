@@ -1,2 +1,6 @@
 npm run build
+mv dist/oid.css dist/oid.min.css
 npm run build:dev
+cp ./LICENSE dist/
+cp ./README.md dist/
+cp ./package.json dist/

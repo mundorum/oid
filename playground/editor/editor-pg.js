@@ -1,8 +1,9 @@
-import { Oid, Sphere, Bus } from '../../lib/foundation/oidlib-dev.js'
+import { Sphere, Bus } from '@mundorum/collections/full.js'
+// import { Sphere, Bus } from '@mundorum/oid/oid.js'
 
-if (!new URL(document.location).searchParams.has('dev')) {
-  await import('../../lib/full/oid-full-dev.js')
-}
+// if (!new URL(document.location).searchParams.has('dev')) {
+//   await import('@mundorum/collections/full.js')
+// }
 
 export class EditorPg {
   start () {
@@ -70,8 +71,16 @@ export class EditorPg {
     div.innerHTML = document.querySelector("#pg-editor").value
 
     const selectedOption = document.querySelector("#oid-list").value
-    const base = document.querySelector(
+    let base = document.querySelector(
       (selectedOption === '') ? '#pg-render' : `#${selectedOption}`)
+
+    if (base instanceof SVGElement) {
+      const foreignObject = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
+      foreignObject.setAttribute('width', '100%')
+      foreignObject.setAttribute('height', '100%')
+      base.appendChild(foreignObject)
+      base = foreignObject
+    }
 
     while (div.firstChild)
       base.appendChild(div.firstChild)
@@ -127,11 +136,11 @@ EditorPg.pageBegin =
 `<!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="https://mundorum.github.io/oid/oid/lib/oiddefault.css">
-  <script src="https://mundorum.github.io/oid/oid/playground/editor/lib/oid-full.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mundorum/oid/oid.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@mundorum/collections/full.min.js"></script>
 </head>
 <body>
-<oid-sphere assets="https://mundorum.github.io/oid/oid/playground/assets/" stydefault="https://mundorum.github.io/oid/oid/lib/oiddefault.css" global></oid-sphere>`
+<oid-sphere assets="https://mundorum.github.io/oid/oid/playground/assets/" stydefault="https://cdn.jsdelivr.net/npm/@mundorum/oid/oid.min.css" global></oid-sphere>`
 
 EditorPg.pageEnd =
 `</body>

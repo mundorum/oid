@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   <title>Playground Editor</title>
-  <link rel="stylesheet" href="../../lib/full/oiddefault.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mundorum/collections/full.min.css">
   <script type="module">
     import { EditorPg } from './editor-pg.js'
     window.editorPg = EditorPg.i
   </script>
 </head>
 <body onload="editorPg.start()">
-  <oid-sphere assets="../assets/" stydefault="../../lib/full/oiddefault.css" global></oid-sphere>
+  <oid-sphere assets="../assets/" stydefault="https://cdn.jsdelivr.net/npm/@mundorum/collections/full.min.css" global></oid-sphere>
   <div style="width:100%;height:100vh;display:flex;flex-direction:column">
     <div style="width:100%">
     <h2>
-      <oid-sphere id="control" stylesheets="../../lib/full/" 
+      <oid-sphere id="control" stylesheets="https://cdn.jsdelivr.net/npm/@mundorum/collections/" 
                   style="display: flex; align-items: center; gap: 20px;">
         Playground Editor
         <file-oid label="Composition" publish="dispatch~file/loaded" style="width:200px"></file-oid>

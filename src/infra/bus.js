@@ -39,7 +39,7 @@ export class Bus {
 
   unsubscribe (subscribed) {
     if (subscribed != null) {
-      const topics = {}
+      let topics = {}
       if (typeof subscribed === 'string' && handler != null)
         topics[subscribed] = handler
       else if (typeof subscribed === 'object')
