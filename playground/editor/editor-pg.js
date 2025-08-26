@@ -1,7 +1,4 @@
-const { Oid, Sphere, Bus } = await import(
-  (new URL(document.location).searchParams.get('dev'))
-    ? '/lib/oidlib-dev.js'
-    : './lib/oid-full-dev.js')
+import { Oid, Sphere, Bus } from './lib/oid-full-dev.js'
 
 export class EditorPg {
   start () {
