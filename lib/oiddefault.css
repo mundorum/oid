@@ -1,14 +1,14 @@
 @font-face {
   font-family: 'MaterialIcons';
-  src: url('/assets/fonts/MaterialIcons-Regular.ttf');
+  src: url('/oid/assets/fonts/MaterialIcons-Regular.ttf');
 }
 @font-face {
   font-family: 'Open Sans';
-  src: url('/assets/fonts/OpenSans-Regular.ttf');
+  src: url('/oid/assets/fonts/OpenSans-Regular.ttf');
 }
 @font-face {
   font-family: 'Roboto';
-  src: url('/assets/fonts/Roboto-Regular.ttf');
+  src: url('/oid/assets/fonts/Roboto-Regular.ttf');
 }
 
 .h1, h1, .h2, h2, .h3, h3 {
