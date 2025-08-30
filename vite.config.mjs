@@ -37,7 +37,13 @@ export default defineConfig(({ command, mode }) => {
         minify: false,
         sourcemap: true,
         outDir: 'dist',
-        emptyOutDir: false // avoid cleaning the output directory
+        emptyOutDir: false, // avoid cleaning the output directory
+        rollupOptions: {
+          external: [],
+          output: {
+            globals: {}
+          }
+        }
       }
     }
   }
@@ -55,11 +61,9 @@ export default defineConfig(({ command, mode }) => {
       emptyOutDir: false,
       cssMinify: true,
       rollupOptions: {
+        external: [],
         output: {
-          globals: {
-            // Add any external dependencies here if needed
-            // e.g. 'react': 'React'
-          }
+          globals: {}
         }
       }
     }
