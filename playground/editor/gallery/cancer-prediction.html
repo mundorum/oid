@@ -3,22 +3,17 @@
   <form>
     <div class="form-group">
       <label for="train_path">Train path</label>
-      <input type="text" id="train_path" name="train_path" required>
+      <input type="text" id="train_path" name="train_path" required  value="breast-cancer-wisconsin_train.csv">
     </div>
     <div class="form-group">
       <label for="test_path">Test path</label>
-      <input type="text" id="test_path" name="test_path" required>
+      <input type="text" id="test_path" name="test_path" required  value="breast-cancer-wisconsin_test.csv">
     </div>
 
     <submit-oid subscribe="form/train/submit~submit" publish="dispatch~form/train/submitted"></submit-oid>
   </form>
 
   <button-oid label="Train" publish="click~form/train/submit"></button-oid>
-
-  <rest-oid custom="cancer-train"
-            subscribe="form/train/submitted~post"
-            publish="dispatch~result/train/display">
-  </rest-oid>
 
   <form>
     <div class="form-group">
@@ -43,8 +38,13 @@
 
   <button-oid label="Submit" publish="click~form/predict/submit"></button-oid>
 
-  <rest-oid custom="cancer-predict"
-            subscribe="form/predict/submitted~get"
+  <rest-oid custom="cancer-train"
+            subscribe=""
+            publish="dispatch~result/train/display">
+  </rest-oid>
+
+  <rest-oid custom="cancer-predictor"
+            subscribe="form/train/submitted~post/train;form/predict/submitted~get/predict"
             publish="dispatch~result/predict/display">
   </rest-oid>
 </div>

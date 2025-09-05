@@ -25,24 +25,16 @@
   </span>
   <span id="temperature" style="width: 20%; display: inline-block; vertical-align: middle">
     <div style="font-size: larger; font-weight: bold;">Temperature</div>
-    <slider-oid min="40" max="120" value="40" index publish="change~temperature/level">
+    <slider-oid min="40" max="120" value="40" index publish="change~predictor/temperature">
     </slider-oid>
   </span>
   <span id="pressure" style="width: 20%; display: inline-block; vertical-align: middle">
     <div style="font-size: larger; font-weight: bold;">Pressure</div>
-    <slider-oid min="40" max="200" value="40" index publish="change~pressure/level">
+    <slider-oid min="40" max="200" value="40" index publish="change~predictor/pressure">
     </slider-oid>
   </span>
-  <rest-oid custom="factory-train"
-            subscribe="predictor/train~post"
-            publish="dispatch~result/train/display">
-  </rest-oid>
-  <rest-oid custom="temperature-predict"
-            subscribe="temperature/level~post"
-            publish="dispatch~update/alert">
-  </rest-oid>
-  <rest-oid custom="pressure-predict"
-            subscribe="pressure/level~post"
+  <rest-oid custom="factory-predictor"
+            subscribe="predictor/train~post/train;predictor/temperature~post/temperature;predictor/pressure~post/pressure"
             publish="dispatch~update/alert">
   </rest-oid>
 </div>

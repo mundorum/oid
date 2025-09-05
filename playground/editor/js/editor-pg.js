@@ -1,5 +1,6 @@
-// import { Sphere, Bus, Oid } from '@mundorum/collections/full.js'
-import { Sphere, Bus, Oid } from '@mundorum/oid/oid.js'
+import './editor-rest.js'
+import { Sphere, Bus } from '@mundorum/collections/full.js'
+// import { Sphere, Bus } from '@mundorum/oid/oid.js'
 
 // if (!new URL(document.location).searchParams.has('dev')) {
 //   await import('@mundorum/collections/full.js')
@@ -129,113 +130,6 @@ export class EditorPg {
     document.body.removeChild(a)
   }
 }
-
-Oid.customize('oid:rest', {
-  cid: 'cancer-train',
-  api: {
-    oas: {
-      paths: {
-        'http://127.0.0.1:8000/train?train_path={train_path}&test_path={test_path}': {
-          'post': {
-            operationId: 'train',
-            parameters: [
-              {name: 'train_path',
-               in: 'path'
-              },
-              {name: 'test_path',
-               in: 'path'
-              }
-            ]
-          }
-        }
-      }
-    }
-  }
-})
-
-Oid.customize('oid:rest', {
-  cid: 'cancer-predict',
-  api: {
-    oas: {
-      paths: {
-        'http://127.0.0.1:8000/predict?radius_mean={radius_mean}&texture_mean={texture_mean}&symmetry_mean={symmetry_mean}&fractal_dimension_mean={fractal_dimension_mean}': {
-          'post': {
-            operationId: 'predict',
-            parameters: [
-              {name: 'radius_mean',
-               in: 'path'
-              },
-              {name: 'texture_mean',
-               in: 'path'
-              },
-              {name: 'symmetry_mean',
-               in: 'path'
-              },
-              {name: 'fractal_dimension_mean',
-               in: 'path'
-              }
-            ]
-          }
-        }
-      }
-    }
-  }
-})
-
-Oid.customize('oid:rest', {
-  cid: 'factory-train',
-  api: {
-    oas: {
-      paths: {
-        'http://127.0.0.1:8000/train': {
-          'post': {
-            operationId: 'train'
-          }
-        }
-      }
-    }
-  }
-})
-
-Oid.customize('oid:rest', {
-  cid: 'temperature-predict',
-  api: {
-    oas: {
-      paths: {
-        'http://127.0.0.1:8000/inform_temperature?value={value}': {
-          'post': {
-            operationId: 'temperature',
-            parameters: [
-              {name: 'value',
-               in: 'path'
-              }
-            ]
-          }
-        }
-      }
-    }
-  }
-})
-
-Oid.customize('oid:rest', {
-  cid: 'pressure-predict',
-  api: {
-    oas: {
-      paths: {
-        'http://127.0.0.1:8000/inform_pressure?value={value}': {
-          'post': {
-            operationId: 'pressure',
-            parameters: [
-              {name: 'value',
-               in: 'path'
-              }
-            ]
-          }
-        }
-      }
-    }
-  }
-})
 
 EditorPg.i = new EditorPg()
 

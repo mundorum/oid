@@ -555,8 +555,9 @@ class OidBase extends Primitive {
     }
   }
   handleNotice(notice, message) {
-    if (this._receiveHandler[notice] != null)
-      this._receiveHandler[notice](notice, message);
+    const noticeMain = notice && notice.includes("/") ? notice.split("/")[0] : notice;
+    if (this._receiveHandler[noticeMain] != null)
+      this._receiveHandler[noticeMain](notice, message);
   }
   async handleInvoke(cInterface, notice, message) {
     let response = null;
@@ -4012,20 +4013,19 @@ const {
   mergeConfig
 } = axios;
 class RESTOid extends OidWeb {
-  async handleGet(topic, message) {
-    console.log("=== REST GET Request ===");
-    await this._restRequest("GET", message);
+  async handleGet(notice, message) {
+    await this._restRequest("GET", notice, message);
   }
-  async handlePost(topic, message) {
-    await this._restRequest("POST", message);
+  async handlePost(notice, message) {
+    await this._restRequest("POST", notice, message);
   }
-  async handlePut(topic, message) {
-    await this._restRequest("PUT", message);
+  async handlePut(notice, message) {
+    await this._restRequest("PUT", notice, message);
   }
-  async handleDelete(topic, message) {
-    await this._restRequest("DELETE", message);
+  async handleDelete(notice, message) {
+    await this._restRequest("DELETE", notice, message);
   }
-  async _restRequest(method, message) {
+  async _restRequest(method, notice, message) {
     let result = null;
     let parameters = {};
     if (message != null) {
@@ -4049,17 +4049,34 @@ class RESTOid extends OidWeb {
     if (api != null && api.oas != null && api.oas.paths != null) {
       const paths = Object.keys(api.oas.paths);
       if (paths.length > 0) {
-        let url = paths[0];
+        let pathKey = paths[0];
+        const noticeParts = notice.split("/");
+        console.log("=== noticeParts");
+        console.log(noticeParts);
+        if (noticeParts.length > 1) {
+          const method2 = noticeParts[0];
+          const key = noticeParts[1];
+          for (let p of paths) {
+            if (api.oas.paths[p][method2] && api.oas.paths[p][method2].operationId == key) {
+              pathKey = p;
+              break;
+            }
+          }
+        }
+        console.log("=== pathKey");
+        console.log(pathKey);
+        let url = pathKey;
         for (let p in parameters)
           url = url.replace("{" + p + "}", parameters[p]);
+        console.log("=== url");
+        console.log(url);
         const request = {
           method: method.toUpperCase(),
           url,
           withCredentials: true
         };
-        let pathDetails = api.oas.paths[paths[0]];
+        let pathDetails = api.oas.paths[pathKey];
         if (pathDetails[method] != null) {
-          if (pathDetails[method].operationId) pathDetails[method].operationId;
           if (pathDetails[method].parameters != null) {
             let body = {};
             for (let p of pathDetails[method].parameters)

@@ -279,8 +279,10 @@ export class OidBase extends Primitive {
   }
 
   handleNotice (notice, message) {
-    if (this._receiveHandler[notice] != null)
-      this._receiveHandler[notice](notice, message)
+    const noticeMain = (notice && notice.includes('/'))
+      ? notice.split('/')[0] : notice
+    if (this._receiveHandler[noticeMain] != null)
+      this._receiveHandler[noticeMain](notice, message)
   }
 
   async handleInvoke (cInterface, notice, message) {
