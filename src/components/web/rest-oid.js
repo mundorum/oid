@@ -117,7 +117,11 @@ export class RESTOid extends OidWeb {
           })
       }
     }
-    this._notify('dispatch', {value: result})
+    const preparedResult =
+      (result != null && typeof result === 'object' &&
+       !Array.isArray(result) && result.value != null)
+        ? result : {value: result}
+    this._notify('dispatch', preparedResult)
   }
 }
 

@@ -77,3 +77,23 @@ Oid.customize('oid:rest', {
     }
   }
 })
+
+Oid.customize('oid:rest', {
+  cid: 'sentiment-analysis',
+  api: {
+    oas: {
+      paths: {
+        'http://127.0.0.1:8000/classify?text={title}': {
+          'get': {
+            operationId: 'classify',
+            parameters: [
+              {name: 'title',
+               in: 'path'
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+})

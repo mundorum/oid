@@ -4100,7 +4100,8 @@ class RESTOid extends OidWeb {
         });
       }
     }
-    this._notify("dispatch", { value: result });
+    const preparedResult = result != null && typeof result === "object" && !Array.isArray(result) && result.value != null ? result : { value: result };
+    this._notify("dispatch", preparedResult);
   }
 }
 Oid.component(
@@ -4112,6 +4113,81 @@ Oid.component(
     },
     receive: ["get", "post", "put", "delete"],
     implementation: RESTOid
+  }
+);
+const _RSSOid = class _RSSOid extends OidUI {
+  connectedCallback() {
+    super.connectedCallback();
+    this._items = [];
+    this._currentItem = 0;
+    if (this.hasAttribute("autorun")) {
+      this.handleNext();
+    }
+  }
+  template() {
+    var _a;
+    return ((_a = this._current) == null ? void 0 : _a.value) || "";
+  }
+  async handleNext() {
+    if (this._items.length == 0) {
+      await this._loadRSS();
+    }
+    if (this._currentItem < this._items.length) {
+      this._current = this._items[this._currentItem];
+      this._notify("dispatch", { value: this._current });
+      this._invoke("itf:transfer", "send", { value: this._current });
+    }
+    this._currentItem++;
+    this.render();
+  }
+  async _loadRSS() {
+    if (this.source != null) {
+      await fetch(this.source).then((response) => response.text()).then((rss) => new window.DOMParser().parseFromString(rss, "text/xml")).then((data) => {
+        const items = data.querySelectorAll("item");
+        this._items = [];
+        for (const it of items) {
+          let image = null;
+          let el = 0;
+          while (image == null && el < _RSSOid.imageElements.length) {
+            image = it.querySelector(_RSSOid.imageElements[el]);
+            el++;
+          }
+          const imageURL = image == null ? null : image.getAttribute("url") ? image.getAttribute("url") : image.getAttribute("href") ? image.getAttribute("href") : null;
+          const item = {
+            title: it.querySelector("title").innerHTML,
+            link: it.querySelector("link").innerHTML
+          };
+          if (imageURL != null) {
+            item.image = imageURL;
+          }
+          item.value = this.constructor.spec.template.replace("{{image}}", imageURL == null ? "" : imageURL).replace("{{link}}", item.link).replaceAll("{{title}}", item.title);
+          this._items.push(item);
+        }
+      });
+    }
+  }
+};
+__publicField(_RSSOid, "imageElements", ["image", "thumbnail"]);
+let RSSOid = _RSSOid;
+Oid.component(
+  {
+    id: "oid:rss",
+    element: "rss-oid",
+    properties: {
+      source: {},
+      autorun: { default: false }
+    },
+    receive: ["next"],
+    implementation: RSSOid,
+    stylesheets: "default",
+    styles: css`
+    img { width: 200px; height: auto }
+  `,
+    template: html`
+    <article>
+      <img src="{{image}}" alt="{{title}}">
+      <p><a href="{{link}}" target="_blank">{{title}}</a></p>
+    </article>`
   }
 );
 class PlatformOid extends OidWeb {
@@ -4152,6 +4228,7 @@ export {
   PlatformOid,
   Primitive,
   RESTOid,
+  RSSOid,
   SliderOid,
   Sphere,
   SplitPaneOid,
