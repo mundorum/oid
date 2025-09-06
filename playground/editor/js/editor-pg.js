@@ -1,3 +1,4 @@
+import './editor-rest.js'
 import { Sphere, Bus } from '@mundorum/collections/full.js'
 // import { Sphere, Bus } from '@mundorum/oid/oid.js'
 

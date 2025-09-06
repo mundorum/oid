@@ -1,0 +1,50 @@
+<div>
+  <div style="font-size:larger;font-weight: bold">Cancer Prediction</div>
+  <form>
+    <div class="form-group">
+      <label for="train_path">Train path</label>
+      <input type="text" id="train_path" name="train_path" required  value="breast-cancer-wisconsin_train.csv">
+    </div>
+    <div class="form-group">
+      <label for="test_path">Test path</label>
+      <input type="text" id="test_path" name="test_path" required  value="breast-cancer-wisconsin_test.csv">
+    </div>
+
+    <submit-oid subscribe="form/train/submit~submit" publish="dispatch~form/train/submitted"></submit-oid>
+  </form>
+
+  <button-oid label="Train" publish="click~form/train/submit"></button-oid>
+
+  <form>
+    <div class="form-group">
+      <label for="radius_mean">Radius mean</label>
+      <input type="text" id="radius_mean" name="radius_mean" required>
+    </div>
+    <div class="form-group">
+      <label for="texture_mean">Texture mean</label>
+      <input type="text" id="texture_mean" name="texture_mean" required>
+    </div>
+    <div class="form-group">
+      <label for="symmetry_mean">Symmetry mean</label>
+      <input type="text" id="symmetry_mean" name="symmetry_mean" required>
+    </div>
+    <div class="form-group">
+      <label for="fractal_dimension_mean">Fractal dimension mean</label>
+      <input type="text" id="fractal_dimension_mean" name="fractal_dimension_mean" required>
+    </div>
+
+    <submit-oid subscribe="form/predict/submit~submit" publish="dispatch~form/predict/submitted"></submit-oid>
+  </form>
+
+  <button-oid label="Submit" publish="click~form/predict/submit"></button-oid>
+
+  <rest-oid custom="cancer-train"
+            subscribe=""
+            publish="dispatch~result/train/display">
+  </rest-oid>
+
+  <rest-oid custom="cancer-predictor"
+            subscribe="form/train/submitted~post/train;form/predict/submitted~get/predict"
+            publish="dispatch~result/predict/display">
+  </rest-oid>
+</div>

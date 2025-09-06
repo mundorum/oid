@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Basic Connect</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mundorum/oid/oid.min.css">
+
+  <script type="importmap">
+  { "imports": {
+      "@mundorum/oid/": "https://cdn.jsdelivr.net/npm/@mundorum/oid/" }}
+  </script>
+</head>
+<body>
+  <h1>Basic RSS</h1>
+  <p>Subscribe an RSS feed</p>
+
+  <script type="module">
+    import '@mundorum/oid/'
+  </script>
+
+  <rss-oid source="https://www.wired.com/category/science/feed"
+           subscribe="rss/next~next" autorun>
+  </rss-oid>
+
+  <button-oid label="Next" publish="click~rss/next"></button-oid>
+</body>
+</html>

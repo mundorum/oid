@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Xkcd REST Test</title>
+  <link rel="stylesheet" href="/lib/foundation/oiddefault.css">
+  <script src="rest-oid-xkcd.js" type="module"></script>
+</head>
+<body>
+  <h1>Xkcd REST Test</h1>
+
+  <form>
+    <div class="form-group">
+      <label for="comic_id">xkcd Comic ID</label>
+      <input type="text" id="comic_id" name="comic_id">
+    </div>
+    <submit-oid subscribe="form/submit~submit" publish="dispatch~form/submitted"></submit-oid>
+  </form>
+
+  <button-oid label="Submit" publish="click~form/submit"></button-oid>
+
+  <rest-oid custom="xkcd"
+            parameters="comic_id:1234"
+            subscribe="form/submitted~get"
+            publish="dispatch~result/display">
+  </rest-oid>
+
+  <console-oid subscribe="result/display~display">
+  </console-oid>
+
+</body>
+</html>
