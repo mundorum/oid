@@ -211,9 +211,11 @@ notice       | action  | message | message type
 ## Example
 
 <p>
+<oid-play messages>
   <rss-oid source="https://www.wired.com/category/science/feed"
            autorun>
   </rss-oid>
+<oid-play messages>
 </p>
 
 <!-- Jekyll directive to avoid Liquid filters
