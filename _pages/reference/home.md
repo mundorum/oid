@@ -215,7 +215,7 @@ notice       | action  | message | message type
   <rss-oid source="https://www.wired.com/category/science/feed"
            autorun>
   </rss-oid>
-<oid-play messages>
+</oid-play>
 </p>
 
 <!-- Jekyll directive to avoid Liquid filters
