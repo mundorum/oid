@@ -185,6 +185,37 @@ notice       | action  | message | message type
 `dispatch` | the values of the fields collected from the form | `value` field with an inner object containing field names and values; `error` field for error  | `JSON`
 
 
+# RSS Oid (`<rss-oid>`)
+
+Fetches items from an RSS feed and presents them or publishes them as messages on the bus.
+
+## Properties
+
+property  | role     | default
+----------| -------- | -------
+`source`   | the source of the RSS feeds |
+`autorun`  | defines if the component will fetch the feed on start | `false`
+
+## Input Notices
+
+notice   | action  | message | message type
+---------| --------| ------- | ------------
+`next`   | publishes one RSS item (the next in a sequence)  | `empty` | `empty`
+
+## Output Notices
+
+notice       | action  | message | message type
+-----------| --------| ------- | ------------
+`dispatch` | return the content of one feed | contains the `title`, `link` to the feed, and link to the `image`, plus a field `value` with these fields in HTML.  | `JSON`
+
+## Example
+
+<p>
+  <rss-oid source="https://www.wired.com/category/science/feed"
+           autorun>
+  </rss-oid>
+</p>
+
 <!-- Jekyll directive to avoid Liquid filters
 {% endraw %}
 -->
