@@ -1,13 +1,48 @@
-~~~
-npx webpack --config webpack.config.dev.js --mode=development
-npx webpack --config webpack.config.js --mode=production
-~~~
+# Tests
 
-~~~
-npx playwright test
-npx playwright show-report
-~~~
+## Directory structure
 
-~~~
-npx web-dev-server --node-resolve --open
-~~~
+```
+tests/
+  unit/       Pure JavaScript unit tests — no browser required
+  e2e/        Browser-based end-to-end tests (Playwright)
+  manual/     Manual HTML pages for exploratory/visual testing
+```
+
+## Running tests
+
+### Unit tests (bus logic)
+
+```
+npm test
+```
+
+or directly:
+
+```
+node --test tests/unit/bus.spec.mjs
+```
+
+These use Node.js's built-in `node:test` runner and cover:
+
+- Basic publish/subscribe (exact topics, object form, multiple subscribers)
+- Single-level wildcard `+` matching
+- Multi-level wildcard `#` matching
+- Unsubscribe (string form, object form, wildcard topics)
+- Connection-oriented API: `provide`, `withhold`, `connect`, `invoke`
+
+### End-to-end tests (browser)
+
+```
+npm run test:e2e
+```
+
+Requires browser engines installed (`npx playwright install`).
+
+### Manual tests
+
+Open the HTML files in `tests/manual/` via the dev server:
+
+```
+npm run dev
+```

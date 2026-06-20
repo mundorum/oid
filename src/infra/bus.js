@@ -37,7 +37,7 @@ export class Bus {
     }
   }
 
-  unsubscribe (subscribed) {
+  unsubscribe (subscribed, handler) {
     if (subscribed != null) {
       let topics = {}
       if (typeof subscribed === 'string' && handler != null)
@@ -51,14 +51,16 @@ export class Bus {
           for (const l in listenersRgx) {
             if (listenersRgx[l][1] === topics[tp] &&
                 listenersRgx[l][2] == tp) {
-              listenersRgx.splice(l, 1)
+              listenersRgx.splice(Number(l), 1)
               break
             }
           }
         } else if (listeners[tp] != null) {
           for (const l in listeners[tp]) {
             if (listeners[tp][l] === topics[tp]) {
-              listeners[tp] = listeners[tp].toSplice(l, 1) // clone
+              const copy = listeners[tp].slice()
+              copy.splice(Number(l), 1)
+              listeners[tp] = copy
               break
             }
           }
