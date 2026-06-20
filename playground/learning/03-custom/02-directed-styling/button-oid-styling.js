@@ -1,4 +1,4 @@
-import { css, Oid } from '/lib/foundation/oidlib-dev.js'
+import { css, Oid } from '@mundorum/oid/oid.js'
 
 Oid.customize('oid:button', {
   cid: 'big',

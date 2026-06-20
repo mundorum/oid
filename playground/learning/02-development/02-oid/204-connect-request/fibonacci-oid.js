@@ -1,4 +1,4 @@
-import { Oid, OidWeb } from '/lib/foundation/oidlib-dev.js'
+import { Oid, OidWeb } from '@mundorum/oid/oid.js'
 
 export class FibonacciOid extends OidWeb {
   constructor () {

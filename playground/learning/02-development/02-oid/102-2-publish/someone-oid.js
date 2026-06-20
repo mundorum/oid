@@ -1,4 +1,4 @@
-import { html, Oid, OidUI } from '/lib/foundation/oidlib-dev.js'
+import { html, Oid, OidUI } from '@mundorum/oid/oid.js'
 
 export class SomeoneOid extends OidUI {
   _tellName () {

@@ -19,8 +19,6 @@
     "axios": "^1.11.0"
   },
   "devDependencies": {
-    "@mundorum/collections": "file:../collections/dist",
-    "@mundorum/oid": "file:dist",
     "@playwright/test": "^1.32.1",
     "vite": "^6.0.7"
   },
