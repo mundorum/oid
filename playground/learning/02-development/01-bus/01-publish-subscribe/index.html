@@ -3,8 +3,12 @@
 <head>
   <meta charset="utf-8">
   <title>Playground</title>
+  <script type="importmap">
+  { "imports": {
+      "@mundorum/oid/": "https://cdn.jsdelivr.net/npm/@mundorum/oid/" }}
+  </script>
   <script type="module">
-    import { Bus } from '/lib/foundation/oidlib-dev.js'
+    import { Bus } from '@mundorum/oid/oid.js'
 
     function notify (topic, message) {
       const messageObj = document.querySelector("#show-message")

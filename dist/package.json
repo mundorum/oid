@@ -7,6 +7,13 @@
   "browser": "./oid.min.js",
   "main": "./oid.js",
   "module": "./oid.js",
+  "exports": {
+    ".": "./oid.js",
+    "./oid.js": "./oid.js",
+    "./oid.min.js": "./oid.min.js",
+    "./oid.css": "./oid.css",
+    "./oid.min.css": "./oid.min.css"
+  },
   "dependencies": {
     "axios": "^1.11.0"
   },

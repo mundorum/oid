@@ -138,7 +138,13 @@ EditorPg.pageBegin =
 <html>
 <head>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mundorum/oid/oid.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/@mundorum/collections/full.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mundorum/collections/full.min.css">
+  <script type="importmap">
+  { "imports": {
+      "@mundorum/oid/":         "https://cdn.jsdelivr.net/npm/@mundorum/oid/",
+      "@mundorum/collections/": "https://cdn.jsdelivr.net/npm/@mundorum/collections/" }}
+  <\/script>
+  <script type="module">import '@mundorum/collections/full.js'<\/script>
 </head>
 <body>
 <oid-sphere assets="https://mundorum.github.io/oid/oid/playground/assets/" stydefault="https://cdn.jsdelivr.net/npm/@mundorum/oid/oid.min.css" global></oid-sphere>`

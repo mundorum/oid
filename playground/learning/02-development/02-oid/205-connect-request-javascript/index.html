@@ -3,12 +3,16 @@
 <head>
   <meta charset="utf-8">
   <title>Playground</title>
+  <script type="importmap">
+  { "imports": {
+      "@mundorum/oid/": "https://cdn.jsdelivr.net/npm/@mundorum/oid/" }}
+  </script>
   <script src="fibonacci-oid.js" type="module"></script>
   <script src="loop-oid.js" type="module"></script>
 </head>
 <body>
   <script type="module">
-    import { Oid } from '/lib/foundation/oidlib-dev.js'
+    import { Oid } from '@mundorum/oid/oid.js'
 
     const fibonacci = Oid.create('ex:fibonacci', {id: 'fibo'})
     document.querySelector('#app').appendChild(fibonacci)
