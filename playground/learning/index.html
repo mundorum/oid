@@ -4,34 +4,61 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>OID Learning Examples</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mundorum/collections/full.min.css">
   <style>
-    body {
-      background-color: #f4f6f9;
+    /* ---- Base palette (mirroring oid.css) ---- */
+    :root {
+      --oid-bg:         #f5f1ed;
+      --oid-dark:       #252323;
+      --oid-mid:        #4e4b4a;
+      --oid-muted:      #9ba1af;
+      --oid-card-bg:    #faf7f4;
+      --oid-card-hover: #ede6dd;
+
+      --clr-page:     #5c4033;
+      --clr-dev:      #6b5040;
+      --clr-custom:   #8b6347;
+      --clr-svg:      #7a4f3a;
+      --clr-platform: #9e8070;
     }
 
+    body {
+      background-color: var(--oid-bg);
+      font-family: 'Open Sans', sans-serif;
+      color: var(--oid-dark);
+    }
+
+    /* ---- Header ---- */
     .site-header {
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
-      color: #fff;
+      background: linear-gradient(135deg, #252323 0%, #3a2e28 60%, #5c4033 100%);
+      color: var(--oid-bg);
       padding: 2rem 2rem 1.5rem;
       margin-bottom: 2rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,.35);
+      box-shadow: 0 2px 8px rgba(37,35,35,.4);
     }
 
     .site-header h1 {
       margin: 0 0 .35rem;
+      font-family: 'Roboto', sans-serif;
       font-size: 1.9rem;
       font-weight: 700;
       letter-spacing: .5px;
+      color: var(--oid-bg);
     }
 
     .site-header p {
       margin: 0;
       opacity: .75;
       font-size: .95rem;
+      color: var(--oid-bg);
     }
 
+    /* ---- Section titles ---- */
     .section-title {
+      font-family: 'Roboto', sans-serif;
       font-size: 1.1rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -41,25 +68,26 @@
       border-bottom: 3px solid currentColor;
     }
 
+    /* ---- Cards ---- */
     .example-card {
       display: flex;
       align-items: center;
-      background: #fff;
-      border-radius: 6px;
+      background: var(--oid-card-bg);
+      border-radius: .375rem;
       padding: .6rem 1rem;
       margin-bottom: .5rem;
       text-decoration: none;
-      color: #212529;
-      box-shadow: 0 1px 3px rgba(0,0,0,.08);
+      color: var(--oid-dark);
+      box-shadow: 0 1px 3px rgba(37,35,35,.1);
       border-left: 4px solid transparent;
       transition: box-shadow .15s, border-color .15s, background .15s;
     }
 
     .example-card:hover {
-      box-shadow: 0 3px 10px rgba(0,0,0,.15);
-      background: #f8f9ff;
+      box-shadow: 0 3px 10px rgba(37,35,35,.18);
+      background: var(--oid-card-hover);
       text-decoration: none;
-      color: #212529;
+      color: var(--oid-dark);
     }
 
     .example-card .badge {
@@ -68,6 +96,7 @@
       text-align: center;
       margin-right: .75rem;
       flex-shrink: 0;
+      font-family: 'Roboto', sans-serif;
     }
 
     .example-card .label {
@@ -76,46 +105,56 @@
     }
 
     .example-card .arrow {
-      opacity: .35;
+      opacity: .4;
       font-size: .8rem;
       margin-left: .5rem;
     }
 
-    /* per-section accent colours */
-    .section-page       .section-title  { color: #0d6efd; }
-    .section-page       .example-card   { border-left-color: #0d6efd; }
-    .section-page       .example-card:hover { border-left-color: #0b5ed7; }
+    /* ---- Per-section warm earth-tone accents ---- */
+    .section-page     .section-title       { color: var(--clr-page); }
+    .section-page     .example-card        { border-left-color: var(--clr-page); }
+    .section-page     .example-card:hover  { border-left-color: #3d2820; }
+    .section-page     .badge               { background-color: var(--clr-page)     !important; color: var(--oid-bg) !important; }
 
-    .section-dev        .section-title  { color: #198754; }
-    .section-dev        .example-card   { border-left-color: #198754; }
-    .section-dev        .example-card:hover { border-left-color: #146c43; }
+    .section-dev      .section-title       { color: var(--clr-dev); }
+    .section-dev      .example-card        { border-left-color: var(--clr-dev); }
+    .section-dev      .example-card:hover  { border-left-color: #4d3828; }
+    .section-dev      .badge               { background-color: var(--clr-dev)      !important; color: var(--oid-bg) !important; }
 
-    .section-custom     .section-title  { color: #fd7e14; }
-    .section-custom     .example-card   { border-left-color: #fd7e14; }
-    .section-custom     .example-card:hover { border-left-color: #d96204; }
+    .section-custom   .section-title       { color: var(--clr-custom); }
+    .section-custom   .example-card        { border-left-color: var(--clr-custom); }
+    .section-custom   .example-card:hover  { border-left-color: #6b4a32; }
+    .section-custom   .badge               { background-color: var(--clr-custom)   !important; color: var(--oid-bg) !important; }
 
-    .section-svg        .section-title  { color: #dc3545; }
-    .section-svg        .example-card   { border-left-color: #dc3545; }
-    .section-svg        .example-card:hover { border-left-color: #b02a37; }
+    .section-svg      .section-title       { color: var(--clr-svg); }
+    .section-svg      .example-card        { border-left-color: var(--clr-svg); }
+    .section-svg      .example-card:hover  { border-left-color: #5a3828; }
+    .section-svg      .badge               { background-color: var(--clr-svg)      !important; color: var(--oid-bg) !important; }
 
-    .section-platform   .section-title  { color: #0dcaf0; }
-    .section-platform   .example-card   { border-left-color: #0dcaf0; }
-    .section-platform   .example-card:hover { border-left-color: #0aa2c0; }
+    .section-platform .section-title       { color: var(--clr-platform); }
+    .section-platform .example-card        { border-left-color: var(--clr-platform); }
+    .section-platform .example-card:hover  { border-left-color: #7a6050; }
+    .section-platform .badge               { background-color: var(--clr-platform) !important; color: var(--oid-bg) !important; }
 
+    /* ---- Subsection labels ---- */
     .subsection-label {
       font-size: .7rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1px;
-      color: #6c757d;
+      color: var(--oid-mid);
       margin: 1rem 0 .4rem;
+    }
+
+    .text-muted {
+      color: #7a6e68 !important;
     }
 
     footer {
       text-align: center;
       padding: 2rem;
       font-size: .8rem;
-      color: #6c757d;
+      color: var(--oid-mid);
     }
   </style>
 </head>
@@ -137,139 +176,139 @@
 
     <div class="subsection-label">Core Concepts</div>
     <a class="example-card" href="01-page/01-basic/">
-      <span class="badge bg-primary">01</span>
+      <span class="badge">01</span>
       <span class="label">Basic Oid — a simple Button component</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/02-publish-subscribe/">
-      <span class="badge bg-primary">02</span>
+      <span class="badge">02</span>
       <span class="label">Publish / Subscribe — components communicating via topics</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/03-publish-subscribe-two-topics/">
-      <span class="badge bg-primary">03</span>
+      <span class="badge">03</span>
       <span class="label">Two Topics Subscribe — multiple pub/sub channels</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/04-publish-subscribe-wildcards/">
-      <span class="badge bg-primary">04</span>
+      <span class="badge">04</span>
       <span class="label">Publish / Subscribe Wildcards — pattern-based subscriptions</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/05-pre-connect/">
-      <span class="badge bg-primary">05</span>
+      <span class="badge">05</span>
       <span class="label">Pre-Connect — connecting components before they are ready</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/06-connect/">
-      <span class="badge bg-primary">06</span>
+      <span class="badge">06</span>
       <span class="label">Basic Connect — direct wiring between components</span>
       <span class="arrow">›</span>
     </a>
 
     <div class="subsection-label">JavaScript Variants</div>
     <a class="example-card" href="01-page/07-basic-javascript/">
-      <span class="badge bg-primary">07</span>
+      <span class="badge">07</span>
       <span class="label">Basic Oid (JavaScript) — using components from JS</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/08-publish-subscribe-javascript/">
-      <span class="badge bg-primary">08</span>
+      <span class="badge">08</span>
       <span class="label">Publish / Subscribe (JavaScript) — pub/sub from JS code</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/09-connect-javascript/">
-      <span class="badge bg-primary">09</span>
+      <span class="badge">09</span>
       <span class="label">Basic Connect (JavaScript) — connect wiring from JS code</span>
       <span class="arrow">›</span>
     </a>
 
     <div class="subsection-label">Containers</div>
     <a class="example-card" href="01-page/10-container/01-split-pane-horizontal/">
-      <span class="badge bg-primary">10a</span>
+      <span class="badge">10a</span>
       <span class="label">Split Pane — Horizontal layout</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/10-container/02-split-pane-vertical/">
-      <span class="badge bg-primary">10b</span>
+      <span class="badge">10b</span>
       <span class="label">Split Pane — Vertical layout</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/10-container/10-state-pane/">
-      <span class="badge bg-primary">10c</span>
+      <span class="badge">10c</span>
       <span class="label">State Pane — pane with state management</span>
       <span class="arrow">›</span>
     </a>
 
     <div class="subsection-label">UI Components</div>
     <a class="example-card" href="01-page/11-ui/01-image/">
-      <span class="badge bg-primary">11a</span>
+      <span class="badge">11a</span>
       <span class="label">Image Oid — displaying images as a component</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/11-ui/02-assets-config/">
-      <span class="badge bg-primary">11b</span>
+      <span class="badge">11b</span>
       <span class="label">Sphere Assets — configuring asset paths per sphere</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/11-ui/03-assets-global-config/">
-      <span class="badge bg-primary">11c</span>
+      <span class="badge">11c</span>
       <span class="label">Sphere Global Assets — global asset path configuration</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/11-ui/10-slider/">
-      <span class="badge bg-primary">11d</span>
+      <span class="badge">11d</span>
       <span class="label">Slider Oid — range slider component</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/11-ui/11-slider-console/">
-      <span class="badge bg-primary">11e</span>
+      <span class="badge">11e</span>
       <span class="label">Slider with Console — slider publishing to a console</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/11-ui/20-switch-console/">
-      <span class="badge bg-primary">11f</span>
+      <span class="badge">11f</span>
       <span class="label">Switch with Console — toggle switch publishing to a console</span>
       <span class="arrow">›</span>
     </a>
 
     <div class="subsection-label">Data</div>
     <a class="example-card" href="01-page/12-data/01-submit-auto/">
-      <span class="badge bg-primary">12a</span>
+      <span class="badge">12a</span>
       <span class="label">Auto Submit — automatic form data submission</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/12-data/03-submit-storage/">
-      <span class="badge bg-primary">12b</span>
+      <span class="badge">12b</span>
       <span class="label">Submit to Storage — persisting form data to storage</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/12-data/04-submit-storage-file/">
-      <span class="badge bg-primary">12c</span>
+      <span class="badge">12c</span>
       <span class="label">Submit to Storage File — saving form data to a file</span>
       <span class="arrow">›</span>
     </a>
 
     <div class="subsection-label">Web Integration</div>
     <a class="example-card" href="01-page/13-web/01-rss/">
-      <span class="badge bg-primary">13</span>
+      <span class="badge">13</span>
       <span class="label">RSS Feed — consuming an RSS feed as a component</span>
       <span class="arrow">›</span>
     </a>
 
     <div class="subsection-label">Advanced</div>
     <a class="example-card" href="01-page/50-advanced/01-two-spheres/">
-      <span class="badge bg-primary">50a</span>
+      <span class="badge">50a</span>
       <span class="label">Two Spheres — isolated component scopes on the same page</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/50-advanced/02-intercalated-spheres/">
-      <span class="badge bg-primary">50b</span>
+      <span class="badge">50b</span>
       <span class="label">Intercalated Spheres — overlapping sphere scopes</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="01-page/50-advanced/10-play/">
-      <span class="badge bg-primary">50c</span>
+      <span class="badge">50c</span>
       <span class="label">Player Panel — composed multi-component playback panel</span>
       <span class="arrow">›</span>
     </a>
@@ -282,158 +321,158 @@
 
     <div class="subsection-label">Bus</div>
     <a class="example-card" href="02-development/01-bus/01-publish-subscribe/">
-      <span class="badge bg-success">Bus 1</span>
+      <span class="badge">Bus 1</span>
       <span class="label">Bus Publish / Subscribe — direct JS bus API</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/01-bus/02-wildcard/">
-      <span class="badge bg-success">Bus 2</span>
+      <span class="badge">Bus 2</span>
       <span class="label">Bus Wildcards — wildcard topic matching in JS</span>
       <span class="arrow">›</span>
     </a>
 
     <div class="subsection-label">OID Component Authoring</div>
     <a class="example-card" href="02-development/02-oid/001-basic/">
-      <span class="badge bg-success">OID 1</span>
+      <span class="badge">OID 1</span>
       <span class="label">Basic OID — minimal custom component definition</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/02-oid/101-1-subscribe/">
-      <span class="badge bg-success">OID 2a</span>
+      <span class="badge">OID 2a</span>
       <span class="label">Subscribe (1) — component that listens to a topic</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/02-oid/101-2-subscribe/">
-      <span class="badge bg-success">OID 2b</span>
+      <span class="badge">OID 2b</span>
       <span class="label">Subscribe (2) — alternative subscribe pattern</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/02-oid/102-1-publish/">
-      <span class="badge bg-success">OID 3a</span>
+      <span class="badge">OID 3a</span>
       <span class="label">Publish (1) — component that emits to a topic</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/02-oid/102-2-publish/">
-      <span class="badge bg-success">OID 3b</span>
+      <span class="badge">OID 3b</span>
       <span class="label">Publish (2) — alternative publish pattern</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/02-oid/201-connect-provide/">
-      <span class="badge bg-success">OID 4</span>
+      <span class="badge">OID 4</span>
       <span class="label">Connect — Provide — exposing a component interface</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/02-oid/202-1-provide-interface/">
-      <span class="badge bg-success">OID 5a</span>
+      <span class="badge">OID 5a</span>
       <span class="label">Provide Interface (1) — typed interface declaration</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/02-oid/202-2-provide-interface/">
-      <span class="badge bg-success">OID 5b</span>
+      <span class="badge">OID 5b</span>
       <span class="label">Provide Interface (2) — alternative interface variant</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/02-oid/203-connect-invoke/">
-      <span class="badge bg-success">OID 6</span>
+      <span class="badge">OID 6</span>
       <span class="label">Connect — Invoke — calling a method on a connected component</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/02-oid/204-connect-request/">
-      <span class="badge bg-success">OID 7a</span>
+      <span class="badge">OID 7a</span>
       <span class="label">Connect — Request — request/response between components</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/02-oid/205-connect-request-javascript/">
-      <span class="badge bg-success">OID 7b</span>
+      <span class="badge">OID 7b</span>
       <span class="label">Connect — Request (JavaScript) — request/response from JS</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/02-oid/206-connect-base/">
-      <span class="badge bg-success">OID 8</span>
+      <span class="badge">OID 8</span>
       <span class="label">Connect — Base — using the base connect mechanism</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/02-oid/207-connect-method/">
-      <span class="badge bg-success">OID 9</span>
+      <span class="badge">OID 9</span>
       <span class="label">Connect — Method — method-level connection binding</span>
       <span class="arrow">›</span>
     </a>
 
     <div class="subsection-label">Styling</div>
     <a class="example-card" href="02-development/03-styling/001-basic/">
-      <span class="badge bg-success">CSS 1</span>
+      <span class="badge">CSS 1</span>
       <span class="label">Basic Styling — inline styles on a component</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/03-styling/101-stylesheet-external/">
-      <span class="badge bg-success">CSS 2</span>
+      <span class="badge">CSS 2</span>
       <span class="label">External Stylesheet — loading a CSS file per component</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/03-styling/102-stylesheet-global/">
-      <span class="badge bg-success">CSS 3a</span>
+      <span class="badge">CSS 3a</span>
       <span class="label">Global Stylesheet — applying a stylesheet to all components</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/03-styling/102-stylesheet-global-page/">
-      <span class="badge bg-success">CSS 3b</span>
+      <span class="badge">CSS 3b</span>
       <span class="label">Global Page Stylesheet — page-level global stylesheet</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/03-styling/201-stylesheet-sphere-default/">
-      <span class="badge bg-success">CSS 4a</span>
+      <span class="badge">CSS 4a</span>
       <span class="label">Sphere Default Stylesheet — default CSS scoped to a sphere</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/03-styling/202-stylesheet-sphere-directory/">
-      <span class="badge bg-success">CSS 4b</span>
+      <span class="badge">CSS 4b</span>
       <span class="label">Sphere Directory Stylesheet — loading styles from a directory</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/03-styling/203-stylesheet-sphere-directory-default/">
-      <span class="badge bg-success">CSS 4c</span>
+      <span class="badge">CSS 4c</span>
       <span class="label">Sphere Directory Default — directory-scoped default styles</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/03-styling/301-stylesheet-setting-default/">
-      <span class="badge bg-success">CSS 5a</span>
+      <span class="badge">CSS 5a</span>
       <span class="label">Setting Default Stylesheet — programmatic default stylesheet</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/03-styling/302-stylesheet-extending-default/">
-      <span class="badge bg-success">CSS 5b</span>
+      <span class="badge">CSS 5b</span>
       <span class="label">Extending Default Styles — layering on top of a default stylesheet</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/03-styling/401-stylesheet-no-stylable/">
-      <span class="badge bg-success">CSS 6</span>
+      <span class="badge">CSS 6</span>
       <span class="label">No-Stylable — component that opts out of the styling system</span>
       <span class="arrow">›</span>
     </a>
 
     <div class="subsection-label">Extras</div>
     <a class="example-card" href="02-development/04-extras/compound-attribute/">
-      <span class="badge bg-success">EXT 1</span>
+      <span class="badge">EXT 1</span>
       <span class="label">Compound Attribute — multi-value attribute on a component</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/04-extras/dynamic-template-1/">
-      <span class="badge bg-success">EXT 2a</span>
+      <span class="badge">EXT 2a</span>
       <span class="label">Dynamic Template (1) — rendering template at runtime</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/04-extras/dynamic-template-2/">
-      <span class="badge bg-success">EXT 2b</span>
+      <span class="badge">EXT 2b</span>
       <span class="label">Dynamic Template (2) — alternative dynamic template approach</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/04-extras/interface-get/">
-      <span class="badge bg-success">EXT 3a</span>
+      <span class="badge">EXT 3a</span>
       <span class="label">Interface — Get — reading a value through the component interface</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="02-development/04-extras/interface-set/">
-      <span class="badge bg-success">EXT 3b</span>
+      <span class="badge">EXT 3b</span>
       <span class="label">Interface — Set — writing a value through the component interface</span>
       <span class="arrow">›</span>
     </a>
@@ -445,17 +484,17 @@
     <p class="text-muted small mb-3">Real-world examples of extending and customizing built-in OID components.</p>
 
     <a class="example-card" href="03-custom/01-button-click/">
-      <span class="badge" style="background:#fd7e14">CTM 1</span>
+      <span class="badge">CTM 1</span>
       <span class="label">Customizing the Button Oid — overriding click behaviour</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="03-custom/02-directed-styling/">
-      <span class="badge" style="background:#fd7e14">CTM 2</span>
+      <span class="badge">CTM 2</span>
       <span class="label">Directed Styling — programmatically targeting component styles</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="03-custom/03-rest-xkcd/">
-      <span class="badge" style="background:#fd7e14">CTM 3</span>
+      <span class="badge">CTM 3</span>
       <span class="label">REST — XKCD — custom REST component fetching xkcd comics</span>
       <span class="arrow">›</span>
     </a>
@@ -467,17 +506,17 @@
     <p class="text-muted small mb-3">Building graphic components using DIV and SVG rendering approaches.</p>
 
     <a class="example-card" href="04-svg/001-rectangle-div/">
-      <span class="badge bg-danger">SVG 1</span>
+      <span class="badge">SVG 1</span>
       <span class="label">Rectangle with DIV — CSS-based rectangle component</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="04-svg/002-rectangle-svg/">
-      <span class="badge bg-danger">SVG 2</span>
+      <span class="badge">SVG 2</span>
       <span class="label">Rectangle with SVG — SVG-based rectangle component</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="04-svg/003-rectangle-svg/">
-      <span class="badge bg-danger">SVG 3</span>
+      <span class="badge">SVG 3</span>
       <span class="label">Rectangle with SVG (composite) — SVG sphere and component</span>
       <span class="arrow">›</span>
     </a>
@@ -489,12 +528,12 @@
     <p class="text-muted small mb-3">Using the OID platform layer for runtime composition and configuration loading.</p>
 
     <a class="example-card" href="05-platform/01-basic/">
-      <span class="badge bg-info text-dark">PLT 1</span>
+      <span class="badge">PLT 1</span>
       <span class="label">Platform — Basic — minimal platform component usage</span>
       <span class="arrow">›</span>
     </a>
     <a class="example-card" href="05-platform/02-load-json/">
-      <span class="badge bg-info text-dark">PLT 2</span>
+      <span class="badge">PLT 2</span>
       <span class="label">Platform — Load JSON — loading a composition from a JSON file</span>
       <span class="arrow">›</span>
     </a>
